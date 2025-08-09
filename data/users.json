@@ -1,0 +1,36 @@
+{
+  "gre": {
+    "email": "james@gmail.com",
+    "password": "91064976ae15edbefb284b3144c35cafee2bf9bfebd636d26b245f7306f7fcfa",
+    "created_at": "2025-08-08 17:40:43",
+    "username": "gre",
+    "login_time": "2025-08-08 18:34:09"
+  },
+  "sofia": {
+    "email": "sofia@gmail.com",
+    "password": "5eac324dc63e5329e18a2fff757afb2866051fc54df858474d1c668b41cde981",
+    "created_at": "2025-08-08 18:51:41"
+  },
+  "pippolo": {
+    "name": "",
+    "surname": "",
+    "email": "quadro@gmail.com",
+    "username": "pippolo",
+    "password": "694889c3f99b48a391bc0a08d668343758d7ddd1eadfc365f196c9609691a5ee",
+    "luogo": "",
+    "telefono": "",
+    "data": "",
+    "created_at": "2025-08-09 16:43:41"
+  },
+  "sofixx": {
+    "name": "sofia",
+    "surname": "santoni",
+    "email": "sofia90@gmail.com",
+    "username": "sofixx",
+    "password": "f6322e20eae56843e790b43b7648271f375611817fd35788f278c5d4cc1e9f88",
+    "luogo": "ancona",
+    "telefono": "9276582",
+    "data": "2004/01/19",
+    "created_at": "2025-08-09 17:08:25"
+  }
+}
