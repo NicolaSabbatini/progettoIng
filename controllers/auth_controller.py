@@ -1,9 +1,13 @@
 from models.user_model import UserModel
 from datetime import datetime
 
+from models.user_model import UserModel
+from models.auto import AutoModel
+
 class AuthController:
     def __init__(self):
         self.user_model = UserModel()
+        self.auto_model = AutoModel()
         self.current_user = None
         self.login_time = None
     
@@ -60,3 +64,17 @@ class AuthController:
     def is_logged_in(self):
         """Verifica se un utente è loggato"""
         return self.current_user is not None
+
+
+    def get_all_auto(self):
+        """Restituisce tutte le auto"""
+        return self.auto_model.get_all_auto()
+    
+    def addo_auto(self, marca, modello, anno):
+        """Aggiunge una nuova auto"""
+        if not (marca and modello and anno):
+            return False, "Tutti i campi dell'auto sono obbligatori"
+        
+        self.auto_model.add_auto(marca,modello, anno)
+        return True, "Auto aggiunta con successo"
+    

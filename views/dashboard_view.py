@@ -1,18 +1,24 @@
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QPushButton, QFrame, QTextEdit)
+                             QPushButton, QFrame, QTextEdit, QGridLayout, QLineEdit, QDialog, QMessageBox)
 from PyQt5.QtCore import Qt
+
+from models.auto import AutoModel
 
 class DashboardView(QWidget):
     def __init__(self, controller, login_view):
         super().__init__()
         self.controller = controller
         self.login_view = login_view
+        self.auto_model = AutoModel()
+        self.setWindowTitle('Dashboard')
+
+
+        
         self.init_ui()
     
     def init_ui(self):
         self.setWindowTitle('Dashboard')
         #self.setFixedSize(600, 400)
-        #self.setStyleSheet(self.get_stylesheet())
         
         # Layout principale
         main_layout = QVBoxLayout()
@@ -79,6 +85,8 @@ class DashboardView(QWidget):
         
         main_layout.addWidget(info_frame)
         
+
+    
         # Area note (esempio di funzionalità aggiuntiva)
         notes_frame = QFrame()
         notes_frame.setObjectName('info_frame')
@@ -92,75 +100,56 @@ class DashboardView(QWidget):
         self.notes_text.setPlaceholderText('Scrivi le tue note qui...')
         self.notes_text.setMaximumHeight(100)
         notes_layout.addWidget(self.notes_text)
+
+
+        # Area auto
+        auto_frame = QFrame()
+        auto_frame.setObjectName('auto_frame')
+        grid_auto_layout = QGridLayout(auto_frame)
+
+        for i, auto in enumerate(self.controller.get_all_auto()):
+            auto_widget = QWidget()
+            auto_widget.setObjectName('auto_widget')
+            auto_layout = QVBoxLayout(auto_widget)
+            auto_layout.setContentsMargins(10, 10, 10, 10)
+    
+            marca_label = QLabel(f"Marca: {auto['marca']}")
+            modello_label = QLabel(f"Modello: {auto['modello']}")
+            anno_label = QLabel(f"Anno: {auto['anno']}")
+    
+            auto_layout.addWidget(marca_label)
+            auto_layout.addWidget(modello_label)
+            auto_layout.addWidget(anno_label)
+    
+
+            grid_auto_layout.addWidget(auto_widget, i // 3, i % 3)
+
+
         
+
+        crea_auto_btn = QPushButton('Crea Auto')
+        crea_auto_btn.setObjectName('crea_auto_button')
+        crea_auto_btn.clicked.connect(self.crea_auto)
+        
+
+
+       
         main_layout.addWidget(notes_frame)
-        
+        main_layout.addWidget(auto_frame)
+        main_layout.addWidget(crea_auto_btn)
+        main_layout.addWidget(auto_frame)
+
+
         main_layout.addStretch()
         
+
+
         self.setLayout(main_layout)
         
         # Centra la finestra
         self.center_window()
     
-    def get_stylesheet(self):
-        return """
-            QWidget {
-                background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,
-                    stop: 0 #667eea, stop: 1 #764ba2);
-                color: white;
-                font-family: 'Segoe UI', Arial, sans-serif;
-            }
-            
-            #welcome_title {
-                font-size: 28px;
-                font-weight: bold;
-            }
-            
-            #section_title {
-                font-size: 18px;
-                font-weight: bold;
-                color: #333;
-                margin-bottom: 10px;
-            }
-            
-            #info_frame {
-                background-color: rgba(255, 255, 255, 0.95);
-                border-radius: 10px;
-                padding: 20px;
-            }
-            
-            #info_frame QLabel {
-                color: #333;
-                font-size: 14px;
-                padding: 5px 0;
-            }
-            
-            #logout_button {
-                background-color: #e53e3e;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 6px;
-                font-weight: bold;
-            }
-            
-            #logout_button:hover {
-                background-color: #c53030;
-            }
-            
-            QTextEdit {
-                background-color: white;
-                border: 2px solid #ddd;
-                border-radius: 6px;
-                color: #333;
-                font-size: 14px;
-                padding: 10px;
-            }
-            
-            QTextEdit:focus {
-                border-color: #667eea;
-            }
-        """
+    
     
     def center_window(self):
         """Centra la finestra sullo schermo"""
@@ -186,7 +175,7 @@ class DashboardView(QWidget):
             self.luogo_label.setText(f'Luogo: {user_data.get("luogo", "N/A")}')
             self.telefono_label.setText(f'Telefono: {user_data.get("telefono", "N/A")}')
             self.data_label.setText(f'Data di nascita: {user_data.get("data", "N/A")}')
-            
+
     
     def handle_logout(self):
         """Gestisce il logout"""
@@ -194,3 +183,103 @@ class DashboardView(QWidget):
         self.login_view.clear_fields()
         self.login_view.show()
         self.hide()
+
+
+    def update_auto_display(self):
+        """Aggiorna la visualizzazione delle auto nella dashboard"""
+        auto_list = self.controller.get_all_auto()
+        
+        if not hasattr(self, 'auto_layout'):
+            self.auto_layout = QGridLayout()
+            self.auto_layout.setSpacing(10)
+            self.auto_layout.setContentsMargins(0, 0, 0, 0)
+            self.auto_frame = QFrame()
+            self.auto_frame.setObjectName('info_frame')
+            self.auto_frame.setLayout(self.auto_layout)
+            self.layout().addWidget(self.auto_frame)
+        
+        # Pulisce il layout esistente
+        for i in reversed(range(self.auto_layout.count())): 
+            widget = self.auto_layout.itemAt(i).widget()
+            if widget is not None:
+                widget.deleteLater()
+        
+        # Crea e aggiunge i widget per le auto
+        if auto_list:
+            self.create_auto_widgets(auto_list)
+
+
+
+
+
+    def view_auto_widgets(self, auto_list):
+        self.auto_frame = QFrame()
+        self.auto_frame.setObjectName('auto_frame')
+        self.auto_layout = QGridLayout(self.auto_frame)
+
+        for i, auto in enumerate(auto_list):
+            auto_widget = QWidget()
+            auto_layout = QVBoxLayout(auto_widget)
+            auto_layout.setContentsMargins(10, 10, 10, 10)
+            
+            marca_label = QLabel(f'Marca: {auto.marca}')
+            modello_label = QLabel(f'Modello: {auto.modello}')
+            anno_label = QLabel(f'Anno: {auto.anno}')
+            
+            auto_layout.addWidget(marca_label)
+            auto_layout.addWidget(modello_label)
+            auto_layout.addWidget(anno_label)
+            
+            self.auto_layout.addWidget(auto_widget, i // 3, i % 3)
+
+    def crea_auto(self):
+        dialog = CreaAutoDialog(self.controller, self)
+        dialog.exec_()
+
+    
+class CreaAutoDialog(QDialog):
+    def __init__(self,controller, parent=None):
+        super().__init__(parent)
+        self.controller = controller
+        self.setWindowTitle('Crea una Nuova Auto')
+        self.setFixedSize(350, 250)
+        layout = QVBoxLayout(self)
+
+        marca_input = QLineEdit()
+        marca_input.setPlaceholderText('Marca')
+        layout.addWidget(QLabel('Marca:'))
+        layout.addWidget(marca_input)
+
+        modello_input = QLineEdit()
+        modello_input.setPlaceholderText('Modello')
+        layout.addWidget(QLabel('Modello:'))
+        layout.addWidget(modello_input)
+
+        anno_input = QLineEdit()
+        anno_input.setPlaceholderText('Anno')
+        layout.addWidget(QLabel('Anno:'))
+        layout.addWidget(anno_input)
+        
+      
+        # Bottone per salvare l'auto
+        save_btn = QPushButton('Salva Auto')  
+        save_btn.setObjectName('primary_button')
+        layout.addWidget(save_btn)
+        save_btn.clicked.connect(lambda: self.addi_auto(marca_input, modello_input, anno_input))
+        
+      
+        self.setLayout(layout)
+        self.setWindowModality(Qt.ApplicationModal)
+
+
+
+    def addi_auto(self, marca_input, modello_input, anno_input):
+        marca = marca_input.text()
+        modello = modello_input.text()
+        anno = anno_input.text()
+
+        if marca and modello and anno:
+            self.controller.addo_auto(marca, modello, anno)
+            self.accept()
+        else:
+            QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')

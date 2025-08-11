@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "marca": "mercedes",
+    "modello": "benz",
+    "anno": "1990"
+  },
+  {
+    "id": 2,
+    "marca": "mercedes",
+    "modello": "lois",
+    "anno": "2000"
+  },
+  {
+    "id": 3,
+    "marca": "fiat",
+    "modello": "popo",
+    "anno": "1890"
+  }
+]
