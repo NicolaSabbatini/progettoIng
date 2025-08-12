@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
 from PyQt5.QtCore import Qt
 
 from models.auto import AutoModel
+from models.contract_model import ContractModel
+from controllers.auth_controller import AuthController
 
 class DashboardView(QWidget):
     def __init__(self, controller, login_view):
@@ -10,6 +12,7 @@ class DashboardView(QWidget):
         self.controller = controller
         self.login_view = login_view
         self.auto_model = AutoModel()
+        self.contract_model = ContractModel()
         self.setWindowTitle('Dashboard')
 
 
@@ -87,19 +90,7 @@ class DashboardView(QWidget):
         
 
     
-        # Area note (esempio di funzionalità aggiuntiva)
-        notes_frame = QFrame()
-        notes_frame.setObjectName('info_frame')
-        notes_layout = QVBoxLayout(notes_frame)
         
-        notes_title = QLabel('Note Personali')
-        notes_title.setObjectName('section_title')
-        notes_layout.addWidget(notes_title)
-        
-        self.notes_text = QTextEdit()
-        self.notes_text.setPlaceholderText('Scrivi le tue note qui...')
-        self.notes_text.setMaximumHeight(100)
-        notes_layout.addWidget(self.notes_text)
 
 
         # Area auto
@@ -122,7 +113,7 @@ class DashboardView(QWidget):
             auto_layout.addWidget(anno_label)
     
 
-            grid_auto_layout.addWidget(auto_widget, i // 3, i % 3)
+            grid_auto_layout.addWidget(auto_widget, i // 4, i % 4)
 
 
         
@@ -131,13 +122,21 @@ class DashboardView(QWidget):
         crea_auto_btn.setObjectName('crea_auto_button')
         crea_auto_btn.clicked.connect(self.crea_auto)
         
+        show_contract_btn = QPushButton('visualizza contratti')
+        show_contract_btn.setObjectName('show_contract_button')
+        show_contract_btn.clicked.connect(self.visualizza_contratti)
+
+        crea_contract_btn = QPushButton('crea contratto')
+        crea_contract_btn.setObjectName('crea_contratto_button')
+        crea_contract_btn.clicked.connect(self.crea_contratto)
 
 
-       
-        main_layout.addWidget(notes_frame)
         main_layout.addWidget(auto_frame)
         main_layout.addWidget(crea_auto_btn)
+        main_layout.addWidget(show_contract_btn)
         main_layout.addWidget(auto_frame)
+        main_layout.addWidget(crea_contract_btn)
+
 
 
         main_layout.addStretch()
@@ -156,8 +155,8 @@ class DashboardView(QWidget):
         screen = self.screen().availableGeometry()
         size = self.geometry()
         self.move(
-            (screen.width() - size.width()) // 2,
-            (screen.height() - size.height()) // 2
+            max(0, (screen.width() - self.width()) // 2),
+            max(0, (screen.height() - self.height()) // 2)
         )
     
     def update_user_info(self):
@@ -210,31 +209,107 @@ class DashboardView(QWidget):
 
 
 
-
-
-    def view_auto_widgets(self, auto_list):
-        self.auto_frame = QFrame()
-        self.auto_frame.setObjectName('auto_frame')
-        self.auto_layout = QGridLayout(self.auto_frame)
-
-        for i, auto in enumerate(auto_list):
-            auto_widget = QWidget()
-            auto_layout = QVBoxLayout(auto_widget)
-            auto_layout.setContentsMargins(10, 10, 10, 10)
-            
-            marca_label = QLabel(f'Marca: {auto.marca}')
-            modello_label = QLabel(f'Modello: {auto.modello}')
-            anno_label = QLabel(f'Anno: {auto.anno}')
-            
-            auto_layout.addWidget(marca_label)
-            auto_layout.addWidget(modello_label)
-            auto_layout.addWidget(anno_label)
-            
-            self.auto_layout.addWidget(auto_widget, i // 3, i % 3)
-
     def crea_auto(self):
         dialog = CreaAutoDialog(self.controller, self)
         dialog.exec_()
+
+    def crea_contratto(self):
+        dialog = CreaContract(self, self.controller)
+        dialog.exec_()
+
+    
+    def visualizza_contratti(self):
+        """Visualizza i contratti associati all'utente"""
+        contracts = self.controller.get_all_contracts()
+        if not contracts:
+            QMessageBox.information(self, 'Contratti', 'Nessun contratto trovato.')
+            return
+            
+        contract_frame = QFrame()
+        contract_frame.setObjectName('contract_frame')
+        contract_grid_layout = QGridLayout(contract_frame)
+
+        for i, contract in enumerate(contracts):
+            contract_widget = QWidget()
+            contract_widget.setObjectName('contract_widget')
+            contract_layout = QVBoxLayout(contract_widget)
+            contract_layout.setContentsMargins(10, 10, 10, 10)
+        
+            user_label = QLabel(f"User: {contract['user']}")
+            auto_label = QLabel(f"auto: {contract['auto']}")
+            start_date_label = QLabel(f"start date: {contract['start_date']}")
+            end_date_label = QLabel(f"end date: {contract['end_date']}")
+            price_label = QLabel(f"Price: {contract['price']}")
+
+            contract_layout.addWidget(user_label)
+            contract_layout.addWidget(auto_label)
+            contract_layout.addWidget(start_date_label)
+            contract_layout.addWidget(end_date_label)
+            contract_layout.addWidget(price_label)
+
+
+        
+
+            contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
+
+            self.layout().addWidget(contract_frame)
+
+class CreaContract(QDialog):
+    def __init__(self, parent=None, controller=None):
+        super().__init__(parent)
+        self.controller = controller
+        self.setWindowTitle('Crea un nuovo contratto')
+        self.setFixedSize(350,250)
+        layout = QVBoxLayout(self)
+
+        user_input = QLineEdit()
+        user_input.setPlaceholderText('user')
+        layout.addWidget(QLabel('user:'))
+        layout.addWidget(user_input)
+
+        auto_input = QLineEdit()
+        auto_input.setPlaceholderText('auto')
+        layout.addWidget(QLabel('auto:'))
+        layout.addWidget(auto_input)
+
+        start_date_input = QLineEdit()
+        start_date_input.setPlaceholderText('start_date')
+        layout.addWidget(QLabel('start date:'))
+        layout.addWidget(start_date_input)
+
+        end_date_input = QLineEdit()
+        end_date_input.setPlaceholderText('end_date')
+        layout.addWidget(QLabel('end date:'))
+        layout.addWidget(end_date_input)
+
+        prezzo_input = QLineEdit()
+        prezzo_input.setPlaceholderText('prezzo')
+        layout.addWidget(QLabel('prezzo:'))
+        layout.addWidget(prezzo_input)
+
+        # Bottone per salvare l'auto
+        save_btn = QPushButton('Salva contratto')  
+        save_btn.setObjectName('primary_button')
+        layout.addWidget(save_btn)
+        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_input,start_date_input,end_date_input,prezzo_input))
+        
+      
+        self.setLayout(layout)
+        self.setWindowModality(Qt.ApplicationModal)
+
+    def addi_contract(self, user_input, auto_input, start_date_input, end_date_input, prezzo_input):
+        user = user_input.text()
+        auto = auto_input.text()
+        start_date = start_date_input.text()
+        end_date = end_date_input.text()
+        prezzo = prezzo_input.text()
+
+
+        if user and auto and start_date and end_date and prezzo:
+            self.controller.addo_contratto(user,auto,start_date,end_date,prezzo)
+            self.accept()
+        else:
+            QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
 
     
 class CreaAutoDialog(QDialog):
@@ -273,6 +348,8 @@ class CreaAutoDialog(QDialog):
 
 
 
+
+
     def addi_auto(self, marca_input, modello_input, anno_input):
         marca = marca_input.text()
         modello = modello_input.text()
@@ -283,3 +360,4 @@ class CreaAutoDialog(QDialog):
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
+

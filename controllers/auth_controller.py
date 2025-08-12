@@ -3,11 +3,13 @@ from datetime import datetime
 
 from models.user_model import UserModel
 from models.auto import AutoModel
+from models.contract_model import ContractModel
 
 class AuthController:
     def __init__(self):
         self.user_model = UserModel()
         self.auto_model = AutoModel()
+        self.contract_model = ContractModel()
         self.current_user = None
         self.login_time = None
     
@@ -78,3 +80,14 @@ class AuthController:
         self.auto_model.add_auto(marca,modello, anno)
         return True, "Auto aggiunta con successo"
     
+    def get_all_contracts(self):
+        """Restituisce tutti i contratti"""
+        return self.contract_model.get_all_contracts()
+    
+    def addo_contratto(self, user, auto, start_date, end_date, price):
+        """Aggiunge un nuovo contratto"""
+        if not (user and auto and start_date and end_date and price):
+            return False, "Tutti i campi del contratto sono obbligatori"
+        
+        self.contract_model.add_contract(user, auto, start_date, end_date, price)
+        return True, "Contratto aggiunto con successo"

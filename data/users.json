@@ -1,16 +1,4 @@
 {
-  "gre": {
-    "email": "james@gmail.com",
-    "password": "91064976ae15edbefb284b3144c35cafee2bf9bfebd636d26b245f7306f7fcfa",
-    "created_at": "2025-08-08 17:40:43",
-    "username": "gre",
-    "login_time": "2025-08-08 18:34:09"
-  },
-  "sofia": {
-    "email": "sofia@gmail.com",
-    "password": "5eac324dc63e5329e18a2fff757afb2866051fc54df858474d1c668b41cde981",
-    "created_at": "2025-08-08 18:51:41"
-  },
   "pippolo": {
     "name": "",
     "surname": "",
