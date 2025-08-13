@@ -4,15 +4,15 @@ from PyQt5.QtCore import Qt
 
 from models.auto import AutoModel
 from models.contract_model import ContractModel
-from controllers.auth_controller import AuthController
+
 
 class DashboardView(QWidget):
-    def __init__(self, controller, login_view):
+    def __init__(self, controller):
         super().__init__()
         self.controller = controller
-        self.login_view = login_view
-        self.auto_model = AutoModel()
-        self.contract_model = ContractModel()
+        #self.login_view = login_view
+        #self.auto_model = AutoModel()
+        #self.contract_model = ContractModel()
         self.setWindowTitle('Dashboard')
 
 
@@ -37,7 +37,7 @@ class DashboardView(QWidget):
         
         self.logout_button = QPushButton('Logout')
         self.logout_button.setObjectName('logout_button')
-        self.logout_button.clicked.connect(self.handle_logout)
+        self.logout_button.clicked.connect(self.controller.handle_logout)
         header_layout.addWidget(self.logout_button)
         
         main_layout.addLayout(header_layout)
@@ -71,7 +71,7 @@ class DashboardView(QWidget):
         self.telefono_label.setObjectName('info_label')
         self.data_label = QLabel()
         self.data_label.setObjectName('info_label')
-        self.update_user_info()
+        self.controller.update_user_info(self)
        
         
         info_layout.addWidget(self.username_label)
@@ -146,67 +146,11 @@ class DashboardView(QWidget):
         self.setLayout(main_layout)
         
         # Centra la finestra
-        self.center_window()
+        self.controller.center_window(self)
     
     
     
-    def center_window(self):
-        """Centra la finestra sullo schermo"""
-        screen = self.screen().availableGeometry()
-        size = self.geometry()
-        self.move(
-            max(0, (screen.width() - self.width()) // 2),
-            max(0, (screen.height() - self.height()) // 2)
-        )
     
-    def update_user_info(self):
-        """Aggiorna le informazioni utente nella dashboard"""
-        user_data = self.controller.get_current_user_data()
-        
-        if user_data:
-            self.welcome_label.setText(f'Benvenuto, {user_data["username"]}!')
-            self.username_label.setText(f'👤 Username: {user_data["username"]}')
-            self.email_label.setText(f'📧 Email: {user_data["email"]}')
-            self.created_label.setText(f'📅 Account creato: {user_data["created_at"]}')
-            self.login_time_label.setText(f'🕐 Ultimo accesso: {user_data["login_time"]}')
-            self.name_label.setText(f'Nome: {user_data.get("name", "N/A")}')
-            self.surname_label.setText(f'Cognome: {user_data.get("surname", "N/A")}')
-            self.luogo_label.setText(f'Luogo: {user_data.get("luogo", "N/A")}')
-            self.telefono_label.setText(f'Telefono: {user_data.get("telefono", "N/A")}')
-            self.data_label.setText(f'Data di nascita: {user_data.get("data", "N/A")}')
-
-    
-    def handle_logout(self):
-        """Gestisce il logout"""
-        self.controller.logout()
-        self.login_view.clear_fields()
-        self.login_view.show()
-        self.hide()
-
-
-    def update_auto_display(self):
-        """Aggiorna la visualizzazione delle auto nella dashboard"""
-        auto_list = self.controller.get_all_auto()
-        
-        if not hasattr(self, 'auto_layout'):
-            self.auto_layout = QGridLayout()
-            self.auto_layout.setSpacing(10)
-            self.auto_layout.setContentsMargins(0, 0, 0, 0)
-            self.auto_frame = QFrame()
-            self.auto_frame.setObjectName('info_frame')
-            self.auto_frame.setLayout(self.auto_layout)
-            self.layout().addWidget(self.auto_frame)
-        
-        # Pulisce il layout esistente
-        for i in reversed(range(self.auto_layout.count())): 
-            widget = self.auto_layout.itemAt(i).widget()
-            if widget is not None:
-                widget.deleteLater()
-        
-        # Crea e aggiunge i widget per le auto
-        if auto_list:
-            self.create_auto_widgets(auto_list)
-
 
 
     def crea_auto(self):

@@ -22,5 +22,11 @@
     "marca": "fiat",
     "modello": "punto",
     "anno": "1200"
+  },
+  {
+    "id": 5,
+    "marca": "kia",
+    "modello": "kai",
+    "anno": "2020"
   }
 ]

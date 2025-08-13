@@ -1,5 +1,10 @@
+from controllers.dashboard_controller import DashboardController
 from models.user_model import UserModel
 from datetime import datetime
+from views.register_view import RegisterView
+from views.dashboard_view import DashboardView
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFrame
 
 from models.user_model import UserModel
 from models.auto import AutoModel
@@ -68,26 +73,51 @@ class AuthController:
         return self.current_user is not None
 
 
-    def get_all_auto(self):
-        """Restituisce tutte le auto"""
-        return self.auto_model.get_all_auto()
     
-    def addo_auto(self, marca, modello, anno):
-        """Aggiunge una nuova auto"""
-        if not (marca and modello and anno):
-            return False, "Tutti i campi dell'auto sono obbligatori"
+    
+    def handle_login(self,usern, passw, parent):
+        """Gestisce il click del bottone login"""
+        #username = self.username_input.text().strip()
+        #password = self.password_input.text()
+
+        username = usern.strip()
+        password = passw
         
-        self.auto_model.add_auto(marca,modello, anno)
-        return True, "Auto aggiunta con successo"
-    
-    def get_all_contracts(self):
-        """Restituisce tutti i contratti"""
-        return self.contract_model.get_all_contracts()
-    
-    def addo_contratto(self, user, auto, start_date, end_date, price):
-        """Aggiunge un nuovo contratto"""
-        if not (user and auto and start_date and end_date and price):
-            return False, "Tutti i campi del contratto sono obbligatori"
+        # Debug: stampa per verificare i valori
+        print(f"Tentativo login - Username: '{username}', Password length: {len(password)}")
         
-        self.contract_model.add_contract(user, auto, start_date, end_date, price)
-        return True, "Contratto aggiunto con successo"
+        if not username or not password:
+            QMessageBox.warning(parent, 'Errore', 'Inserisci username e password')
+            return False
+        
+        success, message = self.login(username, password)
+        
+        print(f"Risultato login - Success: {success}, Message: {message}")
+        
+        if success:
+            QMessageBox.information(parent, 'Successo', 'Login effettuato con successo!')
+            #self.show_dashboard()
+            return True
+        else:
+            QMessageBox.warning(parent, 'Errore di Login', message)
+            return False
+
+    def show_register(self):
+        """Mostra la finestra di registrazione"""
+        if not self.register_view:
+            self.register_view = RegisterView(self.controller, self)
+        #self.register_view.show()
+        #self.hide()
+
+    def show_dashboard(self):
+        controller = DashboardController(self)
+        self.dashboard_view = DashboardView(controller)
+        #self.dashboard_view.update_user_info()
+       
+        #self.dashboard_view.show()
+        
+    
+    def clear_fields(self):
+        """Pulisce i campi di input"""
+        self.username_input.clear()
+        self.password_input.clear()

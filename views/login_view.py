@@ -2,8 +2,6 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
                              QLineEdit, QPushButton, QMessageBox, QFrame)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QPalette
-from views.register_view import RegisterView
-from views.dashboard_view import DashboardView
 
 class LoginView(QWidget):
     def __init__(self, controller):
@@ -53,6 +51,8 @@ class LoginView(QWidget):
         # Bottone login
         self.login_button = QPushButton('Accedi')
         self.login_button.setObjectName('primary_button')
+    #self.login_button.clicked.connect(
+    #lambda: self.controller.handle_login(self.username_input.text(), self.password_input.text(), self))
         self.login_button.clicked.connect(self.handle_login)
         form_layout.addWidget(self.login_button)
         
@@ -63,7 +63,7 @@ class LoginView(QWidget):
         register_label = QLabel("Non hai un account?")
         self.register_button = QPushButton('Registrati qui')
         self.register_button.setObjectName('link_button')
-        self.register_button.clicked.connect(self.show_register)
+        self.register_button.clicked.connect(self.controller.show_register)
         
         register_layout.addWidget(register_label)
         register_layout.addWidget(self.register_button)
@@ -75,8 +75,10 @@ class LoginView(QWidget):
         self.setLayout(main_layout)
         
         # Connessione Enter per login
-        self.password_input.returnPressed.connect(self.handle_login)
         
+    #self.password_input.returnPressed.connect(lambda: self.controller.handle_login(self.username_input.text(), self.password_input.text(), self))
+        self.password_input.returnPressed.connect(self.handle_login)
+
         # Centra la finestra
         self.center_window()
     
@@ -91,43 +93,18 @@ class LoginView(QWidget):
         )
     
     def handle_login(self):
-        """Gestisce il click del bottone login"""
-        username = self.username_input.text().strip()
+        username = self.username_input.text()
         password = self.password_input.text()
-        
-        # Debug: stampa per verificare i valori
-        print(f"Tentativo login - Username: '{username}', Password length: {len(password)}")
-        
-        if not username or not password:
-            QMessageBox.warning(self, 'Errore', 'Inserisci username e password')
-            return
-        
-        success, message = self.controller.login(username, password)
-        
-        print(f"Risultato login - Success: {success}, Message: {message}")
-        
-        if success:
-            QMessageBox.information(self, 'Successo', 'Login effettuato con successo!')
+        if self.controller.handle_login(username, password, self):
             self.show_dashboard()
-        else:
-            QMessageBox.warning(self, 'Errore di Login', message)
-    
-    def show_register(self):
-        """Mostra la finestra di registrazione"""
-        if not self.register_view:
-            self.register_view = RegisterView(self.controller, self)
-        self.register_view.show()
-        self.hide()
-    
+
     def show_dashboard(self):
-        """Mostra la dashboard dopo login riuscito"""
-        if not self.dashboard_view:
-            self.dashboard_view = DashboardView(self.controller, self)
-        self.dashboard_view.update_user_info()
+        from controllers.dashboard_controller import DashboardController
+        from views.dashboard_view import DashboardView
+
+        dashboard_controller = DashboardController(self.controller)
+        self.dashboard_view = DashboardView(dashboard_controller)
         self.dashboard_view.show()
         self.hide()
     
-    def clear_fields(self):
-        """Pulisce i campi di input"""
-        self.username_input.clear()
-        self.password_input.clear()
+    
