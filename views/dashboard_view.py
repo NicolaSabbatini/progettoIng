@@ -2,8 +2,11 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
                              QPushButton, QFrame, QTextEdit, QGridLayout, QLineEdit, QDialog, QMessageBox)
 from PyQt5.QtCore import Qt
 
-from models.auto import AutoModel
+from models.auto_model import AutoModel
 from models.contract_model import ContractModel
+from controllers.contract_controller import ContractController
+from controllers.auto_controller import AutoController
+from views.contract_view import ContractView
 
 
 class DashboardView(QWidget):
@@ -147,161 +150,10 @@ class DashboardView(QWidget):
         
         # Centra la finestra
         self.controller.center_window(self)
-    
-    
-    
-    
 
-
-    def crea_auto(self):
-        dialog = CreaAutoDialog(self.controller, self)
-        dialog.exec_()
-
-    def crea_contratto(self):
-        dialog = CreaContract(self, self.controller)
-        dialog.exec_()
-
-    
-    def visualizza_contratti(self):
-        """Visualizza i contratti associati all'utente"""
-        contracts = self.controller.get_all_contracts()
-        if not contracts:
-            QMessageBox.information(self, 'Contratti', 'Nessun contratto trovato.')
-            return
-            
-        contract_frame = QFrame()
-        contract_frame.setObjectName('contract_frame')
-        contract_grid_layout = QGridLayout(contract_frame)
-
-        for i, contract in enumerate(contracts):
-            contract_widget = QWidget()
-            contract_widget.setObjectName('contract_widget')
-            contract_layout = QVBoxLayout(contract_widget)
-            contract_layout.setContentsMargins(10, 10, 10, 10)
-        
-            user_label = QLabel(f"User: {contract['user']}")
-            auto_label = QLabel(f"auto: {contract['auto']}")
-            start_date_label = QLabel(f"start date: {contract['start_date']}")
-            end_date_label = QLabel(f"end date: {contract['end_date']}")
-            price_label = QLabel(f"Price: {contract['price']}")
-
-            contract_layout.addWidget(user_label)
-            contract_layout.addWidget(auto_label)
-            contract_layout.addWidget(start_date_label)
-            contract_layout.addWidget(end_date_label)
-            contract_layout.addWidget(price_label)
-
-
-        
-
-            contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
-
-            self.layout().addWidget(contract_frame)
-
-class CreaContract(QDialog):
-    def __init__(self, parent=None, controller=None):
-        super().__init__(parent)
-        self.controller = controller
-        self.setWindowTitle('Crea un nuovo contratto')
-        self.setFixedSize(350,250)
-        layout = QVBoxLayout(self)
-
-        user_input = QLineEdit()
-        user_input.setPlaceholderText('user')
-        layout.addWidget(QLabel('user:'))
-        layout.addWidget(user_input)
-
-        auto_input = QLineEdit()
-        auto_input.setPlaceholderText('auto')
-        layout.addWidget(QLabel('auto:'))
-        layout.addWidget(auto_input)
-
-        start_date_input = QLineEdit()
-        start_date_input.setPlaceholderText('start_date')
-        layout.addWidget(QLabel('start date:'))
-        layout.addWidget(start_date_input)
-
-        end_date_input = QLineEdit()
-        end_date_input.setPlaceholderText('end_date')
-        layout.addWidget(QLabel('end date:'))
-        layout.addWidget(end_date_input)
-
-        prezzo_input = QLineEdit()
-        prezzo_input.setPlaceholderText('prezzo')
-        layout.addWidget(QLabel('prezzo:'))
-        layout.addWidget(prezzo_input)
-
-        # Bottone per salvare l'auto
-        save_btn = QPushButton('Salva contratto')  
-        save_btn.setObjectName('primary_button')
-        layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_input,start_date_input,end_date_input,prezzo_input))
-        
-      
-        self.setLayout(layout)
-        self.setWindowModality(Qt.ApplicationModal)
-
-    def addi_contract(self, user_input, auto_input, start_date_input, end_date_input, prezzo_input):
-        user = user_input.text()
-        auto = auto_input.text()
-        start_date = start_date_input.text()
-        end_date = end_date_input.text()
-        prezzo = prezzo_input.text()
-
-
-        if user and auto and start_date and end_date and prezzo:
-            self.controller.addo_contratto(user,auto,start_date,end_date,prezzo)
-            self.accept()
-        else:
-            QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
-
-    
-class CreaAutoDialog(QDialog):
-    def __init__(self,controller, parent=None):
-        super().__init__(parent)
-        self.controller = controller
-        self.setWindowTitle('Crea una Nuova Auto')
-        self.setFixedSize(350, 250)
-        layout = QVBoxLayout(self)
-
-        marca_input = QLineEdit()
-        marca_input.setPlaceholderText('Marca')
-        layout.addWidget(QLabel('Marca:'))
-        layout.addWidget(marca_input)
-
-        modello_input = QLineEdit()
-        modello_input.setPlaceholderText('Modello')
-        layout.addWidget(QLabel('Modello:'))
-        layout.addWidget(modello_input)
-
-        anno_input = QLineEdit()
-        anno_input.setPlaceholderText('Anno')
-        layout.addWidget(QLabel('Anno:'))
-        layout.addWidget(anno_input)
-        
-      
-        # Bottone per salvare l'auto
-        save_btn = QPushButton('Salva Auto')  
-        save_btn.setObjectName('primary_button')
-        layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_auto(marca_input, modello_input, anno_input))
-        
-      
-        self.setLayout(layout)
-        self.setWindowModality(Qt.ApplicationModal)
-
-
-
-
-
-    def addi_auto(self, marca_input, modello_input, anno_input):
-        marca = marca_input.text()
-        modello = modello_input.text()
-        anno = anno_input.text()
-
-        if marca and modello and anno:
-            self.controller.addo_auto(marca, modello, anno)
-            self.accept()
-        else:
-            QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
+    def show_contract(self):
+        contract_controller = ContractController(self.controller)
+        self.contract_view = ContractView(contract_controller)
+        self.contract_view.show()
+        self.hide()
 

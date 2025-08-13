@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFrame
 
 from models.user_model import UserModel
-from models.auto import AutoModel
+from models.auto_model import AutoModel
 from models.contract_model import ContractModel
 
 class AuthController:

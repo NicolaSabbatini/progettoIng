@@ -3,6 +3,9 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QPalette
 
+from views.dashboard_view import DashboardView
+from controllers.dashboard_controller import DashboardController
+
 class LoginView(QWidget):
     def __init__(self, controller):
         super().__init__()
@@ -99,9 +102,6 @@ class LoginView(QWidget):
             self.show_dashboard()
 
     def show_dashboard(self):
-        from controllers.dashboard_controller import DashboardController
-        from views.dashboard_view import DashboardView
-
         dashboard_controller = DashboardController(self.controller)
         self.dashboard_view = DashboardView(dashboard_controller)
         self.dashboard_view.show()
