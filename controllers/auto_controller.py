@@ -1,4 +1,3 @@
-from models.auto_model import Auto
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 from models.auto_model import AutoModel
@@ -9,7 +8,7 @@ class AutoController(QObject):
     def __init__(self, view):
         super().__init__()
         self.view = view
-        self.auto_model = Auto()
+        self.auto_model = AutoModel()
 
         self.view.salva_btn.clicked.connect(self.crea_auto)
 
@@ -24,7 +23,7 @@ class AutoController(QObject):
         anno = self.view.anno_input.text()
 
         if marca and modello and anno:
-            auto = Auto(id,marca, modello, anno)
+            auto = AutoModel(id,marca, modello, anno)
             self.auto_model.add_auto(auto)
             self.view.output_label.setText(f"Auto creata: {auto.scheda()}")
         else:

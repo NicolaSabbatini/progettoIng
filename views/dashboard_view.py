@@ -119,26 +119,22 @@ class DashboardView(QWidget):
             grid_auto_layout.addWidget(auto_widget, i // 4, i % 4)
 
 
-        
+        # Bottone per creare una nuova auto
+        #create_auto_btn = QPushButton('Crea Auto') 
+        #create_auto_btn.setObjectName('create_auto_button')
+        #create_auto_btn.clicked.connect(self.controller.crea_auto_dialog)
 
-        crea_auto_btn = QPushButton('Crea Auto')
-        crea_auto_btn.setObjectName('crea_auto_button')
-        crea_auto_btn.clicked.connect(self.crea_auto)
         
         show_contract_btn = QPushButton('visualizza contratti')
         show_contract_btn.setObjectName('show_contract_button')
-        show_contract_btn.clicked.connect(self.visualizza_contratti)
+        show_contract_btn.clicked.connect(self.show_contract)
 
-        crea_contract_btn = QPushButton('crea contratto')
-        crea_contract_btn.setObjectName('crea_contratto_button')
-        crea_contract_btn.clicked.connect(self.crea_contratto)
+
 
 
         main_layout.addWidget(auto_frame)
-        main_layout.addWidget(crea_auto_btn)
         main_layout.addWidget(show_contract_btn)
-        main_layout.addWidget(auto_frame)
-        main_layout.addWidget(crea_contract_btn)
+        main_layout.addWidget(auto_frame) 
 
 
 
@@ -152,7 +148,7 @@ class DashboardView(QWidget):
         self.controller.center_window(self)
 
     def show_contract(self):
-        contract_controller = ContractController(self.controller)
+        contract_controller = ContractController(self.controller, contract_view=self)
         self.contract_view = ContractView(contract_controller)
         self.contract_view.show()
         self.hide()

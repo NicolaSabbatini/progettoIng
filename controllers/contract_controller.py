@@ -8,24 +8,53 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit
 from PyQt5.QtCore import Qt
 
 
-from models.auto_model import AutoModel
 from models.contract_model import ContractModel
+from controllers.fatture_controller import FattureController
+from models.fatture_model import FattureModel
+from views.contract_view import ContractView
 
 class ContractController:
-    def __init__(self, main_controller):
+    def __init__(self, main_controller, contract_view=None):
         self.main_controller = main_controller  # Reference to AuthController or main app controller
-        self.auto_model = AutoModel()
+        self.contract_view = contract_view
         self.contract_model = ContractModel()
 
+
+    def get_all_contracts(self):
+        """Restituisce tutti i contratti"""
+        return self.contract_model.get_all_contracts()
+
     def crea_contratto(self):
-        dialog = CreaContract(self, self.controller)
+        dialog = CreaContract(parent=None, controller=self, contract_view=self.contract_view)
         dialog.exec_()
 
     
+    def center_window(self, view):
+        """Centra la finestra sullo schermo"""
+        screen = view.screen().availableGeometry()
+        size = view.geometry()
+        view.move(
+            max(0, (screen.width() - view.width()) // 2),
+            max(0, (screen.height() - view.height()) // 2)
+        )
+
+
+    def addo_contratto(self, user, auto, start_date, end_date, price):
+        """Aggiunge un nuovo contratto"""
+        if not (user and auto and start_date and end_date and price):
+            return False, "Tutti i campi del contratto sono obbligatori"
+        
+        self.contract_model.add_contract(user, auto, start_date, end_date, price)
+        return True, "Contratto aggiunto con successo"
+    
+    
+
+    
 class CreaContract(QDialog):
-    def __init__(self, parent=None, controller=None):
+    def __init__(self, parent=None, controller=None, contract_view=None):
         super().__init__(parent)
         self.controller = controller
+        self.contract_view = contract_view
         self.setWindowTitle('Crea un nuovo contratto')
         self.setFixedSize(350,250)
         layout = QVBoxLayout(self)
@@ -75,6 +104,8 @@ class CreaContract(QDialog):
 
         if user and auto and start_date and end_date and prezzo:
             self.controller.addo_contratto(user,auto,start_date,end_date,prezzo)
+            if self.contract_view:
+                self.contract_view.refresh_contracts()  # aggiorna la view!
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
