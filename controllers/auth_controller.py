@@ -11,10 +11,12 @@ from models.auto_model import AutoModel
 from models.contract_model import ContractModel
 
 class AuthController:
-    def __init__(self):
+    def __init__(self, login_view=None):
         self.user_model = UserModel()
         self.auto_model = AutoModel()
         self.contract_model = ContractModel()
+        self.login_view = login_view
+
         self.current_user = None
         self.login_time = None
     
@@ -119,5 +121,5 @@ class AuthController:
     
     def clear_fields(self):
         """Pulisce i campi di input"""
-        self.username_input.clear()
-        self.password_input.clear()
+        self.login_view.username_input.clear()
+        self.login_view.password_input.clear()

@@ -26,13 +26,15 @@ class FattureModel:
         with open(self.fatture_file, 'w', encoding='utf-8') as f:
             json.dump(self.fatture, f, indent=2, ensure_ascii=False)
 
-    def add_fattura(self, contratto, data):
+    def add_fattura(self, user, data, price, contratto):
         """Aggiunge una nuova fattura"""
         new_id = len(self.fatture) + 1
         new_fattura = {
             'idfattura': new_id,
+            'user': user,
             'contratto': contratto,
             'data': data,
+            'prezzo': price,
             'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         self.fatture.append(new_fattura)

@@ -49,7 +49,7 @@ class DashboardController:
     def handle_logout(self, view):
         """Gestisce il logout"""
         self.main_controller.logout()
-        view.login_view.clear_fields()
+        self.main_controller.clear_fields()
         view.login_view.show()
         view.hide()
 

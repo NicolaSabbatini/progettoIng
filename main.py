@@ -9,6 +9,8 @@ def main():
     # Inizializza il controller e la view
     controller = AuthController()
     login_view = LoginView(controller)
+    controller.login_view = login_view
+    
     
     # Mostra la finestra di login
     login_view.show()

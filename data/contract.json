@@ -61,5 +61,32 @@
     "end_date": "121213",
     "price": "3400",
     "created_at": "2025-08-14 02:48:23"
+  },
+  {
+    "id": 8,
+    "user": "saetta",
+    "auto": "mcqueen",
+    "start_date": "17/08/2025",
+    "end_date": "27/08/2026",
+    "price": "550",
+    "created_at": "2025-08-17 16:46:03"
+  },
+  {
+    "id": 9,
+    "user": "ciproviamo",
+    "auto": "cicca",
+    "start_date": "10/10/2010",
+    "end_date": "20/10/2011",
+    "price": "211",
+    "created_at": "2025-08-17 17:02:58"
+  },
+  {
+    "id": 10,
+    "user": "pengu",
+    "auto": "nutnut",
+    "start_date": "17/17/2017",
+    "end_date": "17/17/2018",
+    "price": "1700",
+    "created_at": "2025-08-17 17:58:58"
   }
 ]

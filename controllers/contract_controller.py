@@ -14,9 +14,10 @@ from models.fatture_model import FattureModel
 from views.contract_view import ContractView
 
 class ContractController:
-    def __init__(self, main_controller, contract_view=None):
+    def __init__(self, main_controller, contract_view=None, dashboard_view=None):
         self.main_controller = main_controller  # Reference to AuthController or main app controller
         self.contract_view = contract_view
+        self.dashboard_view = dashboard_view
         self.contract_model = ContractModel()
 
 

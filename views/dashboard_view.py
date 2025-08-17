@@ -10,11 +10,11 @@ from views.contract_view import ContractView
 
 
 class DashboardView(QWidget):
-    def __init__(self, controller):
+    def __init__(self, controller, login_view=None):
         super().__init__()
         self.controller = controller
-        #self.login_view = login_view
-        #self.auto_model = AutoModel()
+        self.login_view = login_view
+        self.auto_model = AutoModel()
         #self.contract_model = ContractModel()
         self.setWindowTitle('Dashboard')
 
@@ -40,7 +40,7 @@ class DashboardView(QWidget):
         
         self.logout_button = QPushButton('Logout')
         self.logout_button.setObjectName('logout_button')
-        self.logout_button.clicked.connect(self.controller.handle_logout)
+        self.logout_button.clicked.connect(lambda: self.controller.handle_logout(self))
         header_layout.addWidget(self.logout_button)
         
         main_layout.addLayout(header_layout)
@@ -148,8 +148,15 @@ class DashboardView(QWidget):
         self.controller.center_window(self)
 
     def show_contract(self):
-        contract_controller = ContractController(self.controller, contract_view=self)
-        self.contract_view = ContractView(contract_controller)
-        self.contract_view.show()
+    # creo il controller (gli passo anche la dashboard, così ci torna indietro)
+        contract_controller = ContractController(self.controller, dashboard_view=self)
+
+        # creo la contract view e la collego al controller
+        contract_view = ContractView(contract_controller, dashboard_view=self)
+        contract_controller.contract_view = contract_view  
+
+        # mostro la contract view e nascondo la dashboard
+        contract_view.show()
         self.hide()
+
 

@@ -1,1 +1,90 @@
-[]
+[
+  {
+    "idfattura": 1,
+    "user": "sofixx",
+    "contratto": 1,
+    "data": "14/04/22004",
+    "prezzo": "270",
+    "created_at": "2025-08-16 15:33:49"
+  },
+  {
+    "idfattura": 2,
+    "user": "sofixx",
+    "contratto": 6,
+    "data": "14/04/2004",
+    "prezzo": "178",
+    "created_at": "2025-08-16 15:38:09"
+  },
+  {
+    "idfattura": 3,
+    "user": "sofixx",
+    "contratto": 1,
+    "data": "14/04/2004",
+    "prezzo": "2010",
+    "created_at": "2025-08-16 15:46:00"
+  },
+  {
+    "idfattura": 4,
+    "user": "sofixx",
+    "contratto": 1,
+    "data": "14/04/2004",
+    "prezzo": "280",
+    "created_at": "2025-08-16 15:47:54"
+  },
+  {
+    "idfattura": 5,
+    "user": "sofixx",
+    "contratto": 1,
+    "data": "13/03/2003",
+    "prezzo": "130",
+    "created_at": "2025-08-16 15:53:27"
+  },
+  {
+    "idfattura": 6,
+    "user": "sofixx",
+    "contratto": 1,
+    "data": "11/09/2001",
+    "prezzo": "119",
+    "created_at": "2025-08-16 16:03:43"
+  },
+  {
+    "idfattura": 7,
+    "user": "gc",
+    "contratto": 2,
+    "data": "676767",
+    "prezzo": "8000",
+    "created_at": "2025-08-16 17:15:04"
+  },
+  {
+    "idfattura": 8,
+    "user": "sofixx",
+    "contratto": 1,
+    "data": "98/98/98",
+    "prezzo": "9800",
+    "created_at": "2025-08-16 17:21:34"
+  },
+  {
+    "idfattura": 9,
+    "user": "lacarta",
+    "contratto": 1,
+    "data": "09/09/2009",
+    "prezzo": "099",
+    "created_at": "2025-08-17 16:41:57"
+  },
+  {
+    "idfattura": 10,
+    "user": "chiara",
+    "contratto": 1,
+    "data": "04/01/2007",
+    "prezzo": "26",
+    "created_at": "2025-08-17 16:42:38"
+  },
+  {
+    "idfattura": 11,
+    "user": "pengu",
+    "contratto": 10,
+    "data": "2017/2017",
+    "prezzo": "1209",
+    "created_at": "2025-08-17 17:59:36"
+  }
+]
