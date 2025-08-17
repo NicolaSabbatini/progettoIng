@@ -12,6 +12,7 @@ class ContractView(QWidget):
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
         self.main_layout.setContentsMargins(30, 30, 30, 30)
+        self.setFixedSize(700,550)
         self.setLayout(self.main_layout)
         self.populate_contracts()
         self.controller.center_window(self)
@@ -48,19 +49,31 @@ class ContractView(QWidget):
             start_date_label = QLabel(f"start date: {contract['start_date']}")
             end_date_label = QLabel(f"end date: {contract['end_date']}")
             price_label = QLabel(f"Price: {contract['price']}")
+            garanzia_label = QLabel(f"Garanzia: {contract['garanzia']}")
 
             contract_layout.addWidget(user_label)
             contract_layout.addWidget(auto_label)
             contract_layout.addWidget(start_date_label)
             contract_layout.addWidget(end_date_label)
             contract_layout.addWidget(price_label)
+            contract_layout.addWidget(garanzia_label)
 
             view_fatture_btn = QPushButton('Visualizza Fatture')
             view_fatture_btn.setObjectName('view_fatture_button')
             view_fatture_btn.clicked.connect(lambda checked, c=contract: self.show_fatture_view(c))
-
+            
+            elimina_contract_btn = QPushButton('elimina contratto')
+            elimina_contract_btn.setObjectName('elimina_contratto_button')
+            elimina_contract_btn.clicked.connect(lambda: self.controller.delete_contract_and_fatture(contract['id'], self))
+            
             contract_layout.addWidget(view_fatture_btn)
+            contract_layout.addWidget(elimina_contract_btn)
+
             contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
+
+            
+            
+        
 
         self.main_layout.addWidget(contract_frame)
         self.main_layout.addStretch()

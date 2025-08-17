@@ -7,6 +7,7 @@ from models.contract_model import ContractModel
 from controllers.contract_controller import ContractController
 from controllers.auto_controller import AutoController
 from views.contract_view import ContractView
+from views.auto_view import AutoView
 
 
 class DashboardView(QWidget):
@@ -24,6 +25,7 @@ class DashboardView(QWidget):
     
     def init_ui(self):
         self.setWindowTitle('Dashboard')
+        self.setFixedSize(700,550)
         #self.setFixedSize(600, 400)
         
         # Layout principale
@@ -96,33 +98,7 @@ class DashboardView(QWidget):
         
 
 
-        # Area auto
-        auto_frame = QFrame()
-        auto_frame.setObjectName('auto_frame')
-        grid_auto_layout = QGridLayout(auto_frame)
-
-        for i, auto in enumerate(self.controller.get_all_auto()):
-            auto_widget = QWidget()
-            auto_widget.setObjectName('auto_widget')
-            auto_layout = QVBoxLayout(auto_widget)
-            auto_layout.setContentsMargins(10, 10, 10, 10)
-    
-            marca_label = QLabel(f"Marca: {auto['marca']}")
-            modello_label = QLabel(f"Modello: {auto['modello']}")
-            anno_label = QLabel(f"Anno: {auto['anno']}")
-    
-            auto_layout.addWidget(marca_label)
-            auto_layout.addWidget(modello_label)
-            auto_layout.addWidget(anno_label)
-    
-
-            grid_auto_layout.addWidget(auto_widget, i // 4, i % 4)
-
-
-        # Bottone per creare una nuova auto
-        #create_auto_btn = QPushButton('Crea Auto') 
-        #create_auto_btn.setObjectName('create_auto_button')
-        #create_auto_btn.clicked.connect(self.controller.crea_auto_dialog)
+        
 
         
         show_contract_btn = QPushButton('visualizza contratti')
@@ -131,10 +107,13 @@ class DashboardView(QWidget):
 
 
 
+        show_auto_btn = QPushButton('Visualizza Auto')
+        show_auto_btn.setObjectName('show_auto_button')
+        show_auto_btn.clicked.connect(self.show_auto)
 
-        main_layout.addWidget(auto_frame)
+
         main_layout.addWidget(show_contract_btn)
-        main_layout.addWidget(auto_frame) 
+        main_layout.addWidget(show_auto_btn)
 
 
 
@@ -159,4 +138,15 @@ class DashboardView(QWidget):
         contract_view.show()
         self.hide()
 
+    def show_auto(self):
+        # creo il controller (gli passo anche la dashboard, così ci torna indietro)
+        auto_controller = AutoController(self.controller, dashboard_view=self)
+
+        # creo la auto view e la collego al controller
+        auto_view = AutoView(auto_controller, dashboard_view=self)
+        auto_controller.auto_view = auto_view  
+
+        # mostro la auto view e nascondo la dashboard
+        auto_view.show()
+        self.hide()
 

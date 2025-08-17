@@ -26,7 +26,7 @@ class ContractModel:
         with open(self.contracts_file, 'w', encoding='utf-8') as f:
             json.dump(self.contracts, f, indent=2, ensure_ascii=False)
 
-    def add_contract(self, user, auto, start_date, end_date, price):
+    def add_contract(self, user, auto, start_date, end_date, price, garanzia):
         """Aggiunge un nuovo contratto"""
         new_id = len(self.contracts) + 1
         new_contract = {
@@ -36,6 +36,7 @@ class ContractModel:
             'start_date': start_date,
             'end_date': end_date,
             'price': price,
+            'garanzia': garanzia,
             'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         self.contracts.append(new_contract)
@@ -52,3 +53,12 @@ class ContractModel:
             if contract['id'] == contract_id:
                 return contract
         return None
+    
+    def delete_contract(self, contract_id):
+        """Elimina un contratto dato il suo id"""
+        for i, contract in enumerate(self.contracts):
+            if contract['id'] == contract_id:
+                del self.contracts[i]
+                self.save_contracts()
+                return True
+        return False

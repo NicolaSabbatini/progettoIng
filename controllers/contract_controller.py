@@ -19,6 +19,7 @@ class ContractController:
         self.contract_view = contract_view
         self.dashboard_view = dashboard_view
         self.contract_model = ContractModel()
+        self.fatture_model = FattureModel()
 
 
     def get_all_contracts(self):
@@ -40,16 +41,49 @@ class ContractController:
         )
 
 
-    def addo_contratto(self, user, auto, start_date, end_date, price):
+    def addo_contratto(self, user, auto, start_date, end_date, price, garanzia):
         """Aggiunge un nuovo contratto"""
-        if not (user and auto and start_date and end_date and price):
+        if not (user and auto and start_date and end_date and price and garanzia):
             return False, "Tutti i campi del contratto sono obbligatori"
         
-        self.contract_model.add_contract(user, auto, start_date, end_date, price)
+        self.contract_model.add_contract(user, auto, start_date, end_date, price, garanzia)
         return True, "Contratto aggiunto con successo"
     
-    
+    def elimina_contratto(self, contract_id, contract_view=None):
+        """Elimina un contratto"""
+        if not contract_id:
+            return False, "ID del contratto non valido"
+        
 
+        self.contract_view = contract_view
+        success = self.contract_model.delete_contract(contract_id)
+        if self.contract_view:
+            self.contract_view.refresh_contracts()
+        if success:
+            return True, "Contratto eliminato con successo"
+        else:
+            return False, "Errore durante l'eliminazione del contratto"
+    
+    def delete_contract_and_fatture(self, contract_id, contract_view=None):
+        """Elimina un contratto e tutte le sue fatture collegate"""
+        # 1️ Elimina le fatture legate a quel contratto
+        self.fatture_model.fatture = [
+            f for f in self.fatture_model.fatture if f['contratto'] != contract_id
+        ]
+        self.fatture_model.save_fatture()
+        
+
+        self.contract_view = contract_view
+        # 2️ Elimina il contratto
+        success = self.contract_model.delete_contract(contract_id)
+
+        
+        if contract_view:
+            self.contract_view.refresh_contracts()
+        if success:
+            return True, "Contratto e fatture collegate eliminate con successo"
+        else:
+            return False, "Errore durante l'eliminazione del contratto e delle fatture collegate"
     
 class CreaContract(QDialog):
     def __init__(self, parent=None, controller=None, contract_view=None):
@@ -57,7 +91,7 @@ class CreaContract(QDialog):
         self.controller = controller
         self.contract_view = contract_view
         self.setWindowTitle('Crea un nuovo contratto')
-        self.setFixedSize(350,250)
+        self.setFixedSize(650,450)
         layout = QVBoxLayout(self)
 
         user_input = QLineEdit()
@@ -85,26 +119,32 @@ class CreaContract(QDialog):
         layout.addWidget(QLabel('prezzo:'))
         layout.addWidget(prezzo_input)
 
+        garanzia_input = QLineEdit()
+        garanzia_input.setPlaceholderText('garanzia')
+        layout.addWidget(QLabel('garanzia:'))
+        layout.addWidget(garanzia_input)
+
         # Bottone per salvare l'auto
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_input,start_date_input,end_date_input,prezzo_input))
+        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_input,start_date_input,end_date_input,prezzo_input, garanzia_input))
         
       
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def addi_contract(self, user_input, auto_input, start_date_input, end_date_input, prezzo_input):
+    def addi_contract(self, user_input, auto_input, start_date_input, end_date_input, prezzo_input, garanzia_input):
         user = user_input.text()
         auto = auto_input.text()
         start_date = start_date_input.text()
         end_date = end_date_input.text()
         prezzo = prezzo_input.text()
+        garanzia = garanzia_input.text()
 
 
-        if user and auto and start_date and end_date and prezzo:
-            self.controller.addo_contratto(user,auto,start_date,end_date,prezzo)
+        if user and auto and start_date and end_date and prezzo and garanzia:
+            self.controller.addo_contratto(user,auto,start_date,end_date,prezzo, garanzia)
             if self.contract_view:
                 self.contract_view.refresh_contracts()  # aggiorna la view!
             self.accept()

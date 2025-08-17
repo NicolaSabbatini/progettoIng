@@ -6,7 +6,7 @@ class FattureView(QWidget):
         self.controller = controller
         self.contract = contract
         self.setWindowTitle('Fatture per il Contratto')
-
+        self.setFixedSize(700,550)
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
         self.main_layout.setContentsMargins(30, 30, 30, 30)
@@ -38,10 +38,12 @@ class FattureView(QWidget):
             id_label = QLabel(f"ID Fattura: {fattura['idfattura']}")
             contratto_label = QLabel(f"Contratto: {fattura['contratto']}")
             data_label = QLabel(f"Data: {fattura['data']}")
+            prezzo_label = QLabel(f"Prezzo: {fattura['prezzo']}")
 
             fatture_layout.addWidget(id_label)
             fatture_layout.addWidget(contratto_label)
             fatture_layout.addWidget(data_label)
+            fatture_layout.addWidget(prezzo_label)
 
             grid_fatture_layout.addWidget(fatture_widget, i // 4, i % 4)
 

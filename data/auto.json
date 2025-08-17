@@ -3,30 +3,27 @@
     "id": 1,
     "marca": "mercedes",
     "modello": "benz",
-    "anno": "1990"
+    "anno": "2009",
+    "chilometri": "0",
+    "prezzo": "20000",
+    "targa": "AA123BM"
   },
   {
     "id": 2,
-    "marca": "mercedes",
-    "modello": "lois",
-    "anno": "2000"
+    "marca": "BMW",
+    "modello": "tedesco",
+    "anno": "2010",
+    "chilometri": "10",
+    "prezzo": "18000",
+    "targa": "BB234NM"
   },
   {
     "id": 3,
-    "marca": "fiat",
-    "modello": "popo",
-    "anno": "1890"
-  },
-  {
-    "id": 4,
-    "marca": "fiat",
-    "modello": "punto",
-    "anno": "1200"
-  },
-  {
-    "id": 5,
-    "marca": "kia",
-    "modello": "kai",
-    "anno": "2020"
+    "marca": "Nissan",
+    "modello": "cascai",
+    "anno": "2014",
+    "chilometri": "20",
+    "prezzo": "8900",
+    "targa": "CC345MM"
   }
 ]

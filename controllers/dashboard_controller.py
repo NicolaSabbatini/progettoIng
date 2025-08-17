@@ -5,7 +5,7 @@ from datetime import datetime
 from views.dashboard_view import DashboardView
 from views.fatture_view import FattureView
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFrame, QGridLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFrame, QGridLayout, QDialog
 
 from models.user_model import UserModel
 from models.auto_model import AutoModel
@@ -17,6 +17,7 @@ class DashboardController:
         self.user_model = UserModel()
         self.auto_model = AutoModel()
         self.contract_model = ContractModel()
+        self.auto_view = None
 
 
 
@@ -53,25 +54,7 @@ class DashboardController:
         view.login_view.show()
         view.hide()
 
-    def update_auto_display(self, view):
-        """Aggiorna la visualizzazione delle auto nella dashboard"""
-        auto_list = self.main_controller.get_all_auto()
-        if not hasattr(view, 'auto_layout'):
-            view.auto_layout = QGridLayout()
-            view.auto_layout.setSpacing(10)
-            view.auto_layout.setContentsMargins(0, 0, 0, 0)
-            view.auto_frame = QFrame()
-            view.auto_frame.setObjectName('info_frame')
-            view.auto_frame.setLayout(view.auto_layout)
-            view.layout().addWidget(view.auto_frame)
-        # Pulisce il layout esistente
-        for i in reversed(range(view.auto_layout.count())): 
-            widget = view.auto_layout.itemAt(i).widget()
-            if widget is not None:
-                widget.deleteLater()
-        # Crea e aggiunge i widget per le auto
-        if auto_list:
-            view.create_auto_widgets(auto_list)
+    
     
     def show_dashboard(self, username):
         """Mostra la dashboard dell'utente"""
@@ -82,17 +65,8 @@ class DashboardController:
         self.dashboard_view = DashboardView(self)
         self.dashboard_view.show()
 
-    def get_all_auto(self):
-        """Restituisce tutte le auto"""
-        return self.auto_model.get_all_auto()
     
-    def addo_auto(self, marca, modello, anno):
-        """Aggiunge una nuova auto"""
-        if not (marca and modello and anno):
-            return False, "Tutti i campi dell'auto sono obbligatori"
-        
-        self.auto_model.add_auto(marca,modello, anno)
-        return True, "Auto aggiunta con successo"
+    
     
     
     
