@@ -70,6 +70,15 @@ class AutoController(QObject):
             return True, "Auto eliminata con successo"
         else:
             return False, "Errore durante l'eliminazione dell'auto"
+        
+
+    def rimuoviAuto(self, autoId):
+        success=self.auto_model.rimuoviAuto(autoId)
+        if success:
+            return True, "auto rimossa dal catalogo"
+        else: 
+            return False, "Errore durante l'eliminazione dell'auto"
+
     
 class CreaAutoDialog(QDialog):
     def __init__(self, controller, parent=None, auto_view=None):

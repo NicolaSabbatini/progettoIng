@@ -32,14 +32,15 @@ class AutoModel:
             'anno': anno,
             'chilometri': chilometri,
             'prezzo': prezzo,
-            'targa': targa
+            'targa': targa,
+            'visibile': True 
         }
         self.auto_list.append(new_auto)
         self.save_auto()
         return True, "Auto creata con successo"
 
     def get_all_auto(self):
-        return self.auto_list
+        return [a for a in self.auto_list if a.get('visibile', True)]
     
     def delete_auto(self, auto_id):
         """Elimina un'auto dato il suo id"""
@@ -49,3 +50,28 @@ class AutoModel:
                 self.save_auto()
                 return True
         return False
+    
+    def rimuoviAuto(self, auto_id):
+        auto_id = int(auto_id)  # sicurezza
+        for auto in self.auto_list:
+            print(f"Controllo auto {auto['id']} (visibile={auto['visibile']})")
+            if auto['id'] == auto_id:
+                auto['visibile'] = False
+                self.save_auto()
+                print("Trovata e modificata")
+                return True
+        print("Auto non trovata")
+        return False
+    
+    def reimpostaAuto(self, auto_id):
+        """Reimposta l'auto per essere visibile nel catalogo"""
+        auto_id = int(auto_id)  # sicurezza
+        for auto in self.auto_list:
+            print(f"Controllo auto {auto['id']} (visibile={auto['visibile']})")
+            if auto['id'] == auto_id:
+                auto['visibile'] = True
+                self.save_auto()
+                print("Trovata e modificata")
+                return True
+        return False
+    

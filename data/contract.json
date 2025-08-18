@@ -11,12 +11,52 @@
   },
   {
     "id": 2,
-    "user": "pippolo",
+    "user": "sofixx",
+    "auto": "1",
+    "start_date": "171717",
+    "end_date": "191919",
+    "price": "9000",
+    "garanzia": "0",
+    "created_at": "2025-08-18 11:26:19"
+  },
+  {
+    "id": 3,
+    "user": "sofixx",
+    "auto": "3",
+    "start_date": "181818",
+    "end_date": "191919",
+    "price": "32000",
+    "garanzia": "3",
+    "created_at": "2025-08-18 11:28:24"
+  },
+  {
+    "id": 4,
+    "user": "sofixx",
     "auto": "2",
-    "start_date": "18/08/2025",
-    "end_date": "18/08/2026",
-    "price": "12000",
+    "start_date": "121212",
+    "end_date": "131313",
+    "price": "98000",
     "garanzia": "1",
-    "created_at": "2025-08-18 01:02:45"
+    "created_at": "2025-08-18 11:30:34"
+  },
+  {
+    "id": 5,
+    "user": "sofixx",
+    "auto": "3",
+    "start_date": "101010",
+    "end_date": "131313",
+    "price": "80000",
+    "garanzia": "2",
+    "created_at": "2025-08-18 11:32:20"
+  },
+  {
+    "id": 6,
+    "user": "sofixx",
+    "auto": "5",
+    "start_date": "151515",
+    "end_date": "161616",
+    "price": "8200",
+    "garanzia": "1",
+    "created_at": "2025-08-18 11:46:50"
   }
 ]

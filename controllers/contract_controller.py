@@ -64,7 +64,7 @@ class ContractController:
         else:
             return False, "Errore durante l'eliminazione del contratto"
     
-    def delete_contract_and_fatture(self, contract_id, contract_view=None):
+    def delete_contract_and_fatture(self, contract_id, auto_id, contract_view=None):
         """Elimina un contratto e tutte le sue fatture collegate"""
         # 1️ Elimina le fatture legate a quel contratto
         self.fatture_model.fatture = [
@@ -76,7 +76,7 @@ class ContractController:
         self.contract_view = contract_view
         # 2️ Elimina il contratto
         success = self.contract_model.delete_contract(contract_id)
-
+        self.reimpostaAuto(auto_id)  # Reimposta l'auto associata al contratto
         
         if contract_view:
             self.contract_view.refresh_contracts()
@@ -85,6 +85,17 @@ class ContractController:
         else:
             return False, "Errore durante l'eliminazione del contratto e delle fatture collegate"
     
+    def rimuoviAuto(self, autoId):
+        self.main_controller.rimuoviAuto(autoId)
+
+    def reimpostaAuto(self, autoId):
+        """Reimposta l'auto per essere visibile nel catalogo"""
+        success = self.main_controller.reimpostaAuto(autoId)
+        if success:
+            return True, "Auto reimpostata con successo"
+        else:
+            return False, "Errore durante la reimpostazione dell'auto"
+
 class CreaContract(QDialog):
     def __init__(self, parent=None, controller=None, contract_view=None):
         super().__init__(parent)
@@ -145,8 +156,12 @@ class CreaContract(QDialog):
 
         if user and auto and start_date and end_date and prezzo and garanzia:
             self.controller.addo_contratto(user,auto,start_date,end_date,prezzo, garanzia)
+            self.controller.rimuoviAuto(auto)
             if self.contract_view:
                 self.contract_view.refresh_contracts()  # aggiorna la view!
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
+
+
+    

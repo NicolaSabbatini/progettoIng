@@ -64,7 +64,7 @@ class ContractView(QWidget):
             
             elimina_contract_btn = QPushButton('elimina contratto')
             elimina_contract_btn.setObjectName('elimina_contratto_button')
-            elimina_contract_btn.clicked.connect(lambda: self.controller.delete_contract_and_fatture(contract['id'], self))
+            elimina_contract_btn.clicked.connect(lambda: self.controller.delete_contract_and_fatture(contract['id'], contract['auto'], self))
             
             contract_layout.addWidget(view_fatture_btn)
             contract_layout.addWidget(elimina_contract_btn)

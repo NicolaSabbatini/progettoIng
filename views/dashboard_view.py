@@ -150,3 +150,7 @@ class DashboardView(QWidget):
         auto_view.show()
         self.hide()
 
+
+    def rimuoviAuto(self, autoId):
+        auto_controller = AutoController(self.controller, dashboard_view=self)
+        auto_controller.rimuoviAuto(autoId)

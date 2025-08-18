@@ -11,6 +11,9 @@ from models.user_model import UserModel
 from models.auto_model import AutoModel
 from models.contract_model import ContractModel
 
+
+from controllers.auto_controller import AutoController
+
 class DashboardController:
     def __init__(self, main_controller):
         self.main_controller = main_controller  # Reference to AuthController or main app controller
@@ -68,7 +71,16 @@ class DashboardController:
     
     
     
+    def rimuoviAuto(self, autoId):
+        self.dashboard_view = DashboardView(self)
+        auto_controller = AutoController(self, self.dashboard_view)
+        auto_controller.rimuoviAuto(autoId)
     
     
-    
-    
+    def reimpostaAuto(self, autoId):
+        """Reimposta l'auto per essere visibile nel catalogo"""
+        success = self.auto_model.reimpostaAuto(autoId)
+        if success:
+            return True, "Auto reimpostata con successo"
+        else:
+            return False, "Errore durante la reimpostazione dell'auto"

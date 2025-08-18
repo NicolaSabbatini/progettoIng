@@ -1,29 +1,22 @@
 [
   {
-    "id": 1,
-    "marca": "mercedes",
-    "modello": "benz",
-    "anno": "2009",
+    "id": 4,
+    "marca": "prova",
+    "modello": "suv",
+    "anno": "1879",
     "chilometri": "0",
-    "prezzo": "20000",
-    "targa": "AA123BM"
+    "prezzo": "45000",
+    "targa": "CC123DD",
+    "visibile": true
   },
   {
-    "id": 2,
-    "marca": "BMW",
-    "modello": "tedesco",
-    "anno": "2010",
-    "chilometri": "10",
-    "prezzo": "18000",
-    "targa": "BB234NM"
-  },
-  {
-    "id": 3,
-    "marca": "Nissan",
-    "modello": "cascai",
-    "anno": "2014",
-    "chilometri": "20",
-    "prezzo": "8900",
-    "targa": "CC345MM"
+    "id": 5,
+    "marca": "kia",
+    "modello": "roax",
+    "anno": "2001",
+    "chilometri": "0",
+    "prezzo": "7700",
+    "targa": "DD123DD",
+    "visibile": true
   }
 ]
