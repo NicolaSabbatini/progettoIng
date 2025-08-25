@@ -20,5 +20,27 @@
     "telefono": "9276582",
     "data": "2004/01/19",
     "created_at": "2025-08-09 17:08:25"
+  },
+  "misterx": {
+    "name": "abbo",
+    "surname": "king",
+    "email": "misterx@gmail.com",
+    "username": "misterx",
+    "password": "70bd395a60e6083c6df9309799617bae765a250b5f12f62b6e7478043ea77e04",
+    "luogo": "lato",
+    "telefono": "2746582",
+    "data": "121212",
+    "created_at": "2025-08-25 17:53:59"
+  },
+  "uomoxy": {
+    "name": "luca",
+    "surname": "gentili",
+    "email": "uomoy@gmail.com",
+    "username": "uomoxy",
+    "password": "6b02cfe4d4cc1305a14b175cfe74ee63d505e83afeef3527c6dc2f54953e4ce7",
+    "luogo": "roma",
+    "telefono": "27386482",
+    "data": "131313",
+    "created_at": "2025-08-25 17:56:26"
   }
 }
