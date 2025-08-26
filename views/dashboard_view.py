@@ -11,18 +11,20 @@ from views.auto_view import AutoView
 
 
 class DashboardView(QWidget):
-    def __init__(self, controller, login_view=None):
+    def __init__(self, controller, login_view=None, auth_controller=None):
         super().__init__()
         self.controller = controller
         self.login_view = login_view
+        self.auth_controller = auth_controller
         self.auto_model = AutoModel()
+        self.controller.set_dashboard_view(self)  # 👈 collega la view al controller
         #self.contract_model = ContractModel()
         self.setWindowTitle('Dashboard')
 
 
         
         self.init_ui()
-    
+        
     def init_ui(self):
         self.setWindowTitle('Dashboard')
         self.setFixedSize(700,550)
@@ -35,7 +37,7 @@ class DashboardView(QWidget):
         
         # Header
         header_layout = QHBoxLayout()
-        self.welcome_label = QLabel('Benvenuto!')
+        self.welcome_label = QLabel('Benvenuto/a!')
         self.welcome_label.setObjectName('welcome_title')
         header_layout.addWidget(self.welcome_label)
         header_layout.addStretch()
@@ -94,16 +96,21 @@ class DashboardView(QWidget):
         main_layout.addWidget(info_frame)
         
 
-    
+        role = self.auth_controller.get_current_user_role()
+
+        if role == 'amministratore':
+            show_contract_btn = QPushButton('visualizza contratti clienti')
+            show_contract_btn.setObjectName('show_contract_button')
+            show_contract_btn.clicked.connect(self.show_contract)
+            main_layout.addWidget(show_contract_btn)
         
+        if role == 'cliente':
+            show_contract_btn = QPushButton('visualizza contratti')
+            show_contract_btn.setObjectName('show_contract_button')
+            show_contract_btn.clicked.connect(self.show_contract_client)
+            main_layout.addWidget(show_contract_btn)
 
 
-        
-
-        
-        show_contract_btn = QPushButton('visualizza contratti')
-        show_contract_btn.setObjectName('show_contract_button')
-        show_contract_btn.clicked.connect(self.show_contract)
 
 
 
@@ -112,7 +119,6 @@ class DashboardView(QWidget):
         show_auto_btn.clicked.connect(self.show_auto)
 
 
-        main_layout.addWidget(show_contract_btn)
         main_layout.addWidget(show_auto_btn)
 
 
@@ -131,19 +137,31 @@ class DashboardView(QWidget):
         contract_controller = ContractController(self.controller, dashboard_view=self)
 
         # creo la contract view e la collego al controller
-        contract_view = ContractView(contract_controller, dashboard_view=self)
+        contract_view = ContractView(contract_controller, dashboard_view=self, auth_controller=self.auth_controller)
         contract_controller.contract_view = contract_view  
 
         # mostro la contract view e nascondo la dashboard
         contract_view.show()
         self.hide()
 
+    def show_contract_client(self):
+        contract_controller = ContractController(self.controller, dashboard_view=self)
+
+        # creo la contract view e la collego al controller
+        contract_view = ContractView(contract_controller, dashboard_view=self, auth_controller = self.auth_controller)
+        contract_controller.contract_view = contract_view  
+
+        # mostro la contract view e nascondo la dashboard
+        contract_view.show()
+        self.hide()
+
+
     def show_auto(self):
         # creo il controller (gli passo anche la dashboard, così ci torna indietro)
         auto_controller = AutoController(self.controller, dashboard_view=self)
 
         # creo la auto view e la collego al controller
-        auto_view = AutoView(auto_controller, dashboard_view=self)
+        auto_view = AutoView(auto_controller, auth_controller=self.auth_controller, dashboard_view=self)
         auto_controller.auto_view = auto_view  
 
         # mostro la auto view e nascondo la dashboard
@@ -154,3 +172,9 @@ class DashboardView(QWidget):
     def rimuoviAuto(self, autoId):
         auto_controller = AutoController(self.controller, dashboard_view=self)
         auto_controller.rimuoviAuto(autoId)
+
+    def refresh_auto_list(self):
+        """Aggiorna solo la lista delle auto"""
+        self.auto_list_widget.clear()
+        for auto in self.controller.auto_controller.get_all_auto():
+            self.auto_list_widget.addItem(auto['modello'])

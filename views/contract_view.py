@@ -4,10 +4,11 @@ from controllers.fatture_controller import FattureController
 from views.fatture_view import FattureView
 
 class ContractView(QWidget):
-    def __init__(self, controller, dashboard_view):
+    def __init__(self, controller, dashboard_view, auth_controller=None):
         super().__init__()
         self.controller = controller
         self.dashboard_view = dashboard_view
+        self.auth_controller = auth_controller
         self.setWindowTitle('ContractView')
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
@@ -33,8 +34,11 @@ class ContractView(QWidget):
         contract_frame = QFrame()
         contract_frame.setObjectName('contract_frame')
         contract_grid_layout = QGridLayout(contract_frame)
-
-        contracts = self.controller.get_all_contracts()
+        role = self.auth_controller.get_current_user_data().get('ruolo', 'cliente')
+        if role == 'amministratore':
+            contracts = self.controller.get_all_contracts()
+        else:
+            contracts = self.controller.get_contracts(self.auth_controller.get_current_user_data().get('username'))
 
 
 
@@ -61,13 +65,14 @@ class ContractView(QWidget):
             view_fatture_btn = QPushButton('Visualizza Fatture')
             view_fatture_btn.setObjectName('view_fatture_button')
             view_fatture_btn.clicked.connect(lambda checked, c=contract: self.show_fatture_view(c))
-            
-            elimina_contract_btn = QPushButton('elimina contratto')
-            elimina_contract_btn.setObjectName('elimina_contratto_button')
-            elimina_contract_btn.clicked.connect(lambda: self.controller.delete_contract_and_fatture(contract['id'], contract['auto'], self))
-            
             contract_layout.addWidget(view_fatture_btn)
-            contract_layout.addWidget(elimina_contract_btn)
+
+            if role == 'amministratore':
+                elimina_contract_btn = QPushButton('elimina contratto')
+                elimina_contract_btn.setObjectName('elimina_contratto_button')
+                elimina_contract_btn.clicked.connect(lambda: self.controller.delete_contract_and_fatture(contract['id'], contract['auto'], self))
+                contract_layout.addWidget(elimina_contract_btn)
+
 
             contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
 
@@ -77,17 +82,18 @@ class ContractView(QWidget):
 
         self.main_layout.addWidget(contract_frame)
         self.main_layout.addStretch()
-
-        crea_contract_btn = QPushButton('crea contratto')
-        crea_contract_btn.setObjectName('crea_contratto_button')
-        crea_contract_btn.clicked.connect(self.controller.crea_contratto)
-        self.main_layout.addWidget(crea_contract_btn)
+        if role == 'amministratore':
+            crea_contract_btn = QPushButton('crea contratto')
+            crea_contract_btn.setObjectName('crea_contratto_button')
+            crea_contract_btn.clicked.connect(self.controller.crea_contratto)
+            self.main_layout.addWidget(crea_contract_btn)
 
         
 
     def show_fatture_view(self, contract):
+        role = self.auth_controller.get_current_user_role()
         fatture_controller = FattureController(self.controller, contract, fatture_view=self)
-        self.fatture_view = FattureView(fatture_controller, contract)
+        self.fatture_view = FattureView(fatture_controller, contract, role)
         self.fatture_view.setWindowTitle(f"Fatture per il contratto: {contract['id']}")
         self.fatture_view.show()
 

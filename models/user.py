@@ -1,5 +1,5 @@
 class User:
-    def __init__(self,name, surname, email, username, password, luogo, telefono, data ):
+    def __init__(self,name, surname, email, username, password, luogo, telefono, data, ruolo ):
         self.name= name
         self.surname = surname
         self.email = email
@@ -8,6 +8,7 @@ class User:
         self.luogo = luogo
         self.telefono = telefono
         self.data = data
+        self.ruolo = ruolo
 
         
         

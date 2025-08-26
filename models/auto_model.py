@@ -75,3 +75,25 @@ class AutoModel:
                 return True
         return False
     
+    def update_auto(self, auto_id, marca=None, modello=None, anno=None, chilometri=None, prezzo=None, targa=None):
+        """Aggiorna i dati di un'auto esistente"""
+        auto_id = int(auto_id)
+        for auto in self.auto_list:
+            if auto['id'] == auto_id:
+                if marca is not None:
+                    auto['marca'] = marca
+                if modello is not None:
+                    auto['modello'] = modello
+                if anno is not None:
+                    auto['anno'] = anno
+                if chilometri is not None:
+                    auto['chilometri'] = chilometri
+                if prezzo is not None:
+                    auto['prezzo'] = prezzo
+                if targa is not None:
+                    auto['targa'] = targa
+                self.save_auto()
+                return True, "Auto aggiornata con successo"
+        return False, "Auto non trovata"
+
+    

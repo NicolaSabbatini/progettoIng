@@ -103,7 +103,7 @@ class LoginView(QWidget):
 
     def show_dashboard(self):
         dashboard_controller = DashboardController(self.controller)
-        self.dashboard_view = DashboardView(dashboard_controller, login_view=self)
+        self.dashboard_view = DashboardView(dashboard_controller, login_view=self, auth_controller = self.controller)
         self.dashboard_view.show()
         self.hide()
 

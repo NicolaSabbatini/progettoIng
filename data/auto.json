@@ -18,5 +18,15 @@
     "prezzo": "7700",
     "targa": "DD123DD",
     "visibile": true
+  },
+  {
+    "id": 3,
+    "marca": "BMW",
+    "modello": "X1",
+    "anno": "2023",
+    "chilometri": "0",
+    "prezzo": "70000",
+    "targa": "TL902KB",
+    "visibile": true
   }
 ]

@@ -46,6 +46,13 @@ class ContractModel:
     def get_all_contracts(self):
         """Restituisce tutti i contratti"""
         return self.contracts
+    
+    def get_contracts(self, username=None):
+        if username is None:
+            return False
+        else:
+            return [contract for contract in self.contracts if contract.get('user') == username]
+        
 
     def get_contract_by_id(self, contract_id):
         """Restituisce un contratto dato il suo id"""

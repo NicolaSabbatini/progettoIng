@@ -21,10 +21,12 @@ class DashboardController:
         self.auto_model = AutoModel()
         self.contract_model = ContractModel()
         self.auto_view = None
+        self.dashboard_view = None
 
 
-
-
+    def set_dashboard_view(self, view):
+        """Collega la DashboardView a questo controller"""
+        self.dashboard_view = view
 
     def center_window(self, view):
         """Centra la finestra sullo schermo"""
@@ -70,12 +72,12 @@ class DashboardController:
 
     
     
-    
     def rimuoviAuto(self, autoId):
-        self.dashboard_view = DashboardView(self)
-        auto_controller = AutoController(self, self.dashboard_view)
-        auto_controller.rimuoviAuto(autoId)
-    
+        """Rimuove un'auto e aggiorna la view"""
+        self.auto_controller.rimuoviAuto(autoId)
+
+        if self.dashboard_view:
+            self.dashboard_view.refresh_auto_list()
     
     def reimpostaAuto(self, autoId):
         """Reimposta l'auto per essere visibile nel catalogo"""

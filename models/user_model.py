@@ -49,6 +49,7 @@ class UserModel:
             'luogo': luogo,
             'telefono': telefono,
             'data': data,
+            'ruolo': 'cliente',
             'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         self.save_users()
@@ -71,3 +72,11 @@ class UserModel:
     def user_exists(self, username):
         """Verifica se un utente esiste"""
         return username in self.users
+    
+    def get_role(self, username):
+        user = self.get_user(username)
+        if user:
+            return user.get('ruolo', 'cliente')  # default 'cliente' se non impostato
+        return None
+
+    

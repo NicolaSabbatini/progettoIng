@@ -1,10 +1,11 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame, QGridLayout, QPushButton
 
 class FattureView(QWidget):
-    def __init__(self, controller, contract):
+    def __init__(self, controller, contract, role = 'cliente'):
         super().__init__()
         self.controller = controller
         self.contract = contract
+        self.role = role
         self.setWindowTitle('Fatture per il Contratto')
         self.setFixedSize(700,550)
         self.main_layout = QVBoxLayout()
@@ -48,11 +49,11 @@ class FattureView(QWidget):
             grid_fatture_layout.addWidget(fatture_widget, i // 4, i % 4)
 
         self.main_layout.addWidget(fatture_frame)
-
-        crea_fattura_button = QPushButton('Crea Fattura')
-        crea_fattura_button.setObjectName('crea_fattura_button')
-        crea_fattura_button.clicked.connect(self.create_fattura)
-        self.main_layout.addWidget(crea_fattura_button)
+        if self.role == 'amministratore':
+            crea_fattura_button = QPushButton('Crea Fattura')
+            crea_fattura_button.setObjectName('crea_fattura_button')
+            crea_fattura_button.clicked.connect(self.create_fattura)
+            self.main_layout.addWidget(crea_fattura_button)
         self.main_layout.addStretch()
 
     def create_fattura(self):

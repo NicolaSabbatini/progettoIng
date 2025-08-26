@@ -17,7 +17,6 @@ class AuthController:
         self.contract_model = ContractModel()
         self.login_view = login_view
         self.register_view = register_view
-
         self.current_user = None
         self.login_time = None
     
@@ -111,7 +110,6 @@ class AuthController:
             self.register_view = RegisterView(self, self.login_view)
         self.register_view.show()
         self.login_view.hide()
-
     def show_dashboard(self):
         controller = DashboardController(self)
         self.dashboard_view = DashboardView(controller)
@@ -124,3 +122,12 @@ class AuthController:
         """Pulisce i campi di input"""
         self.login_view.username_input.clear()
         self.login_view.password_input.clear()
+
+    def get_current_user_role(self):
+            """Restituisce il ruolo dell'utente loggato"""
+            user_data = self.get_current_user_data()
+            if user_data:
+                return user_data.get("ruolo")
+            return None
+
+        

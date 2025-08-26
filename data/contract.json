@@ -21,42 +21,22 @@
   },
   {
     "id": 3,
-    "user": "sofixx",
-    "auto": "3",
-    "start_date": "181818",
-    "end_date": "191919",
-    "price": "32000",
-    "garanzia": "3",
-    "created_at": "2025-08-18 11:28:24"
+    "user": "Abbo",
+    "auto": "BMW",
+    "start_date": "26/08/2025",
+    "end_date": "26/08/2026",
+    "price": "70000",
+    "garanzia": "1",
+    "created_at": "2025-08-26 22:53:48"
   },
   {
     "id": 4,
-    "user": "sofixx",
-    "auto": "2",
-    "start_date": "121212",
-    "end_date": "131313",
-    "price": "98000",
-    "garanzia": "1",
-    "created_at": "2025-08-18 11:30:34"
-  },
-  {
-    "id": 5,
-    "user": "sofixx",
-    "auto": "3",
-    "start_date": "101010",
-    "end_date": "131313",
-    "price": "80000",
-    "garanzia": "2",
-    "created_at": "2025-08-18 11:32:20"
-  },
-  {
-    "id": 6,
-    "user": "sofixx",
-    "auto": "5",
-    "start_date": "151515",
-    "end_date": "161616",
-    "price": "8200",
-    "garanzia": "1",
-    "created_at": "2025-08-18 11:46:50"
+    "user": "Abbo",
+    "auto": "Audi",
+    "start_date": "222222",
+    "end_date": "333333",
+    "price": "25000",
+    "garanzia": "0",
+    "created_at": "2025-08-26 22:56:47"
   }
 ]

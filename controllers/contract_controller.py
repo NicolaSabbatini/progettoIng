@@ -25,6 +25,9 @@ class ContractController:
     def get_all_contracts(self):
         """Restituisce tutti i contratti"""
         return self.contract_model.get_all_contracts()
+    
+    def get_contracts(self, username=None):
+        return self.contract_model.get_contracts(username)
 
     def crea_contratto(self):
         dialog = CreaContract(parent=None, controller=self, contract_view=self.contract_view)
@@ -76,7 +79,7 @@ class ContractController:
         self.contract_view = contract_view
         # 2️ Elimina il contratto
         success = self.contract_model.delete_contract(contract_id)
-        self.reimpostaAuto(auto_id)  # Reimposta l'auto associata al contratto
+        #self.reimpostaAuto(auto_id)  # Reimposta l'auto associata al contratto
         
         if contract_view:
             self.contract_view.refresh_contracts()
@@ -156,12 +159,14 @@ class CreaContract(QDialog):
 
         if user and auto and start_date and end_date and prezzo and garanzia:
             self.controller.addo_contratto(user,auto,start_date,end_date,prezzo, garanzia)
-            self.controller.rimuoviAuto(auto)
+           # self.controller.rimuoviAuto(auto)
             if self.contract_view:
                 self.contract_view.refresh_contracts()  # aggiorna la view!
+            #if self.controller.dashboard_view:
+                #self.controller.dashboard_view.refresh_auto_list()  # aggiorna lista auto nella dashboard
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
 
-
+ 
     
