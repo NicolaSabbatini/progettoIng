@@ -106,5 +106,12 @@ class LoginView(QWidget):
         self.dashboard_view = DashboardView(dashboard_controller, login_view=self)
         self.dashboard_view.show()
         self.hide()
+
+    def clear_fields(self):
+        """Pulisce i campi di input"""
+        self.username_input.clear()
+        self.password_input.clear()
+        self.username_input.setFocus()
+
     
     

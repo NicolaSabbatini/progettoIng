@@ -11,11 +11,12 @@ from models.auto_model import AutoModel
 from models.contract_model import ContractModel
 
 class AuthController:
-    def __init__(self, login_view=None):
+    def __init__(self, login_view=None, register_view=None):
         self.user_model = UserModel()
         self.auto_model = AutoModel()
         self.contract_model = ContractModel()
         self.login_view = login_view
+        self.register_view = register_view
 
         self.current_user = None
         self.login_time = None
@@ -107,9 +108,9 @@ class AuthController:
     def show_register(self):
         """Mostra la finestra di registrazione"""
         if not self.register_view:
-            self.register_view = RegisterView(self.controller, self)
-        #self.register_view.show()
-        #self.hide()
+            self.register_view = RegisterView(self, self.login_view)
+        self.register_view.show()
+        self.login_view.hide()
 
     def show_dashboard(self):
         controller = DashboardController(self)
