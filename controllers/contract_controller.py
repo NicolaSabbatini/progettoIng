@@ -9,16 +9,20 @@ from PyQt5.QtCore import Qt
 
 
 from models.contract_model import ContractModel
+from models.buy_contract_model import BuyContractModel
+from models.rent_contract_model import RentContractModel
 from controllers.fatture_controller import FattureController
 from models.fatture_model import FattureModel
 from views.contract_view import ContractView
 
 class ContractController:
     def __init__(self, main_controller, contract_view=None, dashboard_view=None):
-        self.main_controller = main_controller  # Reference to AuthController or main app controller
+        self.main_controller = main_controller 
         self.contract_view = contract_view
         self.dashboard_view = dashboard_view
         self.contract_model = ContractModel()
+        self.buy_contract_model = BuyContractModel()
+        self.rent_contract_model = RentContractModel()
         self.fatture_model = FattureModel()
 
 
@@ -29,8 +33,12 @@ class ContractController:
     def get_contracts(self, username=None):
         return self.contract_model.get_contracts(username)
 
-    def crea_contratto(self):
-        dialog = CreaContract(parent=None, controller=self, contract_view=self.contract_view)
+    def crea_noleggio_contratto(self):
+        dialog = CreaRentContract(parent=None, controller=self, contract_view=self.contract_view)
+        dialog.exec_()
+
+    def crea_acquisto_contratto(self):
+        dialog = CreaBuyContract(parent=None, controller=self, contract_view=self.contract_view)
         dialog.exec_()
 
     
@@ -44,12 +52,21 @@ class ContractController:
         )
 
 
-    def addo_contratto(self, user, auto, start_date, end_date, price, garanzia):
+    def addo_noleggio_contratto(self, user, auto, start_date, end_date, cauzione, tipoGaranzia, durataGaranzia, kmMax, prezzoTot):
         """Aggiunge un nuovo contratto"""
-        if not (user and auto and start_date and end_date and price and garanzia):
+        if not (user and auto and start_date and end_date and cauzione and tipoGaranzia and durataGaranzia and kmMax and prezzoTot):
             return False, "Tutti i campi del contratto sono obbligatori"
         
-        self.contract_model.add_contract(user, auto, start_date, end_date, price, garanzia)
+        self.rent_contract_model.add_rent_contract(user, auto, start_date, end_date, cauzione, prezzoTot, durataGaranzia, tipoGaranzia, kmMax)
+        return True, "Contratto aggiunto con successo"
+
+
+    def addo_acquisto_contratto(self, user, auto, tipoGaranzia, durataGaranzia, prezzoTot):
+        """Aggiunge un nuovo contratto"""
+        if not (user and auto and tipoGaranzia and durataGaranzia and prezzoTot):
+            return False, "Tutti i campi del contratto sono obbligatori"
+        
+        self.buy_contract_model.add_buy_contract(user, auto, prezzoTot, durataGaranzia, tipoGaranzia)
         return True, "Contratto aggiunto con successo"
     
     def elimina_contratto(self, contract_id, contract_view=None):
@@ -99,7 +116,7 @@ class ContractController:
         else:
             return False, "Errore durante la reimpostazione dell'auto"
 
-class CreaContract(QDialog):
+class CreaRentContract(QDialog):
     def __init__(self, parent=None, controller=None, contract_view=None):
         super().__init__(parent)
         self.controller = controller
@@ -128,45 +145,126 @@ class CreaContract(QDialog):
         layout.addWidget(QLabel('end date:'))
         layout.addWidget(end_date_input)
 
+        cauzione_input = QLineEdit()
+        cauzione_input.setPlaceholderText('cauzione')
+        layout.addWidget(QLabel('cauzione:'))
+        layout.addWidget(cauzione_input)
+
         prezzo_input = QLineEdit()
         prezzo_input.setPlaceholderText('prezzo')
         layout.addWidget(QLabel('prezzo:'))
         layout.addWidget(prezzo_input)
 
-        garanzia_input = QLineEdit()
-        garanzia_input.setPlaceholderText('garanzia')
-        layout.addWidget(QLabel('garanzia:'))
-        layout.addWidget(garanzia_input)
+        durataGaranzia_input = QLineEdit()
+        durataGaranzia_input.setPlaceholderText('durata garanzia')
+        layout.addWidget(QLabel('durata garanzia:'))
+        layout.addWidget(durataGaranzia_input)
+
+        tipoGaranzia_input = QLineEdit()
+        tipoGaranzia_input.setPlaceholderText('tipo garanzia')
+        layout.addWidget(QLabel('tipo garanzia:'))
+        layout.addWidget(tipoGaranzia_input)
+
+        kmMax_input = QLineEdit()
+        kmMax_input.setPlaceholderText('chilometri massimi')
+        layout.addWidget(QLabel('chilometri massimi:'))
+        layout.addWidget(kmMax_input)
 
         # Bottone per salvare l'auto
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_input,start_date_input,end_date_input,prezzo_input, garanzia_input))
+        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_input,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input))
         
       
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def addi_contract(self, user_input, auto_input, start_date_input, end_date_input, prezzo_input, garanzia_input):
+    def addi_contract(self,user_input,auto_input,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input):
         user = user_input.text()
         auto = auto_input.text()
         start_date = start_date_input.text()
         end_date = end_date_input.text()
+        cauzione = cauzione_input.text()
         prezzo = prezzo_input.text()
-        garanzia = garanzia_input.text()
+        durataGaranzia = durataGaranzia_input.text()
+        tipoGaranzia = tipoGaranzia_input.text()
+        kmMax = kmMax_input.text()
 
 
-        if user and auto and start_date and end_date and prezzo and garanzia:
-            self.controller.addo_contratto(user,auto,start_date,end_date,prezzo, garanzia)
+
+        if user and auto and start_date and end_date and cauzione and prezzo and durataGaranzia and tipoGaranzia and kmMax:
+            self.controller.addo_noleggio_contratto(user, auto, start_date, end_date, cauzione, tipoGaranzia, durataGaranzia, kmMax, prezzo)
            # self.controller.rimuoviAuto(auto)
-            if self.contract_view:
-                self.contract_view.refresh_contracts()  # aggiorna la view!
+            
+            self.contract_view.refresh_contracts()  # aggiorna la view!
             #if self.controller.dashboard_view:
                 #self.controller.dashboard_view.refresh_auto_list()  # aggiorna lista auto nella dashboard
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
 
- 
+class CreaBuyContract(QDialog):
+    def __init__(self, parent=None, controller=None, contract_view=None):
+        super().__init__(parent)
+        self.controller = controller
+        self.contract_view = contract_view
+        self.setWindowTitle('Crea un nuovo contratto')
+        self.setFixedSize(650,450)
+        layout = QVBoxLayout(self)
+
+        user_input = QLineEdit()
+        user_input.setPlaceholderText('user')
+        layout.addWidget(QLabel('user:'))
+        layout.addWidget(user_input)
+
+        auto_input = QLineEdit()
+        auto_input.setPlaceholderText('auto')
+        layout.addWidget(QLabel('auto:'))
+        layout.addWidget(auto_input)
+
+        prezzo_input = QLineEdit()
+        prezzo_input.setPlaceholderText('prezzo')
+        layout.addWidget(QLabel('prezzo:'))
+        layout.addWidget(prezzo_input)
+
+        durataGaranzia_input = QLineEdit()
+        durataGaranzia_input.setPlaceholderText('durata garanzia')
+        layout.addWidget(QLabel('durata garanzia:'))
+        layout.addWidget(durataGaranzia_input)
+
+        tipoGaranzia_input = QLineEdit()
+        tipoGaranzia_input.setPlaceholderText('tipo garanzia')
+        layout.addWidget(QLabel('tipo garanzia:'))
+        layout.addWidget(tipoGaranzia_input)
+
+        # Bottone per salvare l'auto
+        save_btn = QPushButton('Salva contratto')  
+        save_btn.setObjectName('primary_button')
+        layout.addWidget(save_btn)
+        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input))
+        
+      
+        self.setLayout(layout)
+        self.setWindowModality(Qt.ApplicationModal)
+
+    def addi_contract(self,user_input,auto_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input):
+        user = user_input.text()
+        auto = auto_input.text()
+        prezzo = prezzo_input.text()
+        durataGaranzia = durataGaranzia_input.text()
+        tipoGaranzia = tipoGaranzia_input.text()
+
+
+        if user and auto and prezzo and durataGaranzia and tipoGaranzia:
+            self.controller.addo_acquisto_contratto(user, auto, tipoGaranzia, durataGaranzia, prezzo)
+           # self.controller.rimuoviAuto(auto)
+         
+            self.contract_view.refresh_contracts()  # aggiorna la view!
+            #if self.controller.dashboard_view:
+                #self.controller.dashboard_view.refresh_auto_list()  # aggiorna lista auto nella dashboard
+            self.accept()
+        else:
+            QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
+
     

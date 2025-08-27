@@ -1,38 +1,8 @@
 [
   {
     "idfattura": 1,
-    "contratto": 1,
-    "data": "18/08/2025",
-    "prezzo": "800"
-  },
-  {
-    "idfattura": 2,
-    "contratto": 1,
-    "data": "18/09/2025",
-    "prezzo": "560"
-  },
-  {
-    "idfattura": 3,
-    "contratto": 1,
-    "data": "18/10/2025",
-    "prezzo": "560"
-  },
-  {
-    "idfattura": 4,
-    "contratto": 1,
-    "data": "26/08/2025",
-    "prezzo": "1400"
-  },
-  {
-    "idfattura": 5,
-    "contratto": 4,
-    "data": "29/08/2025",
-    "prezzo": "700"
-  },
-  {
-    "idfattura": 6,
-    "contratto": 4,
-    "data": "27/10/2025",
-    "prezzo": "700"
+    "contratto": 2,
+    "data": "27/09/2025",
+    "prezzo": "1500"
   }
 ]

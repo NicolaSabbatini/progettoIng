@@ -1,42 +1,80 @@
 [
   {
     "id": 1,
-    "user": "sofixx",
-    "auto": "1",
-    "start_date": "18/08/2025",
-    "end_date": "18/08/2026",
-    "price": "24000",
-    "garanzia": "2",
-    "created_at": "2025-08-18 01:01:55"
+    "tipo": "acquisto",
+    "user": "Abbo",
+    "auto": "BMW",
+    "price": "55000",
+    "durataGaranzia": "12 mesi",
+    "tipoGaranzia": "1",
+    "created_at": "2025-08-27 18:49:34"
   },
   {
     "id": 2,
-    "user": "sofixx",
-    "auto": "1",
-    "start_date": "171717",
-    "end_date": "191919",
-    "price": "9000",
-    "garanzia": "0",
-    "created_at": "2025-08-18 11:26:19"
+    "tipo": "noleggio",
+    "user": "Abbo",
+    "auto": "Audi",
+    "start_date": "27/08/2025",
+    "end_date": "27/08/2026",
+    "cauzione": "500",
+    "tipoGaranzia": "1",
+    "durataGaranzia": "12 mesi",
+    "kmMax": "60000",
+    "prezzoTot": "28000",
+    "created_at": "2025-08-27 19:04:21"
   },
   {
     "id": 3,
-    "user": "Abbo",
-    "auto": "BMW",
-    "start_date": "26/08/2025",
-    "end_date": "26/08/2026",
-    "price": "70000",
-    "garanzia": "1",
-    "created_at": "2025-08-26 22:53:48"
+    "tipo": "acquisto",
+    "user": "sofixx",
+    "auto": "Mercedes",
+    "price": "40000",
+    "durataGaranzia": "12 mesi",
+    "tipoGaranzia": "2",
+    "created_at": "2025-08-27 19:07:02"
   },
   {
     "id": 4,
+    "tipo": "noleggio",
+    "user": "sofixx",
+    "auto": "Fiat",
+    "start_date": "12/09/2025",
+    "end_date": "12/09/2027",
+    "cauzione": "1000",
+    "tipoGaranzia": "0",
+    "durataGaranzia": "12 mesi",
+    "kmMax": "100000",
+    "prezzoTot": "10000",
+    "created_at": "2025-08-27 19:28:37"
+  },
+  {
+    "id": 5,
+    "tipo": "acquisto",
     "user": "Abbo",
-    "auto": "Audi",
-    "start_date": "222222",
-    "end_date": "333333",
-    "price": "25000",
-    "garanzia": "0",
-    "created_at": "2025-08-26 22:56:47"
+    "auto": "Ferrari",
+    "price": "170000",
+    "durataGaranzia": "12 mesi",
+    "tipoGaranzia": "2",
+    "created_at": "2025-08-27 19:32:13"
+  },
+  {
+    "id": 6,
+    "tipo": "acquisto",
+    "user": "Sofixx",
+    "auto": "Lamborghini",
+    "price": "150000",
+    "durataGaranzia": "12 mesi",
+    "tipoGaranzia": "2",
+    "created_at": "2025-08-27 19:48:27"
+  },
+  {
+    "id": 8,
+    "tipo": "acquisto",
+    "user": "Abbo",
+    "auto": "Lotus",
+    "price": "120000",
+    "durataGaranzia": "12 mesi",
+    "tipoGaranzia": "1",
+    "created_at": "2025-08-27 20:04:09"
   }
 ]
