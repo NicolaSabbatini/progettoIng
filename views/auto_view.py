@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout
 from controllers.auto_controller import AutoController
 
 class AutoView(QWidget):
-    def __init__(self, controller, auth_controller=None, dashboard_view=None):
+    def __init__(self, controller, auth_controller=None, dashboard_view=None, parent=None):
         super().__init__()
         self.controller = controller
         self.dashboard_view = dashboard_view
@@ -12,7 +12,8 @@ class AutoView(QWidget):
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
         self.main_layout.setContentsMargins(30, 30, 30, 30)
-        self.setFixedSize(700, 550)
+        if parent:
+            self.setGeometry(parent.geometry())
         self.setLayout(self.main_layout)
         self.populate_auto()
         self.controller.center_window(self)

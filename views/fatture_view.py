@@ -1,13 +1,15 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame, QGridLayout, QPushButton
 
 class FattureView(QWidget):
-    def __init__(self, controller, contract, role = 'cliente'):
+    def __init__(self, controller, contract, role = 'cliente', parent =None):
         super().__init__()
         self.controller = controller
         self.contract = contract
         self.role = role
         self.setWindowTitle('Fatture per il Contratto')
-        self.setFixedSize(700,550)
+        if parent:
+            self.setGeometry(parent.geometry())
+
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
         self.main_layout.setContentsMargins(30, 30, 30, 30)

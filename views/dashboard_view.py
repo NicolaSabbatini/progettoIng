@@ -19,6 +19,7 @@ class DashboardView(QWidget):
         self.auto_model = AutoModel()
         self.controller.set_dashboard_view(self)  # 👈 collega la view al controller
         #self.contract_model = ContractModel()
+        self.resize(700, 550)  # dimensione iniziale
         self.setWindowTitle('Dashboard')
 
 
@@ -27,9 +28,67 @@ class DashboardView(QWidget):
         
     def init_ui(self):
         self.setWindowTitle('Dashboard')
-        self.setFixedSize(700,550)
+        self.resize(700,550)
         #self.setFixedSize(600, 400)
-        
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b; /* grigio scuro */
+                color: white; /* testo bianco */
+            }
+
+            QLabel {
+                color: white;
+                font-size: 22px;
+            }
+
+            QPushButton {
+                background-color: black;
+                color: white;
+                border: 1px solid #444;
+                border-radius: 8px;
+                padding: 6px 12px;
+                min-width: 180px;
+                max-width: 450px;
+                min-height: 40px;
+                font-size: 18px;
+            }
+
+            QPushButton:hover {
+                background-color: #444;
+            }
+
+            QLineEdit, QTextEdit {
+                background-color: #3c3c3c;
+                color: white;
+                border: 1px solid #555;
+                border-radius: 5px;
+                padding: 4px;
+            }
+
+            QFrame#info_frame {
+                background-color: #1e1e1e;
+                border: 1px solid #444;
+                border-radius: 10px;
+                padding: 10px;
+            }
+
+            QLabel#section_title {
+                font-size: 24px;
+                font-weight: bold;
+                color: #f39c12; /* giallo/arancio per i titoli */
+            }
+
+            QPushButton#logout_button {
+                background-color: #e74c3c;
+                border-radius: 8px;
+                padding: 6px 12px;
+                font-size: 16px;
+                max-width: 80px;
+            }
+            QPushButton#logout_button:hover {
+                background-color: #c0392b;
+            }
+        """)
         # Layout principale
         main_layout = QVBoxLayout()
         main_layout.setSpacing(20)
@@ -53,7 +112,7 @@ class DashboardView(QWidget):
         info_frame = QFrame()
         info_frame.setObjectName('info_frame')
         info_layout = QVBoxLayout(info_frame)
-        info_layout.setSpacing(15)
+        info_layout.setSpacing(25)
         
         info_title = QLabel('Informazioni Account')
         info_title.setObjectName('section_title')
@@ -98,35 +157,29 @@ class DashboardView(QWidget):
 
         role = self.auth_controller.get_current_user_role()
 
+        main_layout.addStretch()
+        buttons_layout = QHBoxLayout()
+        
         if role == 'amministratore':
             show_contract_btn = QPushButton('visualizza contratti clienti')
             show_contract_btn.setObjectName('show_contract_button')
             show_contract_btn.clicked.connect(self.show_contract)
-            main_layout.addWidget(show_contract_btn)
+            buttons_layout.addWidget(show_contract_btn)
         
         if role == 'cliente':
             show_contract_btn = QPushButton('visualizza contratti')
             show_contract_btn.setObjectName('show_contract_button')
             show_contract_btn.clicked.connect(self.show_contract_client)
-            main_layout.addWidget(show_contract_btn)
-
-
-
+            buttons_layout.addWidget(show_contract_btn)
 
 
         show_auto_btn = QPushButton('Visualizza Auto')
         show_auto_btn.setObjectName('show_auto_button')
         show_auto_btn.clicked.connect(self.show_auto)
+        buttons_layout.addWidget(show_auto_btn)
+                
 
-
-        main_layout.addWidget(show_auto_btn)
-
-
-
-        main_layout.addStretch()
-        
-
-
+        main_layout.addLayout(buttons_layout)
         self.setLayout(main_layout)
         
         # Centra la finestra
@@ -137,7 +190,7 @@ class DashboardView(QWidget):
         contract_controller = ContractController(self.controller, dashboard_view=self)
 
         # creo la contract view e la collego al controller
-        contract_view = ContractView(contract_controller, dashboard_view=self, auth_controller=self.auth_controller)
+        contract_view = ContractView(contract_controller, dashboard_view=self, auth_controller=self.auth_controller, parent=self)
         contract_controller.contract_view = contract_view  
 
         # mostro la contract view e nascondo la dashboard
@@ -148,7 +201,7 @@ class DashboardView(QWidget):
         contract_controller = ContractController(self.controller, dashboard_view=self)
 
         # creo la contract view e la collego al controller
-        contract_view = ContractView(contract_controller, dashboard_view=self, auth_controller = self.auth_controller)
+        contract_view = ContractView(contract_controller, dashboard_view=self, auth_controller = self.auth_controller, parent=self)
         contract_controller.contract_view = contract_view  
 
         # mostro la contract view e nascondo la dashboard
@@ -161,7 +214,7 @@ class DashboardView(QWidget):
         auto_controller = AutoController(self.controller, dashboard_view=self)
 
         # creo la auto view e la collego al controller
-        auto_view = AutoView(auto_controller, auth_controller=self.auth_controller, dashboard_view=self)
+        auto_view = AutoView(auto_controller, auth_controller=self.auth_controller, dashboard_view=self, parent=self)
         auto_controller.auto_view = auto_view  
 
         # mostro la auto view e nascondo la dashboard
