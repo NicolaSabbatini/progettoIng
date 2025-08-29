@@ -5,8 +5,63 @@ from PyQt5.QtWidgets import (
 )
 from models.auto_model import AutoModel
 
+DIALOG_STYLE = """
+    QWidget {
+        background-color: #2b2b2b;
+        color: white;
+        font-family: Arial;
+        font-size: 18px;
+    }
+    QLabel {
+        background-color: #2b2b2b;
+    }
+    QLineEdit {
+        padding: 8px;
+        border: 1px solid #bbb;
+        border-radius: 6px;
+        background-color: black;
+        min-height: 30px;
+    }
+    QLineEdit:focus {
+        border: 1px solid #2e86de;
+        background-color: black;
+    }
+    QPushButton#primary_button {
+        background-color: #2e86de;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+    QPushButton#primary_button:hover {
+        background-color: #1b4f72;
+    }
+    QMessageBox {
+        background-color: #2b2b2b;
+        color: white;
+        font-size: 18px;
+        border-radius: 8px;
+    }
+    QMessageBox QLabel {
+        color: white;
+        background-color: #2b2b2b;
+        font-size: 18px;
+    }
+    QMessageBox QPushButton {
+        background-color: #2e86de;
+        color: white;
+        border-radius: 6px;
+        padding: 6px 12px;
+    }
+    QMessageBox QPushButton:hover {
+        background-color: #1b4f72;
+    }
+    """
 
 class AutoController(QObject):
+
+    
+
     def __init__(self, main_controller=None, auto_view=None, dashboard_view=None):
         super().__init__()
         self.main_controller = main_controller
@@ -112,7 +167,7 @@ class CreaAutoDialog(QDialog):
         self.controller = controller
         self.auto_view = auto_view
         self.setWindowTitle('Crea una Nuova Auto')
-        self.setFixedSize(650, 450)
+        self.setFixedSize(650, 650)
         layout = QVBoxLayout(self)
 
         self.marca_input = QLineEdit()
@@ -153,6 +208,9 @@ class CreaAutoDialog(QDialog):
 
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
+        
+        self.setStyleSheet(DIALOG_STYLE)
+
 
     def addi_auto(self):
         marca = self.marca_input.text()
@@ -182,7 +240,7 @@ class ModificaAutoDialog(QDialog):
         self.auto_id = auto_data["id"]
 
         self.setWindowTitle('Modifica Auto')
-        self.setFixedSize(650, 450)
+        self.setFixedSize(650, 650)
         layout = QVBoxLayout(self)
 
         # Campi precompilati
@@ -218,6 +276,8 @@ class ModificaAutoDialog(QDialog):
 
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
+
+        self.setStyleSheet(DIALOG_STYLE)
 
     def salva_modifiche(self):
         """Aggiorna i dati dell’auto con i nuovi valori"""

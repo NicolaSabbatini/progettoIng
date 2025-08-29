@@ -73,6 +73,58 @@ class CreaFattura(QDialog):
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: white;
+                font-family: Arial;
+                font-size: 18px;
+            }
+            QLineEdit {
+                padding: 6px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 28px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QLabel {
+                font-size: 18px;
+            }
+            QPushButton#primary_button {
+                background-color: #2e86de;
+                color: white;
+                padding: 8px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton#primary_button:hover {
+                background-color: #1b4f72;
+            }
+            QMessageBox {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
+        """)
+
     def addi_fattura(self, start_date_input, prezzo_input, contract_id):
         start_date = start_date_input.text()
         prezzo = prezzo_input.text()

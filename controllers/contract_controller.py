@@ -122,7 +122,7 @@ class CreaRentContract(QDialog):
         self.controller = controller
         self.contract_view = contract_view
         self.setWindowTitle('Crea un nuovo contratto')
-        self.setFixedSize(650,450)
+        self.setFixedSize(850,650)
         layout = QVBoxLayout(self)
 
         user_input = QLineEdit()
@@ -210,7 +210,7 @@ class CreaBuyContract(QDialog):
         self.controller = controller
         self.contract_view = contract_view
         self.setWindowTitle('Crea un nuovo contratto')
-        self.setFixedSize(650,450)
+        self.setFixedSize(850,650)
         layout = QVBoxLayout(self)
 
         user_input = QLineEdit()

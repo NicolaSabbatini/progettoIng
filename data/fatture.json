@@ -4,5 +4,35 @@
     "contratto": 2,
     "data": "27/09/2025",
     "prezzo": "1500"
+  },
+  {
+    "idfattura": 2,
+    "contratto": 4,
+    "data": "29/08/2025",
+    "prezzo": "800"
+  },
+  {
+    "idfattura": 3,
+    "contratto": 4,
+    "data": "29/09/2025",
+    "prezzo": "800"
+  },
+  {
+    "idfattura": 4,
+    "contratto": 4,
+    "data": "29/10/2025",
+    "prezzo": "800"
+  },
+  {
+    "idfattura": 5,
+    "contratto": 4,
+    "data": "29/11/2025",
+    "prezzo": "800"
+  },
+  {
+    "idfattura": 6,
+    "contratto": 4,
+    "data": "29/12/2025",
+    "prezzo": "800"
   }
 ]

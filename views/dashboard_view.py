@@ -11,7 +11,7 @@ from views.auto_view import AutoView
 
 
 class DashboardView(QWidget):
-    def __init__(self, controller, login_view=None, auth_controller=None):
+    def __init__(self, controller, login_view=None, auth_controller=None, parent=None):
         super().__init__()
         self.controller = controller
         self.login_view = login_view
@@ -19,7 +19,10 @@ class DashboardView(QWidget):
         self.auto_model = AutoModel()
         self.controller.set_dashboard_view(self)  # 👈 collega la view al controller
         #self.contract_model = ContractModel()
-        self.resize(700, 550)  # dimensione iniziale
+        if parent:
+            self.setGeometry(parent.geometry())
+        else:
+            self.resize(700, 550)  # dimensione iniziale
         self.setWindowTitle('Dashboard')
 
 
@@ -28,7 +31,6 @@ class DashboardView(QWidget):
         
     def init_ui(self):
         self.setWindowTitle('Dashboard')
-        self.resize(700,550)
         #self.setFixedSize(600, 400)
         self.setStyleSheet("""
             QWidget {
