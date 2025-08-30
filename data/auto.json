@@ -7,7 +7,7 @@
     "chilometri": "0",
     "prezzo": "45000",
     "targa": "CC123DD",
-    "visibile": true
+    "visibile": false
   },
   {
     "id": 5,
@@ -17,7 +17,7 @@
     "chilometri": "0",
     "prezzo": "7700",
     "targa": "DD123DD",
-    "visibile": true
+    "visibile": false
   },
   {
     "id": 3,
@@ -27,6 +27,6 @@
     "chilometri": "0",
     "prezzo": "70000",
     "targa": "TL902KB",
-    "visibile": true
+    "visibile": false
   }
 ]

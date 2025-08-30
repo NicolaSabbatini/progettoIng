@@ -46,6 +46,10 @@ class AutoController(QObject):
     def get_all_auto(self):
         """Restituisce tutte le auto"""
         return self.auto_model.get_all_auto()
+    
+    def get_every_auto(self):
+        """Restituisce tutte le auto, visibili e non"""
+        return self.auto_model.get_every_auto()
 
     def crea_auto_dialog(self, dashboard_view=None):
         dialog = CreaAutoDialog(self, auto_view=self.auto_view)

@@ -16,12 +16,11 @@ class DashboardView(QWidget):
         self.controller = controller
         self.login_view = login_view
         self.auth_controller = auth_controller
-        self.auto_model = AutoModel()
+        #self.auto_model = AutoModel()
         self.controller.set_dashboard_view(self)  # 👈 collega la view al controller
         #self.contract_model = ContractModel()
         self.resize(700, 550)  # dimensione iniziale
         self.setWindowTitle('Dashboard')
-
 
         
         self.init_ui()
@@ -153,6 +152,19 @@ class DashboardView(QWidget):
 
         
         main_layout.addWidget(info_frame)
+
+        contratti_scaduti_frame = QFrame()
+        contratti_scaduti_frame.setObjectName('contratti_scaduti_frame')
+        contratti_scaduti_layout = QVBoxLayout(contratti_scaduti_frame)
+        contratti_scaduti_layout.setSpacing(25)
+
+
+        self.notification_label = QLabel()
+        self.notification_label.setStyleSheet("color: #e74c3c; font-size: 16px;")
+        self.notification_label.hide()
+        contratti_scaduti_layout.addWidget(self.notification_label)
+
+        main_layout.addWidget(contratti_scaduti_frame)
         
 
         role = self.auth_controller.get_current_user_role()
@@ -165,6 +177,17 @@ class DashboardView(QWidget):
             show_contract_btn.setObjectName('show_contract_button')
             show_contract_btn.clicked.connect(self.show_contract)
             buttons_layout.addWidget(show_contract_btn)
+
+            
+
+            #self.notification_button = QPushButton('Mostra contratti in scadenza')
+            #self.notification_button.setObjectName('notification_button')
+            #self.notification_button.clicked.connect(self.verificaScadenzaNoleggio)
+            #main_layout.addWidget(self.notification_button)
+            
+
+
+
         
         if role == 'cliente':
             show_contract_btn = QPushButton('visualizza contratti')
@@ -184,6 +207,8 @@ class DashboardView(QWidget):
         
         # Centra la finestra
         self.controller.center_window(self)
+
+        self.verificaScadenzaNoleggio()
 
     def show_contract(self):
     # creo il controller (gli passo anche la dashboard, così ci torna indietro)
@@ -231,3 +256,12 @@ class DashboardView(QWidget):
         self.auto_list_widget.clear()
         for auto in self.controller.auto_controller.get_all_auto():
             self.auto_list_widget.addItem(auto['modello'])
+
+    def verificaScadenzaNoleggio(self):
+        contract_controller = ContractController(self.controller, self)
+        contract_controller.check_contracts_and_notify_dashboard(self)
+        
+
+    def show_notification(self, message):
+        self.notification_label.setText(message)
+        self.notification_label.show()

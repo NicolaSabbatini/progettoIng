@@ -74,10 +74,11 @@ class DashboardController:
     
     def rimuoviAuto(self, autoId):
         """Rimuove un'auto e aggiorna la view"""
-        self.auto_controller.rimuoviAuto(autoId)
+        auto_controller = AutoController(main_controller=self.main_controller, auto_view=self.auto_view, dashboard_view=self.dashboard_view)
+        auto_controller.rimuoviAuto(autoId)
 
-        if self.dashboard_view:
-            self.dashboard_view.refresh_auto_list()
+        #if self.dashboard_view:
+        #    self.dashboard_view.refresh_auto_list()
     
     def reimpostaAuto(self, autoId):
         """Reimposta l'auto per essere visibile nel catalogo"""

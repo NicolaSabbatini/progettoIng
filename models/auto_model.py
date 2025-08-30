@@ -42,6 +42,9 @@ class AutoModel:
     def get_all_auto(self):
         return [a for a in self.auto_list if a.get('visibile', True)]
     
+    def get_every_auto(self):
+        return self.auto_list
+    
     def delete_auto(self, auto_id):
         """Elimina un'auto dato il suo id"""
         for i, auto in enumerate(self.auto_list):
@@ -58,6 +61,7 @@ class AutoModel:
             if auto['id'] == auto_id:
                 auto['visibile'] = False
                 self.save_auto()
+                self.auto_list = self.load_auto()  # <-- aggiorna la lista!
                 print("Trovata e modificata")
                 return True
         print("Auto non trovata")
@@ -71,6 +75,7 @@ class AutoModel:
             if auto['id'] == auto_id:
                 auto['visibile'] = True
                 self.save_auto()
+                self.auto_list = self.load_auto()  # <-- aggiorna la lista!
                 print("Trovata e modificata")
                 return True
         return False

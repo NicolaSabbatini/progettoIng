@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, Q
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QSizePolicy, QScrollArea
 from controllers.fatture_controller import FattureController
+from controllers.auto_controller import AutoController
 from views.fatture_view import FattureView
 
 class ContractView(QWidget):
@@ -14,6 +15,7 @@ class ContractView(QWidget):
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
         self.main_layout.setContentsMargins(30, 30, 30, 30)
+        
         if parent:
             self.setGeometry(parent.geometry())
 
@@ -120,17 +122,20 @@ class ContractView(QWidget):
         rent_contracts = [c for c in contracts if c.get('tipo') == 'noleggio']
         buy_contracts = [c for c in contracts if c.get('tipo') == 'acquisto']
         
-        print("contratti totali: ")
-        for c in contracts:
-            print(c)
-        print("contratti acquisto: ")
-        for c in buy_contracts:
-            print(c)
-        print("contratti noleggio: ")
-        for c in rent_contracts:
-            print(c)
+        #print("contratti totali: ")
+        #for c in contracts:
+            #print(c)
+        #print("contratti acquisto: ")
+        #for c in buy_contracts:
+            #print(c)
+        #print("contratti noleggio: ")
+        #for c in rent_contracts:
+            #print(c)
+
+        auto_list = AutoController().get_every_auto()
 
         for i, contract in enumerate(rent_contracts):
+
             contract_widget = QWidget()
             contract_widget.setObjectName('contract_widget')
             contract_layout = QVBoxLayout(contract_widget)
@@ -139,8 +144,17 @@ class ContractView(QWidget):
             user_label = QLabel(f"User: {contract['user']}")
             user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-            auto_label = QLabel(f"auto: {contract['auto']}")
+            
+
+            auto_label = QLabel("Auto: non trovata")
             auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+            for auto in auto_list:
+                #print(f"{auto}")
+                if auto['id'] == contract['auto']:
+                    print(f"trovato auto per contratto {contract['id']}: {auto}")
+                    auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
+                    auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
             start_date_label = QLabel(f"start date: {contract['start_date']}")
             start_date_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -199,8 +213,16 @@ class ContractView(QWidget):
             user_label = QLabel(f"User: {contract['user']}")
             user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-            auto_label = QLabel(f"auto: {contract['auto']}")
+            auto_label = QLabel("Auto: non trovata")
             auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+            for auto in auto_list:
+                #print(f"{auto}")
+                if auto['id'] == contract['auto']:
+                    print(f"trovato auto per contratto {contract['id']}: {auto}")
+                    auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
+                    auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                    break
 
             price_label = QLabel(f"Price: {contract['price']}")
             price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -222,7 +244,7 @@ class ContractView(QWidget):
                 elimina_contract_btn = QPushButton('elimina contratto')
                 elimina_contract_btn.setObjectName('elimina_contratto_button')
                 elimina_contract_btn.clicked.connect(
-                    lambda checked=False, c=contract: self.controller.elimina_contratto(c['id'], self))
+                    lambda checked=False, c=contract: self.controller.delete_contract_and_fatture(c['id'], c['auto'], self))
                 contract_layout.addWidget(elimina_contract_btn)
             
             contract_grid_layout.addWidget(contract_widget, (i + len(rent_contracts)) // 4, (i + len(rent_contracts)) % 4)
