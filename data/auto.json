@@ -28,5 +28,55 @@
     "prezzo": "70000",
     "targa": "TL902KB",
     "visibile": false
+  },
+  {
+    "id": 6,
+    "marca": "Lamborghini",
+    "modello": "Urus",
+    "anno": "2024",
+    "chilometri": "100000",
+    "prezzo": "100000",
+    "targa": "TL452GF",
+    "visibile": true
+  },
+  {
+    "id": 7,
+    "marca": "Fiat",
+    "modello": "Panda",
+    "anno": "2015",
+    "chilometri": "160000",
+    "prezzo": "12000",
+    "targa": "FG972HO",
+    "visibile": true
+  },
+  {
+    "id": 8,
+    "marca": "Honda",
+    "modello": "Civic",
+    "anno": "2008",
+    "chilometri": "200000",
+    "prezzo": "9000",
+    "targa": "EK371JL",
+    "visibile": true
+  },
+  {
+    "id": 9,
+    "marca": "Subaru",
+    "modello": "Baracca",
+    "anno": "2001",
+    "chilometri": "1000000",
+    "prezzo": "500",
+    "targa": "AL104GC",
+    "visibile": true
+  },
+  {
+    "id": 8,
+    "marca": "Renault",
+    "modello": "Clio",
+    "anno": "2014",
+    "chilometri": "199600",
+    "prezzo": "8000",
+    "targa": "ND609AC",
+    "visibile": true
   }
 ]
