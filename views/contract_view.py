@@ -251,6 +251,7 @@ class ContractView(QWidget):
 
             
             
+            
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(contract_frame)
