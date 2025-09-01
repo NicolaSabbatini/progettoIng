@@ -12,7 +12,10 @@ class BuyContractModel(ContractModel):
 
    def add_buy_contract(self, user, auto, prezzoTot, durataGaranzia, tipoGaranzia):
         """Aggiunge un nuovo contratto"""
-        new_id = len(self.contracts) + 1
+        if self.contracts:
+            new_id = max(c['id'] for c in self.contracts) + 1
+        else:
+            new_id = 1
         new_buy_contract = {
             'id': new_id,
             'tipo': 'acquisto',

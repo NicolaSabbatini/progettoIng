@@ -1,16 +1,6 @@
 [
   {
-    "id": 4,
-    "marca": "prova",
-    "modello": "suv",
-    "anno": "1879",
-    "chilometri": "0",
-    "prezzo": "45000",
-    "targa": "CC123DD",
-    "visibile": false
-  },
-  {
-    "id": 5,
+    "id": 1,
     "marca": "kia",
     "modello": "roax",
     "anno": "2001",
@@ -20,7 +10,7 @@
     "visibile": false
   },
   {
-    "id": 3,
+    "id": 2,
     "marca": "BMW",
     "modello": "X1",
     "anno": "2023",
@@ -28,5 +18,25 @@
     "prezzo": "70000",
     "targa": "TL902KB",
     "visibile": false
+  },
+  {
+    "id": 3,
+    "marca": "Macchina",
+    "modello": "fiammeggiante",
+    "anno": "2009",
+    "chilometri": "0",
+    "prezzo": "90000",
+    "targa": "FF489DO",
+    "visibile": true
+  },
+  {
+    "id": 4,
+    "marca": "Porche",
+    "modello": "LaPorche",
+    "anno": "2004",
+    "chilometri": "2000",
+    "prezzo": "20000",
+    "targa": "CD200DC",
+    "visibile": true
   }
 ]

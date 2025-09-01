@@ -1,13 +1,13 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from controllers.auth_controller import AuthController
+from controllers.GestoreUtenti import GestoreUtenti
 from views.login_view import LoginView
 
 def main():
     app = QApplication(sys.argv)
     
     # Inizializza il controller e la view
-    controller = AuthController()
+    controller = GestoreUtenti()
     login_view = LoginView(controller)
     controller.login_view = login_view
     

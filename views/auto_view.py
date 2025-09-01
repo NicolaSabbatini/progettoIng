@@ -1,13 +1,13 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFrame, QGridLayout
 
-from controllers.auto_controller import AutoController
+from controllers.GestoreAuto import GestoreAuto
 
 class AutoView(QWidget):
-    def __init__(self, controller, auth_controller=None, dashboard_view=None, parent=None):
+    def __init__(self, controller, user_controller=None, dashboard_view=None, parent=None):
         super().__init__()
         self.controller = controller
         self.dashboard_view = dashboard_view
-        self.auth_controller = auth_controller
+        self.user_controller = user_controller
         self.setWindowTitle('Auto Management')
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
@@ -34,7 +34,7 @@ class AutoView(QWidget):
         self.main_layout.addWidget(dashboard_btn)
 
         # Recupera il ruolo dell'utente
-        role = self.auth_controller.get_current_user_data().get('ruolo', 'cliente')
+        role = self.user_controller.get_current_user_data().get('ruolo', 'cliente')
         is_admin = role == 'amministratore'
         
 

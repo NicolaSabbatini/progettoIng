@@ -1,4 +1,4 @@
-from controllers.dashboard_controller import DashboardController
+
 from models.user_model import UserModel
 from datetime import datetime
 from views.register_view import RegisterView
@@ -10,13 +10,15 @@ from models.user_model import UserModel
 from models.auto_model import AutoModel
 from models.contract_model import ContractModel
 
-class AuthController:
-    def __init__(self, login_view=None, register_view=None):
+
+class GestoreUtenti:
+    def __init__(self, login_view=None, register_view=None, dashboard_view=None):
         self.user_model = UserModel()
         self.auto_model = AutoModel()
         self.contract_model = ContractModel()
         self.login_view = login_view
         self.register_view = register_view
+        self.dashboard_view = dashboard_view
         self.current_user = None
         self.login_time = None
     
@@ -79,8 +81,6 @@ class AuthController:
     
     def handle_login(self,usern, passw, parent):
         """Gestisce il click del bottone login"""
-        #username = self.username_input.text().strip()
-        #password = self.password_input.text()
 
         username = usern.strip()
         password = passw
@@ -98,11 +98,13 @@ class AuthController:
         
         if success:
             QMessageBox.information(parent, 'Successo', 'Login effettuato con successo!')
-            #self.show_dashboard()
-            return True
+            self.show_dashboard(username)
+            self.clear_fields()
+            self.login_view.hide()
+            #return True
         else:
             QMessageBox.warning(parent, 'Errore di Login', message)
-            return False
+            #return False
 
     def show_register(self):
         """Mostra la finestra di registrazione"""
@@ -110,14 +112,8 @@ class AuthController:
             self.register_view = RegisterView(self, self.login_view)
         self.register_view.show()
         self.login_view.hide()
-    def show_dashboard(self):
-        controller = DashboardController(self)
-        self.dashboard_view = DashboardView(controller)
-        #self.dashboard_view.update_user_info()
-       
-        #self.dashboard_view.show()
-        
     
+
     def clear_fields(self):
         """Pulisce i campi di input"""
         self.login_view.username_input.clear()
@@ -130,4 +126,37 @@ class AuthController:
                 return user_data.get("ruolo")
             return None
 
+    def update_user_info(self, view):
+        """Aggiorna le informazioni utente nella dashboard"""
+        user_data = self.get_current_user_data()
+        if user_data:
+            view.welcome_label.setText(f'Benvenuto, {user_data["username"]}!')
+            view.username_label.setText(f'👤 Username: {user_data["username"]}')
+            view.email_label.setText(f'📧 Email: {user_data["email"]}')
+            view.created_label.setText(f'📅 Account creato: {user_data["created_at"]}')
+            view.login_time_label.setText(f'🕐 Ultimo accesso: {user_data["login_time"]}')
+            view.name_label.setText(f'Nome: {user_data.get("name", "N/A")}')
+            view.surname_label.setText(f'Cognome: {user_data.get("surname", "N/A")}')
+            view.luogo_label.setText(f'Luogo: {user_data.get("luogo", "N/A")}')
+            view.telefono_label.setText(f'Telefono: {user_data.get("telefono", "N/A")}')
+            view.data_label.setText(f'Data di nascita: {user_data.get("data", "N/A")}')
         
+    def handle_logout(self):
+        """Gestisce il logout"""
+        self.logout()
+        self.login_view.clear_fields()
+        self.login_view.show()
+        self.dashboard_view.hide()
+
+    
+    
+    
+    
+    def show_dashboard(self, username):
+        """Mostra la dashboard dell'utente"""
+        self.current_user = username
+        self.login_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
+        # Inizializza la vista della dashboard
+        self.dashboard_view = DashboardView(self)
+        self.dashboard_view.show()

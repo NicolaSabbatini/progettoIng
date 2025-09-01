@@ -69,3 +69,6 @@ class FattureView(QWidget):
             max(0, (screen.width() - self.width()) // 2),
             max(0, (screen.height() - self.height()) // 2)
         )
+
+    def refresh_fatture(self):
+        self.populate_fatture()

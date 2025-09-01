@@ -4,7 +4,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QPalette
 
 from views.dashboard_view import DashboardView
-from controllers.dashboard_controller import DashboardController
+
+from controllers.GestoreUtenti import GestoreUtenti
+
 
 class LoginView(QWidget):
     def __init__(self, controller):
@@ -54,9 +56,8 @@ class LoginView(QWidget):
         # Bottone login
         self.login_button = QPushButton('Accedi')
         self.login_button.setObjectName('primary_button')
-    #self.login_button.clicked.connect(
-    #lambda: self.controller.handle_login(self.username_input.text(), self.password_input.text(), self))
-        self.login_button.clicked.connect(self.handle_login)
+        self.login_button.clicked.connect(lambda: self.controller.handle_login(self.username_input.text(), self.password_input.text(), self))
+        #self.login_button.clicked.connect(self.handle_login)
         form_layout.addWidget(self.login_button)
         
         main_layout.addWidget(form_frame)
@@ -78,8 +79,6 @@ class LoginView(QWidget):
         self.setLayout(main_layout)
         
         # Connessione Enter per login
-        
-    #self.password_input.returnPressed.connect(lambda: self.controller.handle_login(self.username_input.text(), self.password_input.text(), self))
         self.password_input.returnPressed.connect(self.handle_login)
 
         # Centra la finestra
@@ -99,13 +98,9 @@ class LoginView(QWidget):
         username = self.username_input.text()
         password = self.password_input.text()
         if self.controller.handle_login(username, password, self):
-            self.show_dashboard()
+            self.controller.show_dashboard(username)
 
-    def show_dashboard(self):
-        dashboard_controller = DashboardController(self.controller)
-        self.dashboard_view = DashboardView(dashboard_controller, login_view=self, auth_controller = self.controller)
-        self.dashboard_view.show()
-        self.hide()
+    
 
     def clear_fields(self):
         """Pulisce i campi di input"""

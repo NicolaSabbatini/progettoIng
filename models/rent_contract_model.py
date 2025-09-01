@@ -14,7 +14,10 @@ class RentContractModel(ContractModel):
 
     def add_rent_contract(self, user, auto, start_date, end_date, cauzione, prezzoTot, durataGaranzia, tipoGaranzia, kmMax):
         """Aggiunge un nuovo contratto"""
-        new_id = len(self.contracts) + 1
+        if self.contracts:
+            new_id = max(c['id'] for c in self.contracts) + 1
+        else:
+            new_id = 1
         new_rent_contract = {
             'id': new_id,
             'tipo': 'noleggio',
@@ -25,7 +28,7 @@ class RentContractModel(ContractModel):
             'cauzione': cauzione,
             'tipoGaranzia': tipoGaranzia,
             'durataGaranzia': durataGaranzia,
-            'kmMax' : kmMax,
+            'kmMax': kmMax,
             'prezzoTot': prezzoTot,
             'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }

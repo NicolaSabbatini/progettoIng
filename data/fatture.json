@@ -1,8 +1,20 @@
 [
   {
     "idfattura": 1,
-    "contratto": 2,
+    "contratto": 1,
     "data": "27/09/2025",
     "prezzo": "1500"
+  },
+  {
+    "idfattura": 2,
+    "contratto": 1,
+    "data": "010101",
+    "prezzo": "200"
+  },
+  {
+    "idfattura": 3,
+    "contratto": 1,
+    "data": "020202",
+    "prezzo": "121212"
   }
 ]
