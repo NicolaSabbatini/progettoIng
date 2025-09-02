@@ -1,0 +1,250 @@
+[
+    {
+        "timestamp": "2025-09-02T19:31:04.214206",
+        "files": {
+            "auto.json": [
+                {
+                    "id": 1,
+                    "marca": "kia",
+                    "modello": "roax",
+                    "anno": "2001",
+                    "chilometri": "0",
+                    "prezzo": "7700",
+                    "targa": "DD123DD",
+                    "visibile": false
+                },
+                {
+                    "id": 2,
+                    "marca": "BMW",
+                    "modello": "X1",
+                    "anno": "2023",
+                    "chilometri": "0",
+                    "prezzo": "70000",
+                    "targa": "TL902KB",
+                    "visibile": false
+                },
+                {
+                    "id": 4,
+                    "marca": "Porche",
+                    "modello": "LaPorche",
+                    "anno": "2004",
+                    "chilometri": "2000",
+                    "prezzo": "20000",
+                    "targa": "CD200DC",
+                    "visibile": false
+                },
+                {
+                    "id": 5,
+                    "marca": "ferrari",
+                    "modello": "lacaca",
+                    "anno": "2004",
+                    "chilometri": "0",
+                    "prezzo": "900000000",
+                    "targa": "UC!£!LO",
+                    "visibile": false
+                },
+                {
+                    "id": 6,
+                    "marca": "fuoco",
+                    "modello": "macchia",
+                    "anno": "2008",
+                    "chilometri": "0",
+                    "prezzo": "121245",
+                    "targa": "CD456FR",
+                    "visibile": false
+                }
+            ],
+            "contract.json": [
+                {
+                    "id": 1,
+                    "tipo": "noleggio",
+                    "user": "Abbo",
+                    "auto": 1,
+                    "start_date": "30/08/2025",
+                    "end_date": "30/08/2025",
+                    "cauzione": "235",
+                    "tipoGaranzia": "1",
+                    "durataGaranzia": "12",
+                    "kmMax": "200000",
+                    "prezzoTot": "20000",
+                    "created_at": "2025-08-30 11:25:37"
+                },
+                {
+                    "id": 2,
+                    "tipo": "acquisto",
+                    "user": "fent",
+                    "auto": 2,
+                    "price": "900",
+                    "durataGaranzia": "01/09/2025",
+                    "tipoGaranzia": "1",
+                    "created_at": "2025-09-01 13:15:05"
+                },
+                {
+                    "id": 3,
+                    "tipo": "acquisto",
+                    "user": "sofixx",
+                    "auto": 4,
+                    "price": "9000",
+                    "durataGaranzia": "02/09/2025",
+                    "tipoGaranzia": "misera",
+                    "created_at": "2025-09-02 18:47:30"
+                },
+                {
+                    "id": 4,
+                    "tipo": "acquisto",
+                    "user": "Abbo",
+                    "auto": 5,
+                    "price": "900000000",
+                    "durataGaranzia": "02/09/2025",
+                    "tipoGaranzia": "costosissima",
+                    "created_at": "2025-09-02 18:50:24"
+                },
+                {
+                    "id": 5,
+                    "tipo": "noleggio",
+                    "user": "Abbo",
+                    "auto": 6,
+                    "start_date": "02/09/2025",
+                    "end_date": "02/09/2025",
+                    "cauzione": "800",
+                    "tipoGaranzia": "base",
+                    "durataGaranzia": "36",
+                    "kmMax": "10000",
+                    "prezzoTot": "70000",
+                    "created_at": "2025-09-02 18:55:20"
+                }
+            ],
+            "fatture.json": [
+                {
+                    "idfattura": 1,
+                    "contratto": 1,
+                    "data": "27/09/2025",
+                    "prezzo": "1500"
+                },
+                {
+                    "idfattura": 2,
+                    "contratto": 1,
+                    "data": "010101",
+                    "prezzo": "200"
+                },
+                {
+                    "idfattura": 3,
+                    "contratto": 1,
+                    "data": "020202",
+                    "prezzo": "121212"
+                }
+            ],
+            "users.json": {
+                "pippolo": {
+                    "name": "",
+                    "surname": "",
+                    "email": "quadro@gmail.com",
+                    "username": "pippolo",
+                    "password": "694889c3f99b48a391bc0a08d668343758d7ddd1eadfc365f196c9609691a5ee",
+                    "luogo": "",
+                    "telefono": "",
+                    "data": "",
+                    "created_at": "2025-08-09 16:43:41"
+                },
+                "sofixx": {
+                    "name": "sofia",
+                    "surname": "santoni",
+                    "email": "sofia90@gmail.com",
+                    "username": "sofixx",
+                    "password": "f6322e20eae56843e790b43b7648271f375611817fd35788f278c5d4cc1e9f88",
+                    "luogo": "ancona",
+                    "telefono": "9276582",
+                    "data": "2004/01/19",
+                    "ruolo": "cliente",
+                    "created_at": "2025-08-09 17:08:25"
+                },
+                "misterx": {
+                    "name": "abbo",
+                    "surname": "king",
+                    "email": "misterx@gmail.com",
+                    "username": "misterx",
+                    "password": "70bd395a60e6083c6df9309799617bae765a250b5f12f62b6e7478043ea77e04",
+                    "luogo": "lato",
+                    "telefono": "2746582",
+                    "data": "121212",
+                    "ruolo": "cliente",
+                    "created_at": "2025-08-25 17:53:59"
+                },
+                "uomoxy": {
+                    "name": "luca",
+                    "surname": "gentili",
+                    "email": "uomoy@gmail.com",
+                    "username": "uomoxy",
+                    "password": "6b02cfe4d4cc1305a14b175cfe74ee63d505e83afeef3527c6dc2f54953e4ce7",
+                    "luogo": "roma",
+                    "telefono": "27386482",
+                    "data": "131313",
+                    "ruolo": "cliente",
+                    "created_at": "2025-08-25 17:56:26"
+                },
+                "Abbo": {
+                    "name": "Christian",
+                    "surname": "Abbondanzieri",
+                    "email": "christian.abbondanzieri.ca@gmail.com",
+                    "username": "Abbo",
+                    "password": "f3299c8d2265f70ab3c98652557e3d491dc076ffddcde9da44930a03216430da",
+                    "luogo": "Urbino",
+                    "telefono": "3519083241",
+                    "data": "23/07/2002",
+                    "ruolo": "cliente",
+                    "created_at": "2025-08-26 15:39:39"
+                },
+                "admin": {
+                    "name": "admin",
+                    "surname": "admin",
+                    "email": "admin@gmail.com",
+                    "username": "admin",
+                    "password": "f3299c8d2265f70ab3c98652557e3d491dc076ffddcde9da44930a03216430da",
+                    "luogo": "Roma",
+                    "telefono": "3333333333",
+                    "data": "11/09/2001",
+                    "ruolo": "amministratore",
+                    "created_at": "2025-08-26 15:39:39",
+                    "login_time": "2025-09-02 18:16:02"
+                },
+                "avvofatto": {
+                    "name": "andrea",
+                    "surname": "diprè",
+                    "email": "andreadipre@gmail.com",
+                    "username": "avvofatto",
+                    "password": "466ebe4fca60aefb75e90432eac9044587ba7238d661728d98165f283afe7770",
+                    "luogo": "roma",
+                    "telefono": "3213213210",
+                    "data": "09/11//1974",
+                    "ruolo": "cliente",
+                    "created_at": "2025-08-26 17:36:09"
+                },
+                "mesk11": {
+                    "name": "meschino",
+                    "surname": "cialtrone",
+                    "email": "meschino@gmail.com",
+                    "username": "mesk11",
+                    "password": "b7e1dedbe0de394be43e46644d4f2dfc25d9c79e41414fed8ec6aeaad526494c",
+                    "luogo": "pesaro",
+                    "telefono": "2223335678",
+                    "data": "121212",
+                    "ruolo": "cliente",
+                    "created_at": "2025-09-01 22:20:04",
+                    "login_time": "2025-09-02 18:15:18"
+                },
+                "surryma": {
+                    "name": "salvatore",
+                    "surname": "cinquegrana",
+                    "email": "surry@gmail.com",
+                    "username": "surryma",
+                    "password": "e45edc1ef12e1514ce78ee83632bfb9af609113bdfe0a32e82e6ede44c7bb64c",
+                    "luogo": "arezzo",
+                    "telefono": "182473658156",
+                    "data": "17/02/1993",
+                    "ruolo": "cliente",
+                    "created_at": "2025-09-02 18:18:40"
+                }
+            }
+        }
+    }
+]

@@ -1,23 +1,21 @@
+# controllers/GestoreSistema.py
 import os
 import json
 import schedule
-import time
 from datetime import datetime
+from PyQt5.QtCore import QTimer
 
 DATA_DIR = "data"            
 BACKUP_FILE = "backUp.json" 
 
 class GestoreSistema:
-     
     def __init__(self):
-        # Qui potresti salvare variabili di configurazione se servono
         self.data_dir = DATA_DIR
         self.backup_file = BACKUP_FILE
 
     def create_backup(self):
         backup_path = os.path.join(self.data_dir, self.backup_file)
 
-        # Se il file esiste già, carichiamo i backup precedenti
         if os.path.exists(backup_path):
             try:
                 with open(backup_path, "r", encoding="utf-8") as f:
@@ -29,7 +27,6 @@ class GestoreSistema:
         else:
             all_backups = []
 
-        # Creiamo un nuovo snapshot
         snapshot = {
             "timestamp": datetime.now().isoformat(),
             "files": {}
@@ -44,18 +41,19 @@ class GestoreSistema:
                 except Exception as e:
                     print(f"❌ Errore nel leggere {filename}: {e}")
 
-        # Aggiungiamo lo snapshot alla lista dei backup
         all_backups.append(snapshot)
 
-        # Riscriviamo il file con tutti i backup
         with open(backup_path, "w", encoding="utf-8") as f:
             json.dump(all_backups, f, indent=4, ensure_ascii=False)
 
         print(f"✅ Nuovo backup aggiunto in {backup_path}")
 
-    def doBackUp(self):
+    def start_scheduled_backup(self, qt_app):
+        """Avvia il backup giornaliero senza bloccare PyQt"""
         schedule.every().day.at("00:00").do(self.create_backup)
         print("⏳ Backup automatico pianificato ogni giorno alle 00:00")
-        while True:
-            schedule.run_pending()
-            time.sleep(30)
+
+        # Usa QTimer per eseguire schedule.run_pending ogni 30 secondi
+        self.timer = QTimer()
+        self.timer.timeout.connect(schedule.run_pending)
+        self.timer.start(30000)  # 30 secondi
