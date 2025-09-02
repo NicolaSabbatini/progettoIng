@@ -20,16 +20,6 @@
     "visibile": false
   },
   {
-    "id": 3,
-    "marca": "Macchina",
-    "modello": "fiammeggiante",
-    "anno": "2009",
-    "chilometri": "0",
-    "prezzo": "90000",
-    "targa": "FF489DO",
-    "visibile": true
-  },
-  {
     "id": 4,
     "marca": "Porche",
     "modello": "LaPorche",
@@ -37,6 +27,26 @@
     "chilometri": "2000",
     "prezzo": "20000",
     "targa": "CD200DC",
-    "visibile": true
+    "visibile": false
+  },
+  {
+    "id": 5,
+    "marca": "ferrari",
+    "modello": "lacaca",
+    "anno": "2004",
+    "chilometri": "0",
+    "prezzo": "900000000",
+    "targa": "UC!£!LO",
+    "visibile": false
+  },
+  {
+    "id": 6,
+    "marca": "fuoco",
+    "modello": "macchia",
+    "anno": "2008",
+    "chilometri": "0",
+    "prezzo": "121245",
+    "targa": "CD456FR",
+    "visibile": false
   }
 ]

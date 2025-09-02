@@ -2,6 +2,7 @@ from datetime import datetime
 
 from controllers.GestoreAuto import GestoreAuto
 
+
 from models.Contratto import Contratto
 from models.ContrattoAcquisto import ContrattoAcquisto
 from models.ContrattoNoleggio import ContrattoNoleggio
@@ -13,14 +14,15 @@ from views.CreaFatturaDialog import CreaFattura
 
 class GestoreContratti:
     def __init__(self, contract_view=None, dashboard_view=None, fatture_view=None):
-        
+        from controllers.GestoreUtenti import GestoreUtenti
         self.contract_view = contract_view
         self.dashboard_view = dashboard_view
         self.contract_model = Contratto()
         self.buy_contract_model = ContrattoAcquisto()
         self.rent_contract_model = ContrattoNoleggio()
         self.fatture_model = Fattura()
-        self.auto_controller = GestoreAuto(self.dashboard_view) 
+        self.auto_controller = GestoreAuto(self.dashboard_view)
+        self.user_controller = GestoreUtenti() 
         self.fatture_view = fatture_view
 
     def get_all_contracts(self):

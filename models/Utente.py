@@ -65,6 +65,10 @@ class Utente:
         """Ottieni informazioni di un utente"""
         return self.users.get(username, None)
     
+    def get_all_clients(self):
+        """Restituisce tutti gli utenti"""
+        return [user for user in self.users.values() if user.get('ruolo') == 'cliente']
+    
     def get_role(self, username):
         user = self.get_user(username)
         if user:

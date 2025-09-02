@@ -114,13 +114,20 @@ class CreaContrattoAcquistoDialog(QDialog):
         layout = QVBoxLayout(self)
         
 
-        user_input = QLineEdit()
-        user_input.setPlaceholderText('user')
-        layout.addWidget(QLabel('user:'))
-        layout.addWidget(user_input)
+        users_list = self.controller.user_controller.get_all_clients()
+        if not users_list:
+            users_list = []
 
-        auto_model = Auto()
-        auto_list = auto_model.get_all_auto()
+        users_combo = QComboBox()
+        users_combo.setObjectName('users_combo')
+        for user in users_list:
+            display_text = f"{user['name']} {user['surname']} - {user['username']}"
+            users_combo.addItem(display_text)
+        
+        layout.addWidget(QLabel('user:'))
+        layout.addWidget(users_combo)
+
+        auto_list = self.controller.auto_controller.get_all_auto()
         if not auto_list:        
             auto_list = []
 
@@ -152,14 +159,14 @@ class CreaContrattoAcquistoDialog(QDialog):
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_contract(user_input,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input))
+        save_btn.clicked.connect(lambda: self.addi_contract(users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input))
         
       
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def addi_contract(self,user_input,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input):
-        user = user_input.text()
+    def addi_contract(self,users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input):
+        user = users_combo.currentText().split(' - ')[-1].strip(')')
         auto = auto_combo.currentData()
         prezzo = prezzo_input.text()
         durataGaranzia = durataGaranzia_input.text()

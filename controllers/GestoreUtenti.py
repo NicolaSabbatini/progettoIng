@@ -4,7 +4,6 @@ from views.RegisterView import RegisterView
 from views.DashboardView import DashboardView
 from PyQt5.QtWidgets import QMessageBox
 
-from models.Utente import Utente
 from models.Auto import Auto
 from models.Contratto import Contratto
 
@@ -59,11 +58,16 @@ class GestoreUtenti:
         self.current_user = None
         self.login_time = None
     
+    
+    def get_all_clients(self):
+        """Restituisce tutti gli utenti"""
+        return self.user_model.get_all_clients()
+    
+    
     def get_current_user_data(self):
         """Ottiene i dati dell'utente corrente"""
         if not self.current_user:
             return None
-        
         user_data = self.user_model.get_user(self.current_user)
         if user_data:
             user_data['username'] = self.current_user
