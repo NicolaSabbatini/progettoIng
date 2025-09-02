@@ -10,6 +10,59 @@ class CreaAutoDialog(QDialog):
         self.setFixedSize(650, 450)
         layout = QVBoxLayout(self)
 
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: white;
+                font-family: Arial;
+                font-size: 18px;
+            }
+            QLabel {
+                background-color: #2b2b2b;
+            }
+            QLineEdit {
+                padding: 8px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 30px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QPushButton#primary_button {
+                background-color: #2e86de;
+                color: white;
+                padding: 10px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton#primary_button:hover {
+                background-color: #1b4f72;
+            }
+            QMessageBox {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+                font-size: 18px;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
+            """)
+
         self.marca_input = QLineEdit()
         self.marca_input.setPlaceholderText('Marca')
         layout.addWidget(QLabel('Marca:'))

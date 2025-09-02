@@ -4,9 +4,7 @@ from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButto
 
 class ModificaAutoDialog(QDialog):
     def __init__(self, controller, auto_data, parent=None, auto_view=None):
-        """
-        Finestra di dialogo per modificare un'auto esistente.
-        """
+        
         super().__init__(parent)
         self.controller = controller
         self.auto_view = auto_view
@@ -15,6 +13,59 @@ class ModificaAutoDialog(QDialog):
         self.setWindowTitle('Modifica Auto')
         self.setFixedSize(650, 450)
         layout = QVBoxLayout(self)
+
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: white;
+                font-family: Arial;
+                font-size: 18px;
+            }
+            QLabel {
+                background-color: #2b2b2b;
+            }
+            QLineEdit {
+                padding: 8px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 30px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QPushButton#primary_button {
+                background-color: #2e86de;
+                color: white;
+                padding: 10px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton#primary_button:hover {
+                background-color: #1b4f72;
+            }
+            QMessageBox {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+                font-size: 18px;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
+            """)
 
         # Campi precompilati
         self.marca_input = QLineEdit(auto_data["marca"])
