@@ -10,6 +10,97 @@ class RegisterView(QWidget):
         self.login_view = login_view
         if parent:
             self.setGeometry(parent.geometry())
+
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: white;
+                font-family: Arial;
+                font-size: 18px;
+            }
+            #form_frame {
+                background-color: black;
+                border: 1px solid #dcdcdc;
+                border-radius: 12px;
+            }
+            QLabel {
+                background-color: black;
+            }
+            QLabel#title {
+                color: #2e86de;
+                font-size: 33px;
+                background-color: #2b2b2b;
+            }
+            QLineEdit {
+                padding: 8px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 40px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #2e86de;
+            }
+            QPushButton#primary_button {
+                background-color: #2e86de;
+                color: white;
+                padding: 10px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton#primary_button:hover {
+                background-color: #1b4f72;
+            }
+            QPushButton#link_button {
+                background: none;
+                color: #2e86de;
+                border: none;
+                text-decoration: underline;
+            }
+            QPushButton#link_button:hover {
+                color: #1b4f72;
+            }
+            QMessageBox {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                font-size: 18px;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
+                           QMessageBox {
+            background-color: #2b2b2b;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+                font-size: 18px;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
+        """)
+
         self.init_ui()
     
     def init_ui(self):
