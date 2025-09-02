@@ -1,8 +1,7 @@
 import json
 import os
-from datetime import datetime
 
-class FattureModel:
+class Fattura:
     def __init__(self):
         self.fatture_file = 'data/fatture.json'
         self.ensure_data_directory()

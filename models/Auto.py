@@ -1,7 +1,7 @@
 import json
 import os
 
-class AutoModel:
+class Auto:
     def __init__(self):
         self.auto_file = 'data/auto.json'
         os.makedirs('data', exist_ok=True)

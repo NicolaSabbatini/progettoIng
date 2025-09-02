@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime
 
-class ContractModel:
+class Contratto:
     def __init__(self):
         self.contracts_file = 'data/contract.json'
         self.ensure_data_directory()

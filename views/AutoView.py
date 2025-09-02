@@ -1,6 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFrame, QGridLayout
-
-from controllers.GestoreAuto import GestoreAuto
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QFrame, QGridLayout
 
 class AutoView(QWidget):
     def __init__(self, controller, user_controller=None, dashboard_view=None, parent=None):

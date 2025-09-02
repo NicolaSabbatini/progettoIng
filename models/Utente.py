@@ -4,15 +4,11 @@ import json
 import os
 from datetime import datetime
 
-class UserModel:
+class Utente:
     def __init__(self):
         self.users_file = 'data/users.json'
-        self.ensure_data_directory()
-        self.load_users()
-    
-    def ensure_data_directory(self):
-        """Crea la directory data se non esiste"""
         os.makedirs('data', exist_ok=True)
+        self.load_users()
     
     def load_users(self):
         """Carica gli utenti dal file JSON"""
@@ -68,10 +64,6 @@ class UserModel:
     def get_user(self, username):
         """Ottieni informazioni di un utente"""
         return self.users.get(username, None)
-    
-    def user_exists(self, username):
-        """Verifica se un utente esiste"""
-        return username in self.users
     
     def get_role(self, username):
         user = self.get_user(username)

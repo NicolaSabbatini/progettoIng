@@ -1,0 +1,80 @@
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox,)
+
+
+class ModificaAutoDialog(QDialog):
+    def __init__(self, controller, auto_data, parent=None, auto_view=None):
+        """
+        Finestra di dialogo per modificare un'auto esistente.
+        """
+        super().__init__(parent)
+        self.controller = controller
+        self.auto_view = auto_view
+        self.auto_id = auto_data["id"]
+
+        self.setWindowTitle('Modifica Auto')
+        self.setFixedSize(650, 450)
+        layout = QVBoxLayout(self)
+
+        # Campi precompilati
+        self.marca_input = QLineEdit(auto_data["marca"])
+        layout.addWidget(QLabel('Marca:'))
+        layout.addWidget(self.marca_input)
+
+        self.modello_input = QLineEdit(auto_data["modello"])
+        layout.addWidget(QLabel('Modello:'))
+        layout.addWidget(self.modello_input)
+
+        self.anno_input = QLineEdit(str(auto_data["anno"]))
+        layout.addWidget(QLabel('Anno:'))
+        layout.addWidget(self.anno_input)
+
+        self.chilometri_input = QLineEdit(str(auto_data["chilometri"]))
+        layout.addWidget(QLabel('Chilometri:'))
+        layout.addWidget(self.chilometri_input)
+
+        self.prezzo_input = QLineEdit(str(auto_data["prezzo"]))
+        layout.addWidget(QLabel('Prezzo:'))
+        layout.addWidget(self.prezzo_input)
+
+        self.targa_input = QLineEdit(auto_data["targa"])
+        layout.addWidget(QLabel('Targa:'))
+        layout.addWidget(self.targa_input)
+
+        # Bottone per salvare le modifiche
+        save_btn = QPushButton('Salva Modifiche')
+        save_btn.setObjectName('primary_button')
+        layout.addWidget(save_btn)
+        save_btn.clicked.connect(self.salva_modifiche)
+
+        self.setLayout(layout)
+        self.setWindowModality(Qt.ApplicationModal)
+
+    def salva_modifiche(self):
+        """Aggiorna i dati dell’auto con i nuovi valori"""
+        marca = self.marca_input.text()
+        modello = self.modello_input.text()
+        anno = self.anno_input.text()
+        chilometri = self.chilometri_input.text()
+        prezzo = self.prezzo_input.text()
+        targa = self.targa_input.text()
+
+        if marca and modello and anno and chilometri and prezzo and targa:
+            success, message = self.controller.salvaModificaAuto(
+                self.auto_id,
+                marca,
+                modello,
+                int(anno),
+                int(chilometri),
+                float(prezzo),
+                targa
+            )
+            if success:
+                if self.auto_view:
+                    self.auto_view.refresh_auto()
+                QMessageBox.information(self, "Successo", message)
+                self.accept()
+            else:
+                QMessageBox.warning(self, "Errore", message)
+        else:
+            QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')

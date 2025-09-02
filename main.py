@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from controllers.GestoreUtenti import GestoreUtenti
-from views.login_view import LoginView
+from views.LoginView import LoginView
 
 def main():
     app = QApplication(sys.argv)

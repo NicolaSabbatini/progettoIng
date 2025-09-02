@@ -1,21 +1,21 @@
 
-from models.user_model import UserModel
+from models.Utente import Utente
 from datetime import datetime
-from views.register_view import RegisterView
-from views.dashboard_view import DashboardView
+from views.RegisterView import RegisterView
+from views.DashboardView import DashboardView
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFrame
 
-from models.user_model import UserModel
-from models.auto_model import AutoModel
-from models.contract_model import ContractModel
+from models.Utente import Utente
+from models.Auto import Auto
+from models.Contratto import Contratto
 
 
 class GestoreUtenti:
     def __init__(self, login_view=None, register_view=None, dashboard_view=None):
-        self.user_model = UserModel()
-        self.auto_model = AutoModel()
-        self.contract_model = ContractModel()
+        self.user_model = Utente()
+        self.auto_model = Auto()
+        self.contract_model = Contratto()
         self.login_view = login_view
         self.register_view = register_view
         self.dashboard_view = dashboard_view

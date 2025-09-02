@@ -1,13 +1,9 @@
-from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QPushButton, QFrame, QTextEdit, QGridLayout, QLineEdit, QDialog, QMessageBox)
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame)
 
-from models.auto_model import AutoModel
-from models.contract_model import ContractModel
 from controllers.GestoreContratti import GestoreContratti
 from controllers.GestoreAuto import GestoreAuto
-from views.contract_view import ContractView
-from views.auto_view import AutoView
+from views.ContractView import ContractView
+from views.AutoView import AutoView
 
 
 class DashboardView(QWidget):
@@ -16,9 +12,7 @@ class DashboardView(QWidget):
         self.controller = controller
         self.login_view = login_view
         self.auth_controller = auth_controller
-        #self.auto_model = AutoModel()
-        #self.controller.set_dashboard_view(self)  # 👈 collega la view al controller
-        #self.contract_model = ContractModel()
+
         if parent:
             self.setGeometry(parent.geometry())
         else:
@@ -176,11 +170,11 @@ class DashboardView(QWidget):
         main_layout.addStretch()
         buttons_layout = QHBoxLayout()
         
-        
-        show_contract_btn = QPushButton('visualizza contratti clienti')
-        show_contract_btn.setObjectName('show_contract_button')
-        show_contract_btn.clicked.connect(self.show_contract)
-        buttons_layout.addWidget(show_contract_btn)
+        if role == 'amministratore':
+            show_contract_btn = QPushButton('visualizza contratti clienti')
+            show_contract_btn.setObjectName('show_contract_button')
+            show_contract_btn.clicked.connect(self.show_contract)
+            buttons_layout.addWidget(show_contract_btn)
 
         
         if role == 'cliente':
@@ -218,9 +212,6 @@ class DashboardView(QWidget):
         if hasattr(self, 'notification_label'):
             self.notification_label.setText(message)
             self.notification_label.show()
-
-    
-
    
    
     def show_contract(self):
@@ -244,11 +235,6 @@ class DashboardView(QWidget):
         contract_view.show()
         self.hide()
 
-
-
-
-
-
     def show_auto(self):
         # creo il controller (gli passo anche la dashboard, così ci torna indietro)
         auto_controller = GestoreAuto(self.controller, dashboard_view=self)
@@ -258,12 +244,7 @@ class DashboardView(QWidget):
         # mostro la auto view e nascondo la dashboard
         auto_view.show()
         self.hide()
-
-
-    
-    
-    
-    
+  
     
     def center_window(self, view):
             """Centra la finestra sullo schermo"""

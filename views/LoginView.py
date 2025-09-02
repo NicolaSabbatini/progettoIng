@@ -1,11 +1,6 @@
-from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QLineEdit, QPushButton, QMessageBox, QFrame)
+from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFrame)
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QPalette
 
-from views.dashboard_view import DashboardView
-
-from controllers.GestoreUtenti import GestoreUtenti
 
 
 class LoginView(QWidget):

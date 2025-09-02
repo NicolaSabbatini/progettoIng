@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, Q
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QSizePolicy, QScrollArea
 from controllers.GestoreAuto import GestoreAuto
-from views.fatture_view import FattureView
+from views.FattureView import FattureView
 
 class ContractView(QWidget):
     def __init__(self, controller, dashboard_view=None, user_controller=None, parent=None):
