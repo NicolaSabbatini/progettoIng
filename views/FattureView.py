@@ -18,6 +18,47 @@ class FattureView(QWidget):
         self.populate_fatture()
         self.center_window()
 
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: white;
+            }
+            QLabel {
+                color: white;
+                font-size: 18px;
+            }
+            QPushButton {
+                background-color: black;
+                color: white;
+                border: 1px solid #444;
+                border-radius: 8px;
+                padding: 6px 12px;
+                font-size: 16px;
+            }
+            QPushButton:hover {
+                background-color: #444;
+            }
+            QPushButton#crea_fattura_button {
+                background-color: #2980b9;
+            }
+            QPushButton#crea_fattura_button:hover {
+                background-color: #1f6391;
+            }
+            QFrame#fatture_widget {
+                background-color: #333;
+                border: 1px solid #555;
+                border-radius: 8px;
+                padding: 10px;
+            }
+            QFrame#fatture_frame {
+                background-color: #1e1e1e;
+                border: 1px solid #444;
+                border-radius: 10px;
+                padding: 10px;
+            }
+        """)
+
+
     def populate_fatture(self):
         # Remove previous fatture frame if exists
         for i in reversed(range(self.main_layout.count())):
