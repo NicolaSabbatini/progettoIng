@@ -10,7 +10,7 @@ class CreaContrattoNoleggioDialog(QDialog):
         self.controller = controller
         self.contract_view = contract_view
         self.setWindowTitle('Crea un nuovo contratto')
-        self.setFixedSize(650,450)
+        self.setFixedSize(750,850)
 
         self.setStyleSheet("""
             QWidget {

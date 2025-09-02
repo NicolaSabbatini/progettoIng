@@ -11,7 +11,7 @@ class ModificaAutoDialog(QDialog):
         self.auto_id = auto_data["id"]
 
         self.setWindowTitle('Modifica Auto')
-        self.setFixedSize(650, 450)
+        self.setFixedSize(750, 650)
         layout = QVBoxLayout(self)
 
         self.setStyleSheet("""

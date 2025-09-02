@@ -7,7 +7,7 @@ class CreaAutoDialog(QDialog):
         self.controller = controller
         self.auto_view = auto_view
         self.setWindowTitle('Crea una Nuova Auto')
-        self.setFixedSize(650, 450)
+        self.setFixedSize(750, 650)
         layout = QVBoxLayout(self)
 
         self.setStyleSheet("""
