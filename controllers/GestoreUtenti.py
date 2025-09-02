@@ -1,10 +1,8 @@
-
 from models.Utente import Utente
 from datetime import datetime
 from views.RegisterView import RegisterView
 from views.DashboardView import DashboardView
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QFrame
 
 from models.Utente import Utente
 from models.Auto import Auto

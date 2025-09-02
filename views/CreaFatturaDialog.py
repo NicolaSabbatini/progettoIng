@@ -9,6 +9,58 @@ class CreaFattura(QDialog):
         self.fatture_view = fatture_view
         self.contract_id = contract_id
 
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: white;
+                font-family: Arial;
+                font-size: 16px;
+            }
+            QLineEdit {
+                padding: 6px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 28px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QLabel {
+                font-size: 16px;
+            }
+            QPushButton#primary_button {
+                background-color: #2e86de;
+                color: white;
+                padding: 8px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton#primary_button:hover {
+                background-color: #1b4f72;
+            }
+            QMessageBox {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
+        """)
+
 
         self.setWindowTitle('Crea un nuova fattura')
         self.setFixedSize(350,250)
