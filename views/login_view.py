@@ -1,10 +1,11 @@
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
                              QLineEdit, QPushButton, QMessageBox, QFrame)
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QPalette
 
 from views.dashboard_view import DashboardView
-from controllers.dashboard_controller import DashboardController
+
+from controllers.GestoreUtenti import GestoreUtenti
 
 
 class LoginView(QWidget):
@@ -17,26 +18,25 @@ class LoginView(QWidget):
     
     def init_ui(self):
         self.setWindowTitle('Sistema di Login')
-        self.setMinimumSize(500, 450)
-
+        #self.setFixedSize(500, 450)
+        
+        
         # Layout principale
         main_layout = QVBoxLayout()
-        main_layout.setSpacing(30)
-        main_layout.setContentsMargins(60, 60, 60, 60)
+        main_layout.setSpacing(20)
+        main_layout.setContentsMargins(40, 40, 40, 40)
         
         # Titolo
         title = QLabel('Accedi al tuo account')
-        title.setObjectName("title")
+        title.setObjectName('title')
         title.setAlignment(Qt.AlignCenter)
-        title.setFont(QFont("Arial", 20, QFont.Bold))
         main_layout.addWidget(title)
         
         # Frame per il form
         form_frame = QFrame()
-        form_frame.setObjectName("form_frame")
+        form_frame.setObjectName('form_frame')
         form_layout = QVBoxLayout(form_frame)
-        form_layout.setSpacing(20)
-        form_layout.setContentsMargins(30, 30, 30, 30)
+        form_layout.setSpacing(15)
         
         # Campo username
         username_label = QLabel('Username:')
@@ -55,26 +55,20 @@ class LoginView(QWidget):
         
         # Bottone login
         self.login_button = QPushButton('Accedi')
-        self.login_button.setObjectName("primary_button")
-        self.login_button.clicked.connect(self.handle_login)
+        self.login_button.setObjectName('primary_button')
+        self.login_button.clicked.connect(lambda: self.controller.handle_login(self.username_input.text(), self.password_input.text(), self))
+        #self.login_button.clicked.connect(self.handle_login)
         form_layout.addWidget(self.login_button)
         
-        form_wrapper = QHBoxLayout()
-        form_wrapper.addStretch()
-        form_wrapper.addWidget(form_frame)
-        form_wrapper.addStretch()
-        main_layout.addLayout(form_wrapper)
-
+        main_layout.addWidget(form_frame)
         
         # Link registrazione
         register_layout = QHBoxLayout()
         register_label = QLabel("Non hai un account?")
-        register_label.setObjectName("register_label")
         self.register_button = QPushButton('Registrati qui')
-        self.register_button.setObjectName("link_button")
+        self.register_button.setObjectName('link_button')
         self.register_button.clicked.connect(self.controller.show_register)
         
-        register_layout.addStretch()
         register_layout.addWidget(register_label)
         register_layout.addWidget(self.register_button)
         register_layout.addStretch()
@@ -86,84 +80,6 @@ class LoginView(QWidget):
         
         # Connessione Enter per login
         self.password_input.returnPressed.connect(self.handle_login)
-
-        # Applica stile CSS
-        self.setStyleSheet("""
-            QWidget {
-                background-color: #2b2b2b; /* grigio scuro */
-                color: white; /* testo bianco */
-                font-family: Arial;
-                font-size: 20px;
-            }
-            #form_frame {
-                background-color: black;
-                border: 1px solid #dcdcdc;
-                border-radius: 12px;
-                max-width: 1000px;
-                min-height: 300px;
-            }
-            QLabel {
-                background-color: black;
-            }
-            QLabel#title {
-                color: #2e86de;
-                background-color: #2b2b2b; /* grigio scuro */
-                font-size: 33px;
-            }
-            QLineEdit {
-                padding: 8px;
-                border: 1px solid #bbb;
-                border-radius: 6px;
-                background-color: black;
-            }
-            QLineEdit:focus {
-                border: 1px solid #2e86de;
-                background-color: black;
-            }
-            QPushButton#primary_button {
-                background-color: #2e86de;
-                color: white;
-                padding: 10px;
-                border-radius: 8px;
-                font-weight: bold;
-            }
-            QPushButton#primary_button:hover {
-                background-color: #1b4f72;
-            }
-            QLabel#register_label{
-                background-color: #2b2b2b;
-            }
-            QPushButton#link_button {
-                background: none;
-                color: #2e86de;
-                border: none;
-                text-decoration: underline;
-            }
-            QPushButton#link_button:hover {
-                color: #1b4f72;
-            }
-            QMessageBox {
-            background-color: #2b2b2b;
-            color: white;
-            font-size: 18px;
-            border-radius: 8px;
-            }
-            QMessageBox QLabel {
-                color: white;
-                background-color: #2b2b2b;
-                font-size: 18px;
-            }
-            QMessageBox QPushButton {
-                background-color: #2e86de;
-                color: white;
-                border-radius: 6px;
-                padding: 6px 12px;
-            }
-            QMessageBox QPushButton:hover {
-                background-color: #1b4f72;
-            }
-            """)
-
 
         # Centra la finestra
         self.center_window()
@@ -182,16 +98,15 @@ class LoginView(QWidget):
         username = self.username_input.text()
         password = self.password_input.text()
         if self.controller.handle_login(username, password, self):
-            self.show_dashboard()
+            self.controller.show_dashboard(username)
 
-    def show_dashboard(self):
-        dashboard_controller = DashboardController(self.controller)
-        self.dashboard_view = DashboardView(dashboard_controller, login_view=self, auth_controller=self.controller, parent=self)
-        self.dashboard_view.show()
-        self.hide()
+    
 
     def clear_fields(self):
         """Pulisce i campi di input"""
         self.username_input.clear()
         self.password_input.clear()
         self.username_input.setFocus()
+
+    
+    

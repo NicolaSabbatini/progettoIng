@@ -5,26 +5,27 @@ class AutoModel:
     def __init__(self):
         self.auto_file = 'data/auto.json'
         os.makedirs('data', exist_ok=True)
-        self.auto_list = self.load_auto()
+        self.auto_list = []
+        self.load_auto()
 
     def load_auto(self):
+        """Carica le auto dal file JSON"""
         try:
             with open(self.auto_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                self.auto_list = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
-            return []
+            self.auto_list = []
+            self.save_auto()
 
     def save_auto(self):
         with open(self.auto_file, 'w', encoding='utf-8') as f:
             json.dump(self.auto_list, f, ensure_ascii=False, indent=2)
 
     def add_auto(self, marca, modello, anno, chilometri, prezzo, targa):
-        # Generate a new id
-        new_id = len(self.auto_list) + 1
-        # Check for duplicates (optional)
-        for auto in self.auto_list:
-            if auto['marca'] == marca and auto['modello'] == modello and auto['anno'] == anno and auto['targa'] == targa and auto['chilometri'] == chilometri and auto['prezzo'] == prezzo:
-                return False, "Auto già esistente"
+        if self.auto_list:
+            new_id = max(c['id'] for c in self.auto_list) + 1
+        else:
+            new_id = 1
         new_auto = {
             'id': new_id,
             'marca': marca,
@@ -47,6 +48,8 @@ class AutoModel:
     
     def delete_auto(self, auto_id):
         """Elimina un'auto dato il suo id"""
+        if self.auto_list is None:
+            self.auto_list = []
         for i, auto in enumerate(self.auto_list):
             if auto['id'] == auto_id:
                 del self.auto_list[i]
@@ -55,6 +58,8 @@ class AutoModel:
         return False
     
     def rimuoviAuto(self, auto_id):
+        if self.auto_list is None:
+            self.auto_list = []
         auto_id = int(auto_id)  # sicurezza
         for auto in self.auto_list:
             print(f"Controllo auto {auto['id']} (visibile={auto['visibile']})")
@@ -69,6 +74,8 @@ class AutoModel:
     
     def reimpostaAuto(self, auto_id):
         """Reimposta l'auto per essere visibile nel catalogo"""
+        if self.auto_list is None:
+            self.auto_list = []
         auto_id = int(auto_id)  # sicurezza
         for auto in self.auto_list:
             print(f"Controllo auto {auto['id']} (visibile={auto['visibile']})")
@@ -82,6 +89,8 @@ class AutoModel:
     
     def update_auto(self, auto_id, marca=None, modello=None, anno=None, chilometri=None, prezzo=None, targa=None):
         """Aggiorna i dati di un'auto esistente"""
+        if self.auto_list is None:
+            self.auto_list = []
         auto_id = int(auto_id)
         for auto in self.auto_list:
             if auto['id'] == auto_id:

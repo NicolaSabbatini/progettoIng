@@ -1,16 +1,15 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, QGridLayout, QHBoxLayout
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QSizePolicy, QScrollArea
-from controllers.fatture_controller import FattureController
-from controllers.auto_controller import AutoController
+from controllers.GestoreAuto import GestoreAuto
 from views.fatture_view import FattureView
 
 class ContractView(QWidget):
-    def __init__(self, controller, dashboard_view, auth_controller=None, parent = None):
+    def __init__(self, controller, dashboard_view=None, user_controller=None, parent=None):
         super().__init__()
         self.controller = controller
         self.dashboard_view = dashboard_view
-        self.auth_controller = auth_controller
+        self.user_controller = user_controller
         self.setWindowTitle('ContractView')
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
@@ -91,7 +90,7 @@ class ContractView(QWidget):
         """)
 
         self.populate_contracts()
-        self.controller.center_window(self)
+        self.center_window(self)
 
     def populate_contracts(self):
         # Rimuovi tutti i widget dal layout principale
@@ -113,11 +112,11 @@ class ContractView(QWidget):
         contract_frame.setObjectName('contract_frame')
         contract_grid_layout = QGridLayout(contract_frame)
         self.controller.contract_model.load_contracts()  # ricarica i dati da file
-        role = self.auth_controller.get_current_user_data().get('ruolo', 'cliente')
+        role = self.user_controller.get_current_user_data().get('ruolo', 'cliente')
         if role == 'amministratore':
             contracts = self.controller.get_all_contracts()
         else:
-            contracts = self.controller.get_contracts(self.auth_controller.get_current_user_data().get('username'))
+            contracts = self.controller.get_contracts(self.user_controller.get_current_user_data().get('username'))
 
         rent_contracts = [c for c in contracts if c.get('tipo') == 'noleggio']
         buy_contracts = [c for c in contracts if c.get('tipo') == 'acquisto']
@@ -131,8 +130,12 @@ class ContractView(QWidget):
         #print("contratti noleggio: ")
         #for c in rent_contracts:
             #print(c)
+        
 
-        auto_list = AutoController().get_every_auto()
+        
+        auto_list = GestoreAuto(self.user_controller).get_every_auto()
+        if not auto_list:        
+            auto_list = []
 
         for i, contract in enumerate(rent_contracts):
 
@@ -251,6 +254,7 @@ class ContractView(QWidget):
 
             
             
+            
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(contract_frame)
@@ -276,10 +280,18 @@ class ContractView(QWidget):
 
         
 
+
+
+
+
+###---FUNZIONI---###--------------------------------------------
+
+
+
     def show_fatture_view(self, contract):
-        role = self.auth_controller.get_current_user_role()
-        fatture_controller = FattureController(self.controller, contract, fatture_view=self)
-        self.fatture_view = FattureView(fatture_controller, contract, role, parent=self)
+        role = self.user_controller.get_current_user_role()
+        self.fatture_view = FattureView(self.controller, contract, role, parent=self)
+        self.controller.fatture_view = self.fatture_view
         self.fatture_view.setWindowTitle(f"Fatture per il contratto: {contract['id']}")
         self.fatture_view.show()
 
@@ -289,4 +301,13 @@ class ContractView(QWidget):
     def go_to_dashboard(self):
         self.hide()
         self.dashboard_view.show()
+
+    def center_window(self, view):
+            """Centra la finestra sullo schermo"""
+            screen = view.screen().availableGeometry()
+            size = view.geometry()
+            view.move(
+                max(0, (screen.width() - view.width()) // 2),
+                max(0, (screen.height() - view.height()) // 2)
+            )
     
