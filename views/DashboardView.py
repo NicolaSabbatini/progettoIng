@@ -171,17 +171,21 @@ class DashboardView(QWidget):
         buttons_layout = QHBoxLayout()
         
         if role == 'amministratore':
-            show_contract_btn = QPushButton('visualizza contratti clienti')
+            show_contract_btn = QPushButton('visualizza contratti')
             show_contract_btn.setObjectName('show_contract_button')
             show_contract_btn.clicked.connect(self.show_contract)
             buttons_layout.addWidget(show_contract_btn)
 
         
         if role == 'cliente':
-            show_contract_btn = QPushButton('visualizza contratti')
-            show_contract_btn.setObjectName('show_contract_button')
-            show_contract_btn.clicked.connect(self.show_contract_client)
-            buttons_layout.addWidget(show_contract_btn)
+            show_buy_contract_btn = QPushButton('visualizza contratti acquisto')
+            show_buy_contract_btn.setObjectName('show_buy_contract_button')
+            show_buy_contract_btn.clicked.connect(self.show_buy_contract_client)
+            buttons_layout.addWidget(show_buy_contract_btn)
+            show_rent_contract_btn = QPushButton('visualizza contratti noleggio')
+            show_rent_contract_btn.setObjectName('show_rent_contract_button')
+            show_rent_contract_btn.clicked.connect(self.show_rent_contract_client)
+            buttons_layout.addWidget(show_rent_contract_btn)
 
 
         show_auto_btn = QPushButton('Visualizza Auto')
@@ -226,11 +230,20 @@ class DashboardView(QWidget):
         contract_view.show()
         self.hide()
    
-    def show_contract_client(self):
+    def show_buy_contract_client(self):
         contract_controller = GestoreContratti(self.controller, dashboard_view=self)
         # creo la contract view e la collego al controller
-        contract_view = ContractView(contract_controller, dashboard_view=self, user_controller = self.controller, parent=self)
+        contract_view = ContractView(contract_controller, dashboard_view=self, user_controller = self.controller, parent=self, type='acquisto')
         contract_controller.contract_view = contract_view  
+        # mostro la contract view e nascondo la dashboard
+        contract_view.show()
+        self.hide()
+
+    def show_rent_contract_client(self):
+        contract_controller = GestoreContratti(self.controller, dashboard_view=self)
+        # creo la contract view e la collego al controller
+        contract_view = ContractView(contract_controller, dashboard_view=self, user_controller = self.controller, parent=self, type='noleggio')
+        contract_controller.contract_view = contract_view
         # mostro la contract view e nascondo la dashboard
         contract_view.show()
         self.hide()

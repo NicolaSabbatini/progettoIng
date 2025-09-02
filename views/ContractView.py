@@ -5,11 +5,12 @@ from controllers.GestoreAuto import GestoreAuto
 from views.FattureView import FattureView
 
 class ContractView(QWidget):
-    def __init__(self, controller, dashboard_view=None, user_controller=None, parent=None):
+    def __init__(self, controller, dashboard_view=None, user_controller=None, parent=None, type =None):
         super().__init__()
         self.controller = controller
         self.dashboard_view = dashboard_view
         self.user_controller = user_controller
+        self.type = type
         self.setWindowTitle('ContractView')
         self.main_layout = QVBoxLayout()
         self.main_layout.setSpacing(20)
@@ -19,6 +20,7 @@ class ContractView(QWidget):
             self.setGeometry(parent.geometry())
 
         self.setLayout(self.main_layout)
+        
         self.setStyleSheet("""
             QWidget {
                 background-color: #2b2b2b;
@@ -136,121 +138,121 @@ class ContractView(QWidget):
         auto_list = GestoreAuto(self.user_controller).get_every_auto()
         if not auto_list:        
             auto_list = []
+        if self.type != 'acquisto':
+            for i, contract in enumerate(rent_contracts):
 
-        for i, contract in enumerate(rent_contracts):
+                contract_widget = QWidget()
+                contract_widget.setObjectName('contract_widget')
+                contract_layout = QVBoxLayout(contract_widget)
+                contract_layout.setContentsMargins(10, 10, 10, 10)
 
-            contract_widget = QWidget()
-            contract_widget.setObjectName('contract_widget')
-            contract_layout = QVBoxLayout(contract_widget)
-            contract_layout.setContentsMargins(10, 10, 10, 10)
-        
-            user_label = QLabel(f"User: {contract['user']}")
-            user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            
-
-            auto_label = QLabel("Auto: non trovata")
-            auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            for auto in auto_list:
-                #print(f"{auto}")
-                if auto['id'] == contract['auto']:
-                    print(f"trovato auto per contratto {contract['id']}: {auto}")
-                    auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
-                    auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            start_date_label = QLabel(f"start date: {contract['start_date']}")
-            start_date_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            end_date_label = QLabel(f"end date: {contract['end_date']}")
-            end_date_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            cauzione_label = QLabel(f"cauzione: {contract['cauzione']}")
-            cauzione_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            price_label = QLabel(f"Price: {contract['prezzoTot']}")
-            price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            tipoGaranzia_label = QLabel(f"tipo garanzia: {contract['tipoGaranzia']}")
-            tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']}")
-            durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-            kmMax_label = QLabel(f"chilometri massimi: {contract['kmMax']}")
-            kmMax_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-
-            contract_layout.addWidget(user_label)
-            contract_layout.addWidget(auto_label)
-            contract_layout.addWidget(start_date_label)
-            contract_layout.addWidget(end_date_label)
-            contract_layout.addWidget(price_label)
-            contract_layout.addWidget(tipoGaranzia_label)
-            contract_layout.addWidget(durataGaranzia_label)
-            contract_layout.addWidget(cauzione_label)
-            contract_layout.addWidget(kmMax_label)
-
-            view_fatture_btn = QPushButton('Visualizza Fatture')
-            view_fatture_btn.setObjectName('view_fatture_button')
-            view_fatture_btn.clicked.connect(lambda checked, c=contract: self.show_fatture_view(c))
-            contract_layout.addWidget(view_fatture_btn)
-
-            if role == 'amministratore':
-                elimina_contract_btn = QPushButton('elimina contratto')
-                elimina_contract_btn.setObjectName('elimina_contratto_button')
-                elimina_contract_btn.clicked.connect(
-                    lambda checked=False, c=contract: self.controller.delete_contract_and_fatture(c['id'], c['auto'], self))
-                contract_layout.addWidget(elimina_contract_btn)
-
-            contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
+                user_label = QLabel(f"User: {contract['user']}")
+                user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
 
 
-        for i, contract in enumerate(buy_contracts):
-            contract_widget = QWidget()
-            contract_widget.setObjectName('contract_widget')
-            contract_layout = QVBoxLayout(contract_widget)
-            contract_layout.setContentsMargins(10, 10, 10, 10)
-        
-            user_label = QLabel(f"User: {contract['user']}")
-            user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                auto_label = QLabel("Auto: non trovata")
+                auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-            auto_label = QLabel("Auto: non trovata")
-            auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                for auto in auto_list:
+                    #print(f"{auto}")
+                    if auto['id'] == contract['auto']:
+                        print(f"trovato auto per contratto {contract['id']}: {auto}")
+                        auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
+                        auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-            for auto in auto_list:
-                #print(f"{auto}")
-                if auto['id'] == contract['auto']:
-                    print(f"trovato auto per contratto {contract['id']}: {auto}")
-                    auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
-                    auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-                    break
+                start_date_label = QLabel(f"start date: {contract['start_date']}")
+                start_date_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-            price_label = QLabel(f"Price: {contract['price']}")
-            price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                end_date_label = QLabel(f"end date: {contract['end_date']}")
+                end_date_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-            tipoGaranzia_label = QLabel(f"tipo garanzia: {contract['tipoGaranzia']}")
-            tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                cauzione_label = QLabel(f"cauzione: {contract['cauzione']}")
+                cauzione_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-            durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']}")
-            durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                price_label = QLabel(f"Price: {contract['prezzoTot']}")
+                price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+                tipoGaranzia_label = QLabel(f"tipo garanzia: {contract['tipoGaranzia']}")
+                tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+                durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']}")
+                durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+                kmMax_label = QLabel(f"chilometri massimi: {contract['kmMax']}")
+                kmMax_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
 
-            contract_layout.addWidget(user_label)
-            contract_layout.addWidget(auto_label)
-            contract_layout.addWidget(price_label)
-            contract_layout.addWidget(tipoGaranzia_label)
-            contract_layout.addWidget(durataGaranzia_label)
+                contract_layout.addWidget(user_label)
+                contract_layout.addWidget(auto_label)
+                contract_layout.addWidget(start_date_label)
+                contract_layout.addWidget(end_date_label)
+                contract_layout.addWidget(price_label)
+                contract_layout.addWidget(tipoGaranzia_label)
+                contract_layout.addWidget(durataGaranzia_label)
+                contract_layout.addWidget(cauzione_label)
+                contract_layout.addWidget(kmMax_label)
 
-            if role == 'amministratore':
-                elimina_contract_btn = QPushButton('elimina contratto')
-                elimina_contract_btn.setObjectName('elimina_contratto_button')
-                elimina_contract_btn.clicked.connect(
-                    lambda checked=False, c=contract: self.controller.delete_contract_and_fatture(c['id'], c['auto'], self))
-                contract_layout.addWidget(elimina_contract_btn)
-            
-            contract_grid_layout.addWidget(contract_widget, (i + len(rent_contracts)) // 4, (i + len(rent_contracts)) % 4)
+                view_fatture_btn = QPushButton('Visualizza Fatture')
+                view_fatture_btn.setObjectName('view_fatture_button')
+                view_fatture_btn.clicked.connect(lambda checked, c=contract: self.show_fatture_view(c))
+                contract_layout.addWidget(view_fatture_btn)
+
+                if role == 'amministratore':
+                    elimina_contract_btn = QPushButton('elimina contratto')
+                    elimina_contract_btn.setObjectName('elimina_contratto_button')
+                    elimina_contract_btn.clicked.connect(
+                        lambda checked=False, c=contract: self.controller.delete_contract_and_fatture(c['id'], c['auto'], self))
+                    contract_layout.addWidget(elimina_contract_btn)
+
+                contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
+
+
+        if self.type != 'noleggio':
+            for i, contract in enumerate(buy_contracts):
+                contract_widget = QWidget()
+                contract_widget.setObjectName('contract_widget')
+                contract_layout = QVBoxLayout(contract_widget)
+                contract_layout.setContentsMargins(10, 10, 10, 10)
+
+                user_label = QLabel(f"User: {contract['user']}")
+                user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+                auto_label = QLabel("Auto: non trovata")
+                auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+                for auto in auto_list:
+                    #print(f"{auto}")
+                    if auto['id'] == contract['auto']:
+                        print(f"trovato auto per contratto {contract['id']}: {auto}")
+                        auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
+                        auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                        break
+
+                price_label = QLabel(f"Price: {contract['price']}")
+                price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+                tipoGaranzia_label = QLabel(f"tipo garanzia: {contract['tipoGaranzia']}")
+                tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+                durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']}")
+                durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+
+                contract_layout.addWidget(user_label)
+                contract_layout.addWidget(auto_label)
+                contract_layout.addWidget(price_label)
+                contract_layout.addWidget(tipoGaranzia_label)
+                contract_layout.addWidget(durataGaranzia_label)
+
+                if role == 'amministratore':
+                    elimina_contract_btn = QPushButton('elimina contratto')
+                    elimina_contract_btn.setObjectName('elimina_contratto_button')
+                    elimina_contract_btn.clicked.connect(
+                        lambda checked=False, c=contract: self.controller.delete_contract_and_fatture(c['id'], c['auto'], self))
+                    contract_layout.addWidget(elimina_contract_btn)
+
+                contract_grid_layout.addWidget(contract_widget, (i + len(rent_contracts)) // 4, (i + len(rent_contracts)) % 4)
 
             
             
