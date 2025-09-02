@@ -16,6 +16,63 @@ class AutoView(QWidget):
         self.populate_auto()
         self.controller.center_window(self)
 
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b;
+                color: white;
+            }
+            QLabel {
+                color: white;
+                font-size: 18px;
+            }
+            QPushButton {
+                background-color: black;
+                color: white;
+                border: 1px solid #444;
+                border-radius: 8px;
+                padding: 6px 12px;
+                font-size: 16px;
+            }
+            QPushButton:hover {
+                background-color: #444;
+            }
+            QPushButton#dashboard_button {
+                background-color: black;
+                max-width: 200px;
+                min-height: 50px;
+                font-size: 20px;
+            }
+            QFrame#auto_frame {
+                background-color: #1e1e1e;
+                border: 1px solid #444;
+                border-radius: 10px;
+                padding: 10px;
+            }
+            QWidget#auto_widget {
+                background-color: #333;
+                border: 1px solid #555;
+                border-radius: 8px;
+                padding: 10px;
+            }
+            QPushButton#elimina_auto_button {
+                background-color: #e74c3c;
+            }
+            QPushButton#elimina_auto_button:hover {
+                background-color: #c0392b;
+            }
+            QPushButton#modifica_auto_button {
+                background-color: #2980b9;
+            }
+            QPushButton#modifica_auto_button:hover {
+                background-color: #1f6391;
+            }
+            QPushButton#create_auto_button {
+                background-color: black;
+                min-height: 40px;
+                font-size: 20px;
+            }
+        """)
+
     def populate_auto(self):
         # Rimuove tutti i widget dal layout principale
         while self.main_layout.count():
