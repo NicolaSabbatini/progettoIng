@@ -10,6 +10,82 @@ class LoginView(QWidget):
         self.register_view = None
         self.dashboard_view = None
         self.init_ui()
+
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2b2b2b; /* grigio scuro */
+                color: white; /* testo bianco */
+                font-family: Arial;
+                font-size: 20px;
+            }
+            #form_frame {
+                background-color: black;
+                border: 1px solid #dcdcdc;
+                border-radius: 12px;
+                max-width: 1000px;
+                min-height: 300px;
+            }
+            QLabel {
+                background-color: black;
+            }
+            QLabel#title {
+                color: #2e86de;
+                background-color: #2b2b2b; /* grigio scuro */
+                font-size: 33px;
+            }
+            QLineEdit {
+                padding: 8px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+            }
+            QLineEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QPushButton#primary_button {
+                background-color: #2e86de;
+                color: white;
+                padding: 10px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton#primary_button:hover {
+                background-color: #1b4f72;
+            }
+            QLabel#register_label{
+                background-color: #2b2b2b;
+            }
+            QPushButton#link_button {
+                background: none;
+                color: #2e86de;
+                border: none;
+                text-decoration: underline;
+            }
+            QPushButton#link_button:hover {
+                color: #1b4f72;
+            }
+            QMessageBox {
+            background-color: #2b2b2b;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+                font-size: 18px;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
+            """)
     
     def init_ui(self):
         self.setWindowTitle('Sistema di Login')
