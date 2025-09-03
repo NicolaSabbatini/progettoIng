@@ -114,11 +114,11 @@ class GestoreAuto:
         if not auto_id:
             return False, "ID dell'auto non valido"
 
-        success = self.auto_model.update_auto(auto_id, marca, modello, anno, chilometri, prezzo, targa)
+        success, msg = self.auto_model.update_auto(auto_id, marca, modello, anno, chilometri, prezzo, targa)
         if success:
             return True, "Auto modificata con successo"
         else:
-            return False, "Errore durante la modifica dell'auto"
+            return False, msg
 
 
 
