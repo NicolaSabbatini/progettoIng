@@ -36,5 +36,19 @@
     "durataGaranzia": "16",
     "tipoGaranzia": "base",
     "created_at": "2025-09-04 03:25:52"
+  },
+  {
+    "id": 7,
+    "tipo": "noleggio",
+    "user": "mesk11",
+    "auto": 7,
+    "start_date": "04/09/2025",
+    "end_date": "05/09/2025",
+    "cauzione": "900",
+    "tipoGaranzia": "1",
+    "durataGaranzia": "12",
+    "kmMax": "10000",
+    "prezzoTot": "1200",
+    "created_at": "2025-09-04 23:22:44"
   }
 ]

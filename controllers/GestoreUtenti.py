@@ -93,11 +93,17 @@ class GestoreUtenti:
     def eliminaUtente(self, parent):
         """Elimina il profilo dell'utente corrente dopo conferma"""
         today = datetime.now().date()
+        print(f"Utente corrente: {self.current_user}")
+        
+        
+        self.contract_model.loadContracts()
         contracts = self.contract_model.getClientContracts(self.current_user)
-        for c in contracts:
+        for c in contracts :
             if c.get('tipo') == 'noleggio':
                 end_date = datetime.strptime(c["end_date"], '%d/%m/%Y').date()
-                if end_date < today:
+                if end_date > today:
+                    ##########
+                    print(f"Contratto di noleggio attivo trovato con end_date {c['end_date']}")
                     return False, "Non puoi procedere all'eliminazione con contratti di noleggio attivi"
 
         success = self.user_model.deleteUser(self.current_user)
@@ -149,6 +155,9 @@ class GestoreUtenti:
 
         # Autenticazione utente
         success, message = self.user_model.authenticateUser(username, password)
+
+        #
+        print(f" i tuoi contratti sono: {self.contract_model.getClientContracts(username)}")
 
         if success:
             self.current_user = username

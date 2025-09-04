@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtCore import Qt, QDate
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QDateEdit
 
 class ModificaUtenteDialog(QDialog):
     def __init__(self, controller, utente_data, parent=None, dashboard_view=None):
@@ -100,7 +100,9 @@ class ModificaUtenteDialog(QDialog):
         layout.addWidget(QLabel('Telefono:'))
         layout.addWidget(self.telefono_input)
 
-        self.data_input = QLineEdit(utente_data.get("data", ""))
+        self.data_input = QDateEdit()
+        self.data_input.setCalendarPopup(True)
+        self.data_input.setDate(QDate.currentDate())
         layout.addWidget(QLabel('Data di nascita:'))
         layout.addWidget(self.data_input)
 
@@ -172,6 +174,7 @@ class ModificaUtenteDialog(QDialog):
             success, message = self.controller.eliminaUtente(self.username)
             if success:
                 QMessageBox.information(self, "Successo", message)
-                self.accept()
-                
+                self.accept()  # chiudi il dialog
+            else:
+                QMessageBox.warning(self, "Errore", message)
                     

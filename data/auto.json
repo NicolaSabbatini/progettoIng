@@ -37,6 +37,6 @@
     "chilometri": 0,
     "prezzo": 12000.0,
     "targa": "CI234DO",
-    "visibile": true
+    "visibile": false
   }
 ]
