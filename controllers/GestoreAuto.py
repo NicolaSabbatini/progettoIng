@@ -10,7 +10,7 @@ class GestoreAuto:
         self.auto_model = Auto()
 
     def aggiornaAuto(self, autoId, marca, modello, anno, chilometri, prezzo, targa):
-        """Effettua l’aggiornamento vero e proprio nel model"""
+        """Effettua l'aggiornamento vero e proprio nel model"""
         if not autoId:
             return False, "ID dell'auto non valido"
 
