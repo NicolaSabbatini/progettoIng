@@ -12,19 +12,19 @@ class DashboardView(QWidget):
         self.controller = controller
         self.login_view = login_view
         self.auth_controller = auth_controller
-
+        self.main_layout = QVBoxLayout()
+        self.main_layout.setSpacing(20)
+        self.main_layout.setContentsMargins(30, 30, 30, 30)
+        if parent:
+            self.setGeometry(parent.geometry())
+        self.setLayout(self.main_layout)
         if parent:
             self.setGeometry(parent.geometry())
         else:
             self.resize(700, 400)  # dimensione iniziale
         self.setWindowTitle('Dashboard')
 
-        
-        self.init_ui()
-        
-    def init_ui(self):
-        self.setWindowTitle('Dashboard')
-        #self.setFixedSize(600, 400)
+        self.populateUserInfo()
         self.setStyleSheet("""
             QWidget {
                 background-color: #2b2b2b; /* grigio scuro */
@@ -84,10 +84,22 @@ class DashboardView(QWidget):
                 background-color: #c0392b;
             }
         """)
-        # Layout principale
-        main_layout = QVBoxLayout()
-        main_layout.setSpacing(20)
-        main_layout.setContentsMargins(30, 30, 30, 30)
+
+
+    def populateUserInfo(self):
+        """Popola le informazioni dell'utente nella dashboard"""
+        while self.main_layout.count():
+            item = self.main_layout.takeAt(0)
+            if item is not None:
+                w = item.widget()
+                if w is not None:
+                    w.deleteLater()
+
+
+
+        self.controller.user_model.loadUsers()  # Ricarica i dati degli utenti
+        
+
         
         # Header
         header_layout = QHBoxLayout()
@@ -95,13 +107,18 @@ class DashboardView(QWidget):
         self.welcome_label.setObjectName('welcome_title')
         header_layout.addWidget(self.welcome_label)
         header_layout.addStretch()
+
+        self.modify_button = QPushButton('Modifica Profilo')
+        self.modify_button.setObjectName('modify_button')
+        self.modify_button.clicked.connect(self.controller.openModificaUtenteDialog)
+        header_layout.addWidget(self.modify_button)
         
         self.logout_button = QPushButton('Logout')
         self.logout_button.setObjectName('logout_button')
         self.logout_button.clicked.connect(self.controller.logout)
         header_layout.addWidget(self.logout_button)
         
-        main_layout.addLayout(header_layout)
+        self.main_layout.addLayout(header_layout)
         
         # Frame informazioni utente
         info_frame = QFrame()
@@ -146,7 +163,9 @@ class DashboardView(QWidget):
         info_layout.addStretch()
 
         
-        main_layout.addWidget(info_frame)
+        self.main_layout.addWidget(info_frame)
+
+        self.controller.aggiornaInfoUtente(self)
 
         role = self.controller.getRuoloUtente()
         if role == 'amministratore':
@@ -161,12 +180,12 @@ class DashboardView(QWidget):
             self.notification_label.hide()
             contratti_scaduti_layout.addWidget(self.notification_label)
 
-            main_layout.addWidget(contratti_scaduti_frame)
+            self.main_layout.addWidget(contratti_scaduti_frame)
             
 
             
 
-        main_layout.addStretch()
+        self.main_layout.addStretch()
         buttons_layout = QHBoxLayout()
         
         if role == 'amministratore':
@@ -193,8 +212,8 @@ class DashboardView(QWidget):
         buttons_layout.addWidget(show_auto_btn)
                 
 
-        main_layout.addLayout(buttons_layout)
-        self.setLayout(main_layout)
+        self.main_layout.addLayout(buttons_layout)
+        self.setLayout(self.main_layout)
         
         # Centra la finestra
         self.centerWindow(self)
@@ -266,6 +285,15 @@ class DashboardView(QWidget):
                 max(0, (screen.height() - view.height()) // 2)
             )
 
+
+    #def refreshUtente(self):
+        #"""Aggiorna le informazioni dell'utente visualizzate"""
+        #self.controller.user_model.loadUsers()  # Ricarica i dati degli utenti
+        #self.populateUserInfo()
+    
+
+    def refreshUtente(self):
+        self.populateUserInfo()
 
 
 

@@ -28,5 +28,15 @@
     "prezzo": "121245",
     "targa": "CD456FR",
     "visibile": false
+  },
+  {
+    "id": 7,
+    "marca": "adessovediamobene",
+    "modello": "coupe",
+    "anno": 2004,
+    "chilometri": 0,
+    "prezzo": 12000.0,
+    "targa": "CI234DO",
+    "visibile": true
   }
 ]

@@ -59,17 +59,17 @@
     "created_at": "2025-08-26 15:39:39"
   },
   "admin": {
-    "name": "admin",
-    "surname": "admin",
+    "name": "garmin",
+    "surname": "adminone",
     "email": "admin@gmail.com",
     "username": "admin",
-    "password": "f3299c8d2265f70ab3c98652557e3d491dc076ffddcde9da44930a03216430da",
+    "password": "d58395ffabfe49141dc74cc9a65610000714c9e11f1858c518bdf9800190331c",
     "luogo": "Roma",
     "telefono": "3333333333",
     "data": "11/09/2001",
     "ruolo": "amministratore",
     "created_at": "2025-08-26 15:39:39",
-    "login_time": "2025-09-02 18:16:02"
+    "login_time": "2025-09-04 19:35:14"
   },
   "avvofatto": {
     "name": "andrea",
@@ -82,19 +82,6 @@
     "data": "09/11//1974",
     "ruolo": "cliente",
     "created_at": "2025-08-26 17:36:09"
-  },
-  "mesk11": {
-    "name": "meschino",
-    "surname": "cialtrone",
-    "email": "meschino@gmail.com",
-    "username": "mesk11",
-    "password": "b7e1dedbe0de394be43e46644d4f2dfc25d9c79e41414fed8ec6aeaad526494c",
-    "luogo": "pesaro",
-    "telefono": "2223335678",
-    "data": "121212",
-    "ruolo": "cliente",
-    "created_at": "2025-09-01 22:20:04",
-    "login_time": "2025-09-02 18:15:18"
   },
   "surryma": {
     "name": "salvatore",

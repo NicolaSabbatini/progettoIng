@@ -8,6 +8,7 @@ class Utente:
     def __init__(self):
         self.users_file = 'data/users.json'
         os.makedirs('data', exist_ok=True)
+        self.users = {}
         self.loadUsers()
 
     def authenticateUser(self, username, password):
@@ -74,6 +75,42 @@ class Utente:
         """Salva gli utenti nel file JSON"""
         with open(self.users_file, 'w', encoding='utf-8') as f:
             json.dump(self.users, f, indent=2, ensure_ascii=False)
+
+    
+    def updateUser(self, username, password=None, name=None, surname=None, email=None, luogo=None, telefono=None, data=None):
+        """Aggiorna i dati di un utente esistente"""
+        if username not in self.users:
+            return False, "Utente non trovato"
+        
+        if email and any(user['email'] == email and user != self.users[username] for user in self.users.values()):
+            return False, "Email già registrata da un altro utente"
+        
+        if name:
+            self.users[username]['name'] = name
+        if surname:
+            self.users[username]['surname'] = surname
+        if email:
+            self.users[username]['email'] = email
+        if luogo:
+            self.users[username]['luogo'] = luogo
+        if password:
+            self.users[username]['password'] = self.hashPassword(password)
+        if telefono:
+            self.users[username]['telefono'] = telefono
+        if data:
+            self.users[username]['data'] = data
+        
+        
+        self.saveUser()
+        return True, "Dati utente aggiornati con successo"
+    
+    def deleteUser(self, username):
+        """Elimina un utente"""
+        if username in self.users:
+            del self.users[username]
+            self.saveUser()
+            return True
+        return False
 
     
 
