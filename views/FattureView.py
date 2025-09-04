@@ -15,8 +15,8 @@ class FattureView(QWidget):
         self.main_layout.setContentsMargins(30, 30, 30, 30)
         self.setLayout(self.main_layout)
 
-        self.populate_fatture()
-        self.center_window()
+        self.populateFatture()
+        self.centerWindow()
 
         self.setStyleSheet("""
             QWidget {
@@ -59,7 +59,7 @@ class FattureView(QWidget):
         """)
 
 
-    def populate_fatture(self):
+    def populateFatture(self):
         # Remove previous fatture frame if exists
         for i in reversed(range(self.main_layout.count())):
             item = self.main_layout.itemAt(i)
@@ -72,7 +72,7 @@ class FattureView(QWidget):
         fatture_frame.setObjectName('fatture_frame')
         grid_fatture_layout = QGridLayout(fatture_frame)
 
-        fatture_list = self.controller.get_fatture_by_contratto(self.contract['id'])
+        fatture_list = self.controller.getFatturePerContratto(self.contract['id'])
         for i, fattura in enumerate(fatture_list):
             fatture_widget = QWidget()
             fatture_widget.setObjectName('fatture_widget')
@@ -95,21 +95,21 @@ class FattureView(QWidget):
         if self.role == 'amministratore':
             crea_fattura_button = QPushButton('Crea Fattura')
             crea_fattura_button.setObjectName('crea_fattura_button')
-            crea_fattura_button.clicked.connect(self.create_fattura)
+            crea_fattura_button.clicked.connect(self.createFattura)
             self.main_layout.addWidget(crea_fattura_button)
         self.main_layout.addStretch()
 
-    def create_fattura(self):
+    def createFattura(self):
         # Call the controller to create a fattura, then refresh the view
-        self.controller.create_fattura_button(self.contract['id'])
-        self.populate_fatture()
+        self.controller.creaFatturaDialog(self.contract['id'])
+        self.populateFatture()
 
-    def center_window(self):
+    def centerWindow(self):
         screen = self.screen().availableGeometry()
         self.move(
             max(0, (screen.width() - self.width()) // 2),
             max(0, (screen.height() - self.height()) // 2)
         )
 
-    def refresh_fatture(self):
-        self.populate_fatture()
+    def refreshFatture(self):
+        self.populateFatture()

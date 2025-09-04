@@ -97,12 +97,12 @@ class CreaAutoDialog(QDialog):
         save_btn = QPushButton('Salva Auto')
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(self.addi_auto)
+        save_btn.clicked.connect(self.aggiungiAuto)
 
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def addi_auto(self):
+    def aggiungiAuto(self):
         marca = self.marca_input.text()
         modello = self.modello_input.text()
         anno = self.anno_input.text()
@@ -111,9 +111,9 @@ class CreaAutoDialog(QDialog):
         targa = self.targa_input.text()
 
         if marca and modello and anno and chilometri and prezzo and targa:
-            self.controller.addo_auto(marca, modello, anno, chilometri, prezzo, targa)
+            self.controller.aggiungiAuto(marca, modello, anno, chilometri, prezzo, targa)
             if self.auto_view:
-                self.auto_view.refresh_auto()
+                self.auto_view.refreshAuto()
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')

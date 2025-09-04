@@ -16,7 +16,7 @@ class DashboardView(QWidget):
         if parent:
             self.setGeometry(parent.geometry())
         else:
-            self.resize(700, 550)  # dimensione iniziale
+            self.resize(700, 400)  # dimensione iniziale
         self.setWindowTitle('Dashboard')
 
         
@@ -98,7 +98,7 @@ class DashboardView(QWidget):
         
         self.logout_button = QPushButton('Logout')
         self.logout_button.setObjectName('logout_button')
-        self.logout_button.clicked.connect(self.controller.handle_logout)
+        self.logout_button.clicked.connect(self.controller.logout)
         header_layout.addWidget(self.logout_button)
         
         main_layout.addLayout(header_layout)
@@ -132,9 +132,8 @@ class DashboardView(QWidget):
         self.telefono_label.setObjectName('info_label')
         self.data_label = QLabel()
         self.data_label.setObjectName('info_label')
-        self.controller.update_user_info(self)
+        self.controller.aggiornaInfoUtente(self)
        
-        
         info_layout.addWidget(self.username_label)
         info_layout.addWidget(self.email_label)
         info_layout.addWidget(self.created_label)
@@ -149,7 +148,7 @@ class DashboardView(QWidget):
         
         main_layout.addWidget(info_frame)
 
-        role = self.controller.get_current_user_role()
+        role = self.controller.getRuoloUtente()
         if role == 'amministratore':
             contratti_scaduti_frame = QFrame()
             contratti_scaduti_frame.setObjectName('contratti_scaduti_frame')
@@ -173,24 +172,24 @@ class DashboardView(QWidget):
         if role == 'amministratore':
             show_contract_btn = QPushButton('visualizza contratti')
             show_contract_btn.setObjectName('show_contract_button')
-            show_contract_btn.clicked.connect(self.show_contract)
+            show_contract_btn.clicked.connect(self.showContract)
             buttons_layout.addWidget(show_contract_btn)
 
         
         if role == 'cliente':
             show_buy_contract_btn = QPushButton('visualizza contratti acquisto')
             show_buy_contract_btn.setObjectName('show_buy_contract_button')
-            show_buy_contract_btn.clicked.connect(self.show_buy_contract_client)
+            show_buy_contract_btn.clicked.connect(self.showBuyContractClient)
             buttons_layout.addWidget(show_buy_contract_btn)
             show_rent_contract_btn = QPushButton('visualizza contratti noleggio')
             show_rent_contract_btn.setObjectName('show_rent_contract_button')
-            show_rent_contract_btn.clicked.connect(self.show_rent_contract_client)
+            show_rent_contract_btn.clicked.connect(self.showRentContractClient)
             buttons_layout.addWidget(show_rent_contract_btn)
 
 
         show_auto_btn = QPushButton('Visualizza Auto')
         show_auto_btn.setObjectName('show_auto_button')
-        show_auto_btn.clicked.connect(self.show_auto)
+        show_auto_btn.clicked.connect(self.showAutoView)
         buttons_layout.addWidget(show_auto_btn)
                 
 
@@ -198,7 +197,7 @@ class DashboardView(QWidget):
         self.setLayout(main_layout)
         
         # Centra la finestra
-        self.center_window(self)
+        self.centerWindow(self)
 
         self.verificaScadenzaNoleggio()
 
@@ -210,15 +209,15 @@ class DashboardView(QWidget):
 
     def verificaScadenzaNoleggio(self):
         contract_controller = GestoreContratti(self.controller, self)
-        contract_controller.check_contracts_and_notify_dashboard(self)
+        contract_controller.verificaScadenza(self)
         
-    def show_notification(self, message):
+    def showNotification(self, message):
         if hasattr(self, 'notification_label'):
             self.notification_label.setText(message)
             self.notification_label.show()
    
    
-    def show_contract(self):
+    def showContract(self):
         # creo il controller (gli passo anche la dashboard, così ci torna indietro)
         contract_controller = GestoreContratti(self.controller, dashboard_view=self)
         
@@ -230,7 +229,7 @@ class DashboardView(QWidget):
         contract_view.show()
         self.hide()
    
-    def show_buy_contract_client(self):
+    def showBuyContractClient(self):
         contract_controller = GestoreContratti(self.controller, dashboard_view=self)
         # creo la contract view e la collego al controller
         contract_view = ContractView(contract_controller, dashboard_view=self, user_controller = self.controller, parent=self, type='acquisto')
@@ -239,7 +238,7 @@ class DashboardView(QWidget):
         contract_view.show()
         self.hide()
 
-    def show_rent_contract_client(self):
+    def showRentContractClient(self):
         contract_controller = GestoreContratti(self.controller, dashboard_view=self)
         # creo la contract view e la collego al controller
         contract_view = ContractView(contract_controller, dashboard_view=self, user_controller = self.controller, parent=self, type='noleggio')
@@ -248,7 +247,7 @@ class DashboardView(QWidget):
         contract_view.show()
         self.hide()
 
-    def show_auto(self):
+    def showAutoView(self):
         # creo il controller (gli passo anche la dashboard, così ci torna indietro)
         auto_controller = GestoreAuto(self.controller, dashboard_view=self)
         # creo la auto view e la collego al controller
@@ -259,10 +258,9 @@ class DashboardView(QWidget):
         self.hide()
   
     
-    def center_window(self, view):
+    def centerWindow(self, view):
             """Centra la finestra sullo schermo"""
             screen = view.screen().availableGeometry()
-            size = view.geometry()
             view.move(
                 max(0, (screen.width() - view.width()) // 2),
                 max(0, (screen.height() - view.height()) // 2)

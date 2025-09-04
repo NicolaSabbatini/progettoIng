@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QDateEdit, QComboBox
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QDateEdit, QComboBox, QMessageBox
 from PyQt5.QtCore import Qt, QDate
 
 from models.Auto import Auto
@@ -113,7 +112,7 @@ class CreaContrattoNoleggioDialog(QDialog):
         
         layout = QVBoxLayout(self)
         
-        users_list = self.controller.user_controller.get_all_clients()
+        users_list = self.controller.user_controller.getClienti()
         if not users_list:
             users_list = []
 
@@ -127,7 +126,7 @@ class CreaContrattoNoleggioDialog(QDialog):
         layout.addWidget(QLabel('user:'))
         layout.addWidget(users_combo)
 
-        auto_list = self.controller.auto_controller.get_all_auto()
+        auto_list = self.controller.auto_controller.getAutoVisibili()
         if not auto_list:        
             auto_list = []
         
@@ -180,13 +179,13 @@ class CreaContrattoNoleggioDialog(QDialog):
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_contract(users_combo,auto_combo,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input))
+        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input))
         
       
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def addi_contract(self,users_combo,auto_combo,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input):
+    def aggiungiContratto(self,users_combo,auto_combo,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input):
         user = users_combo.currentText().split(' - ')[-1].strip(')')
         auto = auto_combo.currentData()
         start_date = start_date_input.text()
@@ -197,11 +196,8 @@ class CreaContrattoNoleggioDialog(QDialog):
         tipoGaranzia = tipoGaranzia_input.text()
         kmMax = kmMax_input.text()
 
-
-
         if user and auto and start_date and end_date and cauzione and prezzo and durataGaranzia and tipoGaranzia and kmMax:
-            self.controller.addo_noleggio_contratto(user, auto, start_date, end_date, cauzione, tipoGaranzia, durataGaranzia, kmMax, prezzo)
+            self.controller.aggiungiContrattoNoleggio(user, auto, start_date, end_date, cauzione, tipoGaranzia, durataGaranzia, kmMax, prezzo)
             self.accept()
-
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')

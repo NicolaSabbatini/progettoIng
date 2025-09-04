@@ -19,7 +19,7 @@ def main():
     
     # Avvia backup automatico
     gestore = GestoreSistema()
-    gestore.start_scheduled_backup(app)
+    gestore.avviaBackupProgrammato()
     
     sys.exit(app.exec_())
 

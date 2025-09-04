@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QLineEdit, QPushButton, QMessageBox, QFrame, QScrollArea)
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QDateEdit, QLineEdit, QPushButton, QMessageBox,
+                              QFrame, QScrollArea)
+from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtGui import QFont
+
 
 class RegisterView(QWidget):
     def __init__(self, controller, login_view, parent=None):
@@ -41,6 +42,24 @@ class RegisterView(QWidget):
             QLineEdit:focus {
                 border: 1px solid #2e86de;
             }
+            QDateEdit {
+                padding: 8px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 30px;
+                color: white;
+            }
+            QDateEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QDateEdit::drop-down {
+                border: none;
+                background-color: #2e86de;
+                border-radius: 3px;
+                width: 20px;
+            }
             QPushButton#primary_button {
                 background-color: #2e86de;
                 color: white;
@@ -65,25 +84,6 @@ class RegisterView(QWidget):
                 color: white;
                 font-size: 18px;
                 border-radius: 8px;
-            }
-            QMessageBox QLabel {
-                color: white;
-                font-size: 18px;
-            }
-            QMessageBox QPushButton {
-                background-color: #2e86de;
-                color: white;
-                border-radius: 6px;
-                padding: 6px 12px;
-            }
-            QMessageBox QPushButton:hover {
-                background-color: #1b4f72;
-            }
-                           QMessageBox {
-            background-color: #2b2b2b;
-            color: white;
-            font-size: 18px;
-            border-radius: 8px;
             }
             QMessageBox QLabel {
                 color: white;
@@ -102,20 +102,18 @@ class RegisterView(QWidget):
         """)
 
         self.init_ui()
-    
+
     def init_ui(self):
         self.setWindowTitle('Registrazione')
         self.resize(900, 900)
-        
+
         main_layout = QVBoxLayout(self)
 
-        # Scroll Area
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         main_layout.addWidget(scroll)
 
-        # Contenitore scroll
         scroll_content = QWidget()
         scroll.setWidget(scroll_content)
 
@@ -130,160 +128,86 @@ class RegisterView(QWidget):
         title.setFont(QFont("Arial", 20, QFont.Bold))
         content_layout.addWidget(title)
 
-        # Frame form
         form_frame = QFrame()
         form_frame.setObjectName('form_frame')
         form_layout = QVBoxLayout(form_frame)
         form_layout.setSpacing(15)
         form_layout.setContentsMargins(30, 30, 30, 30)
 
-        # Campi input
-        fields = [
-            ("Nome:", "Inserisci il tuo nome"),
-            ("Cognome:", "Inserisci il tuo cognome"),
-            ("Luogo di Nascita:", "Inserisci il tuo luogo di nascita"),
-            ("Telefono:", "Inserisci il tuo numero di telefono"),
-            ("Data di Nascita:", "YYYY-MM-DD"),
-            ("Username:", "Scegli un username"),
-            ("Email:", "Inserisci la tua email"),
-            ("Password:", "Minimo 6 caratteri", True),
-            ("Conferma Password:", "Ripeti la password", True)
-        ]
+        self.nome_input = QLineEdit()
+        self.nome_input.setPlaceholderText("Inserisci il tuo nome")
+        form_layout.addWidget(QLabel("Nome:"))
+        form_layout.addWidget(self.nome_input)
 
-        self.inputs = {}
+        self.cognome_input = QLineEdit()
+        self.cognome_input.setPlaceholderText("Inserisci il tuo cognome")
+        form_layout.addWidget(QLabel("Cognome:"))
+        form_layout.addWidget(self.cognome_input)
 
-        for field in fields:
-            label = QLabel(field[0])
-            input_field = QLineEdit()
-            input_field.setPlaceholderText(field[1])
-            input_field.setMinimumHeight(40)  # altezza maggiore
-            if len(field) == 3 and field[2]:
-                input_field.setEchoMode(QLineEdit.Password)
-            form_layout.addWidget(label)
-            form_layout.addWidget(input_field)
-            self.inputs[field[0]] = input_field
+        self.luogo_input = QLineEdit()
+        self.luogo_input.setPlaceholderText("Inserisci il tuo luogo di nascita")
+        form_layout.addWidget(QLabel("Luogo di Nascita:"))
+        form_layout.addWidget(self.luogo_input)
+
+        self.telefono_input = QLineEdit()
+        self.telefono_input.setPlaceholderText("Inserisci il tuo numero di telefono")
+        form_layout.addWidget(QLabel("Telefono:"))
+        form_layout.addWidget(self.telefono_input)
+
+        self.data_nascita_input = QDateEdit()
+        self.data_nascita_input.setCalendarPopup(True)
+        self.data_nascita_input.setDate(QDate.currentDate())
+        form_layout.addWidget(QLabel("Data di Nascita:"))
+        form_layout.addWidget(self.data_nascita_input)
+
+        self.username_input = QLineEdit()
+        self.username_input.setPlaceholderText("Scegli un username")
+        form_layout.addWidget(QLabel("Username:"))
+        form_layout.addWidget(self.username_input)
+
+        self.email_input = QLineEdit()
+        self.email_input.setPlaceholderText("Inserisci la tua email")
+        form_layout.addWidget(QLabel("Email:"))
+        form_layout.addWidget(self.email_input)
+
+        self.password_input = QLineEdit()
+        self.password_input.setPlaceholderText("Minimo 6 caratteri")
+        self.password_input.setEchoMode(QLineEdit.Password)
+        form_layout.addWidget(QLabel("Password:"))
+        form_layout.addWidget(self.password_input)
+
+        self.conferma_password_input = QLineEdit()
+        self.conferma_password_input.setPlaceholderText("Ripeti la password")
+        self.conferma_password_input.setEchoMode(QLineEdit.Password)
+        form_layout.addWidget(QLabel("Conferma Password:"))
+        form_layout.addWidget(self.conferma_password_input)
 
         # Bottone registrazione
         self.register_button = QPushButton('Registrati')
         self.register_button.setObjectName('primary_button')
-        self.register_button.clicked.connect(self.handle_register)
+        self.register_button.clicked.connect(self.handleRegister)
         form_layout.addWidget(self.register_button)
 
-        # Centra il form
         form_wrapper = QHBoxLayout()
         form_wrapper.addStretch()
         form_wrapper.addWidget(form_frame)
         form_wrapper.addStretch()
         content_layout.addLayout(form_wrapper)
 
-        # Bottoni navigazione
         nav_layout = QHBoxLayout()
         nav_layout.addStretch()
         self.back_button = QPushButton('← Torna al Login')
         self.back_button.setObjectName('link_button')
-        self.back_button.clicked.connect(self.back_to_login)
+        self.back_button.clicked.connect(self.backToLogin)
         nav_layout.addWidget(self.back_button)
         nav_layout.addStretch()
         content_layout.addLayout(nav_layout)
 
-        # Enter su conferma password
-        self.inputs["Conferma Password:"].returnPressed.connect(self.handle_register)
+        self.conferma_password_input.returnPressed.connect(self.handleRegister)
 
-        # Applica stile QSS (uguale a LoginView)
-        self.setStyleSheet("""
-            QWidget {
-                background-color: #2b2b2b;
-                color: white;
-                font-family: Arial;
-                font-size: 18px;
-            }
-            #form_frame {
-                background-color: black;
-                border: 1px solid #dcdcdc;
-                border-radius: 12px;
-            }
-            QLabel {
-                background-color: black;
-            }
-            QLabel#title {
-                color: #2e86de;
-                font-size: 33px;
-                background-color: #2b2b2b;
-            }
-            QLineEdit {
-                padding: 8px;
-                border: 1px solid #bbb;
-                border-radius: 6px;
-                background-color: black;
-                min-height: 40px;
-            }
-            QLineEdit:focus {
-                border: 1px solid #2e86de;
-            }
-            QPushButton#primary_button {
-                background-color: #2e86de;
-                color: white;
-                padding: 10px;
-                border-radius: 8px;
-                font-weight: bold;
-            }
-            QPushButton#primary_button:hover {
-                background-color: #1b4f72;
-            }
-            QPushButton#link_button {
-                background: none;
-                color: #2e86de;
-                border: none;
-                text-decoration: underline;
-            }
-            QPushButton#link_button:hover {
-                color: #1b4f72;
-            }
-            QMessageBox {
-                background-color: #2b2b2b;
-                color: white;
-                font-size: 18px;
-                border-radius: 8px;
-            }
-            QMessageBox QLabel {
-                color: white;
-                font-size: 18px;
-            }
-            QMessageBox QPushButton {
-                background-color: #2e86de;
-                color: white;
-                border-radius: 6px;
-                padding: 6px 12px;
-            }
-            QMessageBox QPushButton:hover {
-                background-color: #1b4f72;
-            }
-                           QMessageBox {
-            background-color: #2b2b2b;
-            color: white;
-            font-size: 18px;
-            border-radius: 8px;
-            }
-            QMessageBox QLabel {
-                color: white;
-                background-color: #2b2b2b;
-                font-size: 18px;
-            }
-            QMessageBox QPushButton {
-                background-color: #2e86de;
-                color: white;
-                border-radius: 6px;
-                padding: 6px 12px;
-            }
-            QMessageBox QPushButton:hover {
-                background-color: #1b4f72;
-            }
-        """)
+        self.centerWindow()
 
-        # Centra la finestra
-        self.center_window()
-
-    def center_window(self):
+    def centerWindow(self):
         screen = self.screen().availableGeometry()
         size = self.geometry()
         self.move(
@@ -291,28 +215,26 @@ class RegisterView(QWidget):
             (screen.height() - size.height()) // 2
         )
 
-    def handle_register(self):
-        data = {label: field.text() for label, field in self.inputs.items()}
-
+    def handleRegister(self):
         success, message = self.controller.register(
-            data["Username:"],
-            data["Email:"],
-            data["Password:"],
-            data["Conferma Password:"],
-            data["Nome:"],
-            data["Cognome:"],
-            data["Luogo di Nascita:"],
-            data["Telefono:"],
-            data["Data di Nascita:"]
+            self.username_input.text(),
+            self.email_input.text(),
+            self.password_input.text(),
+            self.conferma_password_input.text(),
+            self.nome_input.text(),
+            self.cognome_input.text(),
+            self.luogo_input.text(),
+            self.telefono_input.text(),
+            self.data_nascita_input.text()
         )
 
         if success:
             QMessageBox.information(self, 'Successo', message)
-            self.back_to_login()
+            self.backToLogin()
         else:
             QMessageBox.warning(self, 'Errore di Registrazione', message)
 
-    def back_to_login(self):
-        self.login_view.clear_fields()
+    def backToLogin(self):
+        self.login_view.clearFields()
         self.login_view.show()
         self.hide()

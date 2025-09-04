@@ -10,7 +10,7 @@ from models.Fattura import Fattura
 
 from views.CreaContrattoAcquistoDialog import CreaContrattoAcquistoDialog
 from views.CreaContrattoNoleggioDialog import CreaContrattoNoleggioDialog
-from views.CreaFatturaDialog import CreaFattura
+from views.CreaFatturaDialog import CreaFatturaDialog
 
 class GestoreContratti:
     def __init__(self, contract_view=None, dashboard_view=None, fatture_view=None):
@@ -25,103 +25,96 @@ class GestoreContratti:
         self.user_controller = GestoreUtenti() 
         self.fatture_view = fatture_view
 
-    def get_all_contracts(self):
-        """Restituisce tutti i contratti"""
-        return self.contract_model.get_all_contracts()
-    
-    def get_contracts(self, username=None):
-        return self.contract_model.get_contracts(username)
-
-    def crea_noleggio_contratto(self):
-        dialog = CreaContrattoNoleggioDialog(parent=None, controller=self, contract_view=self.contract_view)
-        dialog.exec_()
-
-    def crea_acquisto_contratto(self):  
-        dialog = CreaContrattoAcquistoDialog(parent=None, controller=self, contract_view=self.contract_view)
-        dialog.exec_()
-
-    
-    def center_window(self, view):
-        """Centra la finestra sullo schermo"""
-        screen = view.screen().availableGeometry()
-        size = view.geometry()
-        view.move(
-            max(0, (screen.width() - view.width()) // 2),
-            max(0, (screen.height() - view.height()) // 2)
-        )
-
-
-    def addo_noleggio_contratto(self, user, auto, start_date, end_date, cauzione, tipoGaranzia, durataGaranzia, kmMax, prezzoTot):
-        """Aggiunge un nuovo contratto"""
-        if not (user and auto and start_date and end_date and cauzione and tipoGaranzia and durataGaranzia and kmMax and prezzoTot):
-            return False, "Tutti i campi del contratto sono obbligatori"
-        
-
-        
-        success = self.rent_contract_model.add_rent_contract(user, auto, start_date, end_date, cauzione, prezzoTot, durataGaranzia, tipoGaranzia, kmMax)
-        self.rimuoviAuto(auto)
-        self.auto_controller.load_auto()
-        self.rent_contract_model.load_contracts()
-        self.buy_contract_model.load_contracts()
-        self.contract_model.load_contracts()
-        if self.contract_view:
-            self.contract_view.refresh_contracts()
-        if success:
-            return True, "Contratto aggiunto con successo"
-        else:
-            return False, "Errore durante l'aggiunta del contratto"
-
-
-    def addo_acquisto_contratto(self, user, auto, tipoGaranzia, durataGaranzia, prezzoTot):
+    def aggiungiContrattoAcquisto(self, user, auto, tipoGaranzia, durataGaranzia, prezzoTot):
         """Aggiunge un nuovo contratto"""
         if not (user and auto and tipoGaranzia and durataGaranzia and prezzoTot):
             return False, "Tutti i campi del contratto sono obbligatori"
         
-        
-        success = self.buy_contract_model.add_buy_contract(user, auto, prezzoTot, durataGaranzia, tipoGaranzia)
-        self.rimuoviAuto(auto)
-        self.auto_controller.load_auto()
-        self.rent_contract_model.load_contracts()
-        self.buy_contract_model.load_contracts()
-        self.contract_model.load_contracts()
+        success = self.buy_contract_model.addBuyContract(user, auto, prezzoTot, durataGaranzia, tipoGaranzia)
+        self.auto_controller.eliminaAuto(auto)
+        self.auto_controller.caricaAuto()
+        self.rent_contract_model.loadContracts()
+        self.buy_contract_model.loadContracts()
+        self.contract_model.loadContracts()
         if self.contract_view:
-            self.contract_view.refresh_contracts()
+            self.contract_view.refreshContracts()
         if success:
             return True, "Contratto aggiunto con successo"
         else:
             return False, "Errore durante l'aggiunta del contratto"
-            
+
+    def aggiungiContrattoNoleggio(self, user, auto, startDate, endDate, cauzione, tipoGaranzia, durataGaranzia, kmMax, prezzoTot):
+        """Aggiunge un nuovo contratto"""
+        if not (user and auto and startDate and endDate and cauzione and tipoGaranzia and durataGaranzia and kmMax and prezzoTot):
+            return False, "Tutti i campi del contratto sono obbligatori"
+        
+        success = self.rent_contract_model.addRentContract(user, auto, startDate, endDate, cauzione, prezzoTot, durataGaranzia, tipoGaranzia, kmMax)
+        self.auto_controller.rimuoviAuto(auto)
+        self.auto_controller.caricaAuto()
+        self.rent_contract_model.loadContracts()
+        self.buy_contract_model.loadContracts()
+        self.contract_model.loadContracts()
+        if self.contract_view:
+            self.contract_view.refreshContracts()
+        if success:
+            return True, "Contratto aggiunto con successo"
+        else:
+            return False, "Errore durante l'aggiunta del contratto"
+
+    def aggiungiFattura(self, startDate, price, contractId):
+        """Aggiunge un nuovo contratto"""
+        if not (startDate and price):
+            return False, "Tutti i campi del contratto sono obbligatori"
+        
+        self.fatture_model.addBill(startDate, price, contractId)
+        return True, "fattura aggiunto con successo"
     
-    def delete_contract_and_fatture(self, contract_id, auto_id, contract_view=None):
+    def creaContrattoAcquistoDialog(self):  
+        dialog = CreaContrattoAcquistoDialog(parent=None, controller=self, contract_view=self.contract_view)
+        dialog.exec_()
+
+    def creaContrattoNoleggioDialog(self):
+        dialog = CreaContrattoNoleggioDialog(parent=None, controller=self, contract_view=self.contract_view)
+        dialog.exec_()
+
+    def creaFatturaDialog(self, contractId):
+        dialog = CreaFatturaDialog(parent=None, controller=self, fatture_view=self.fatture_view, contract_id=contractId)
+        dialog.exec_()
+
+    def eliminaContrattieFatture(self, contractId, autoId, contract_view=None):
         """Elimina un contratto e tutte le sue fatture collegate"""
-
-
         # 1️ Elimina le fatture legate a quel contratto
         self.fatture_model.fatture = [
-            f for f in self.fatture_model.fatture if f['contratto'] != contract_id
+            f for f in self.fatture_model.fatture if f['contratto'] != contractId
         ]
-        self.fatture_model.save_fatture()
-        
-
+        self.fatture_model.saveBills()
         self.contract_view = contract_view
         # 2️ Elimina il contratto
-        success = self.contract_model.delete_contract(contract_id)
-        self.reimpostaAuto(auto_id)  # Reimposta l'auto associata al contratto
-        self.auto_controller.load_auto()
-        self.rent_contract_model.load_contracts()
-        self.buy_contract_model.load_contracts()
-        self.contract_model.load_contracts()
+        success = self.contract_model.deleteContract(contractId)
+        self.reimpostaAuto(autoId)  # Reimposta l'auto associata al contratto
+        self.auto_controller.caricaAuto()
+        self.rent_contract_model.loadContracts()
+        self.buy_contract_model.loadContracts()
+        self.contract_model.loadContracts()
 
         if contract_view:
-            self.contract_view.refresh_contracts()
+            self.contract_view.refreshContracts()
         if success:
             return True, "Contratto e fatture collegate eliminate con successo"
         else:
             return False, "Errore durante l'eliminazione del contratto e delle fatture collegate"
-    
-    def rimuoviAuto(self, autoId):
-        self.auto_controller.rimuoviAuto(autoId)
 
+    def getContratti(self):
+        """Restituisce tutti i contratti"""
+        return self.contract_model.getAllContracts()
+    
+    def getContrattiCliente(self, username=None):
+        return self.contract_model.getClientContracts(username)
+
+    def getFatturePerContratto(self, contractId):
+        """Restituisce le fatture associate a un contratto specifico"""
+        return self.fatture_model.getBillsByContract(contractId)
+    
     def reimpostaAuto(self, autoId):
         """Reimposta l'auto per essere visibile nel catalogo"""
         success = self.auto_controller.reimpostaAuto(autoId)
@@ -129,11 +122,11 @@ class GestoreContratti:
             return True, "Auto reimpostata con successo"
         else:
             return False, "Errore durante la reimpostazione dell'auto"
-        
-    def check_contracts_and_notify_dashboard(self, dashboard_view=None):
+
+    def verificaScadenza(self, dashboard_view=None):
         today = datetime.now().date()
         expired_contracts = []
-        for contract in self.contract_model.get_all_contracts():
+        for contract in self.contract_model.getAllContracts():
             if contract['tipo'] == 'noleggio':
                 print(f"Controllo contratto ID {contract['id']} con end_date {contract['end_date']}")
                 try:
@@ -150,30 +143,13 @@ class GestoreContratti:
                     print(f"Contratto scaduto trovato: ID {c['id']}, Utente {c['user']}, Auto {c['auto']}, End date {c['end_date']}")
                     msg += f"ID: {c['id']}, Utente: {c['user']}, Auto: {c['auto']}, End date: {c['end_date']}\n"
                     
-                dashboard_view.show_notification(msg)
+                dashboard_view.showNotification(msg)
             elif dashboard_view:
                 print("Nessun contratto scaduto trovato.")
                 dashboard_view.notification_label.hide()
 
 
-
-    def get_all_fatture(self):
-        """Restituisce tutti i contratti"""
-        return self.fatture_model.get_all_fatture()
-
-    def get_fatture_by_contratto(self, contract_id):
-        """Restituisce le fatture associate a un contratto specifico"""
-        return self.fatture_model.get_fatture_by_contract(contract_id)
     
-    def create_fattura_button(self, contract_id):
-        dialog = CreaFattura(parent=None, controller=self, fatture_view=self.fatture_view, contract_id=contract_id)
-        dialog.exec_()
 
-    def addo_fattura(self, start_date, price, contract_id):
-        """Aggiunge un nuovo contratto"""
-        if not (start_date and price):
-            return False, "Tutti i campi del contratto sono obbligatori"
-        
-        self.fatture_model.add_fattura(start_date, price, contract_id)
-        return True, "fattura aggiunto con successo"
+
 

@@ -107,5 +107,17 @@
     "data": "17/02/1993",
     "ruolo": "cliente",
     "created_at": "2025-09-02 18:18:40"
+  },
+  "spiderman": {
+    "name": "peter",
+    "surname": "parker",
+    "email": "pp@gmail.com",
+    "username": "spiderman",
+    "password": "0a1b086f072513ebb1d3d715166583135b706781ce4948cb1eb90b9837eb5707",
+    "luogo": "new york",
+    "telefono": "323232323",
+    "data": "2004/03/02",
+    "ruolo": "cliente",
+    "created_at": "2025-09-03 19:12:01"
   }
 }

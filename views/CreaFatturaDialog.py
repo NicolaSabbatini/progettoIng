@@ -1,8 +1,7 @@
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QDateEdit, QMessageBox
+from PyQt5.QtCore import Qt, QDate
 
-class CreaFattura(QDialog):
+class CreaFatturaDialog(QDialog):
     def __init__(self, parent=None, controller=None, fatture_view=None, contract_id=None):
         super().__init__(parent)
         self.controller = controller
@@ -29,6 +28,24 @@ class CreaFattura(QDialog):
             }
             QLabel {
                 font-size: 16px;
+            }
+            QDateEdit {
+                padding: 8px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 30px;
+                color: white;
+            }
+            QDateEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QDateEdit::drop-down {
+                border: none;
+                background-color: #2e86de;
+                border-radius: 3px;
+                width: 20px;
             }
             QPushButton#primary_button {
                 background-color: #2e86de;
@@ -66,8 +83,9 @@ class CreaFattura(QDialog):
         self.setFixedSize(350,250)
         layout = QVBoxLayout(self)
 
-        start_date_input = QLineEdit()
-        start_date_input.setPlaceholderText('start_date')
+        start_date_input = QDateEdit()
+        start_date_input.setCalendarPopup(True)
+        start_date_input.setDate(QDate.currentDate())
         layout.addWidget(QLabel('data emissione:'))
         layout.addWidget(start_date_input)
 
@@ -80,21 +98,20 @@ class CreaFattura(QDialog):
         save_btn = QPushButton('Salva fattura')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_fattura(start_date_input,prezzo_input, self.contract_id))
+        save_btn.clicked.connect(lambda: self.aggiungiFattura(start_date_input,prezzo_input, self.contract_id))
         
       
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def addi_fattura(self, start_date_input, prezzo_input, contract_id):
+    def aggiungiFattura(self, start_date_input, prezzo_input, contract_id):
         start_date = start_date_input.text()
         prezzo = prezzo_input.text()
 
-
         if start_date and prezzo:
-            self.controller.addo_fattura(start_date,prezzo, contract_id)
+            self.controller.aggiungiFattura(start_date,prezzo, contract_id)
             if self.fatture_view:
-                self.fatture_view.refresh_fatture()  # aggiorna la view!
+                self.fatture_view.refreshFatture()  # aggiorna la view!
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')  

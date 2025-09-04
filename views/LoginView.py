@@ -51,7 +51,7 @@ class LoginView(QWidget):
         # Bottone login
         self.login_button = QPushButton('Accedi')
         self.login_button.setObjectName("primary_button")
-        self.login_button.clicked.connect(self.handle_login)
+        self.login_button.clicked.connect(self.handleLogin)
         form_layout.addWidget(self.login_button)
         
         form_wrapper = QHBoxLayout()
@@ -67,7 +67,7 @@ class LoginView(QWidget):
         register_label.setObjectName("register_label")
         self.register_button = QPushButton('Registrati qui')
         self.register_button.setObjectName("link_button")
-        self.register_button.clicked.connect(self.controller.show_register)
+        self.register_button.clicked.connect(self.controller.visualizzaRegistrazione)
         
         register_layout.addStretch()
         register_layout.addWidget(register_label)
@@ -80,7 +80,7 @@ class LoginView(QWidget):
         self.setLayout(main_layout)
         
         # Connessione Enter per login
-        self.password_input.returnPressed.connect(self.handle_login)
+        self.password_input.returnPressed.connect(self.handleLogin)
 
         # Applica stile CSS
         self.setStyleSheet("""
@@ -162,10 +162,10 @@ class LoginView(QWidget):
 
 
         # Centra la finestra
-        self.center_window()
+        self.centerWindow()
     
     
-    def center_window(self):
+    def centerWindow(self):
         """Centra la finestra sullo schermo"""
         screen = self.screen().availableGeometry()
         size = self.geometry()
@@ -174,15 +174,15 @@ class LoginView(QWidget):
             (screen.height() - size.height()) // 2
         )
     
-    def handle_login(self):
+    def handleLogin(self):
         username = self.username_input.text()
         password = self.password_input.text()
-        if self.controller.handle_login(username, password, self):
-            self.controller.show_dashboard(username)
+        if self.controller.login(username, password, self):
+            self.controller.visualizzaDashboard(username)
 
     
 
-    def clear_fields(self):
+    def clearFields(self):
         """Pulisce i campi di input"""
         self.username_input.clear()
         self.password_input.clear()

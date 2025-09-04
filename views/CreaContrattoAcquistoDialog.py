@@ -1,6 +1,5 @@
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QDateEdit, QComboBox
-from PyQt5.QtCore import Qt, QDate
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QLineEdit, QPushButton, QDialog, QComboBox, QMessageBox
+from PyQt5.QtCore import Qt
 
 from models.Auto import Auto
 
@@ -114,7 +113,7 @@ class CreaContrattoAcquistoDialog(QDialog):
         layout = QVBoxLayout(self)
         
 
-        users_list = self.controller.user_controller.get_all_clients()
+        users_list = self.controller.user_controller.getClienti()
         if not users_list:
             users_list = []
 
@@ -127,7 +126,7 @@ class CreaContrattoAcquistoDialog(QDialog):
         layout.addWidget(QLabel('user:'))
         layout.addWidget(users_combo)
 
-        auto_list = self.controller.auto_controller.get_all_auto()
+        auto_list = self.controller.auto_controller.getAutoVisibili()
         if not auto_list:        
             auto_list = []
 
@@ -144,10 +143,9 @@ class CreaContrattoAcquistoDialog(QDialog):
         layout.addWidget(QLabel('prezzo:'))
         layout.addWidget(prezzo_input)
 
-        durataGaranzia_input = QDateEdit()
-        durataGaranzia_input.setCalendarPopup(True)
-        durataGaranzia_input.setDate(QDate.currentDate())
-        layout.addWidget(QLabel('Data fine garanzia:'))
+        durataGaranzia_input = QLineEdit()
+        durataGaranzia_input.setPlaceholderText('durataGaranzia')
+        layout.addWidget(QLabel('Durata Garanzia:'))
         layout.addWidget(durataGaranzia_input)
 
         tipoGaranzia_input = QLineEdit()
@@ -159,13 +157,13 @@ class CreaContrattoAcquistoDialog(QDialog):
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.addi_contract(users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input))
+        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input))
         
       
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def addi_contract(self,users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input):
+    def aggiungiContratto(self,users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input):
         user = users_combo.currentText().split(' - ')[-1].strip(')')
         auto = auto_combo.currentData()
         prezzo = prezzo_input.text()
@@ -174,7 +172,7 @@ class CreaContrattoAcquistoDialog(QDialog):
 
 
         if user and auto and prezzo and durataGaranzia and tipoGaranzia:
-            self.controller.addo_acquisto_contratto(user, auto, tipoGaranzia, durataGaranzia, prezzo)
+            self.controller.aggiungiContrattoAcquisto(user, auto, tipoGaranzia, durataGaranzia, prezzo)
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')

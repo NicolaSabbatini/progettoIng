@@ -96,12 +96,12 @@ class ModificaAutoDialog(QDialog):
         save_btn = QPushButton('Salva Modifiche')
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(self.salva_modifiche)
+        save_btn.clicked.connect(self.salvaModifiche)
 
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def salva_modifiche(self):
+    def salvaModifiche(self):
         """Aggiorna i dati dell’auto con i nuovi valori"""
         marca = self.marca_input.text()
         modello = self.modello_input.text()
@@ -111,7 +111,7 @@ class ModificaAutoDialog(QDialog):
         targa = self.targa_input.text()
 
         if marca and modello and anno and chilometri and prezzo and targa:
-            success, message = self.controller.salvaModificaAuto(
+            success, message = self.controller.aggiornaAuto(
                 self.auto_id,
                 marca,
                 modello,
@@ -122,7 +122,7 @@ class ModificaAutoDialog(QDialog):
             )
             if success:
                 if self.auto_view:
-                    self.auto_view.refresh_auto()
+                    self.auto_view.refreshAuto()
                 QMessageBox.information(self, "Successo", message)
                 self.accept()
             else:

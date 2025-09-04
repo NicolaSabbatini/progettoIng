@@ -10,26 +10,6 @@
     "visibile": false
   },
   {
-    "id": 2,
-    "marca": "BMW",
-    "modello": "X1",
-    "anno": "2023",
-    "chilometri": "0",
-    "prezzo": "70000",
-    "targa": "TL902KB",
-    "visibile": false
-  },
-  {
-    "id": 4,
-    "marca": "Porche",
-    "modello": "LaPorche",
-    "anno": "2004",
-    "chilometri": "2000",
-    "prezzo": "20000",
-    "targa": "CD200DC",
-    "visibile": false
-  },
-  {
     "id": 5,
     "marca": "ferrari",
     "modello": "lacaca",

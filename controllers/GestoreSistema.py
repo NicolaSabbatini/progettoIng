@@ -13,7 +13,7 @@ class GestoreSistema:
         self.data_dir = DATA_DIR
         self.backup_file = BACKUP_FILE
 
-    def create_backup(self):
+    def creaBackup(self):
         backup_path = os.path.join(self.data_dir, self.backup_file)
 
         if os.path.exists(backup_path):
@@ -48,9 +48,9 @@ class GestoreSistema:
 
         print(f"✅ Nuovo backup aggiunto in {backup_path}")
 
-    def start_scheduled_backup(self, qt_app):
+    def avviaBackupProgrammato(self):
         """Avvia il backup giornaliero senza bloccare PyQt"""
-        schedule.every().day.at("00:00").do(self.create_backup)
+        schedule.every().day.at("00:00").do(self.creaBackup)
         print("⏳ Backup automatico pianificato ogni giorno alle 00:00")
 
         # Usa QTimer per eseguire schedule.run_pending ogni 30 secondi

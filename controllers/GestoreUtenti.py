@@ -19,118 +19,9 @@ class GestoreUtenti:
         self.current_user = None
         self.login_time = None
     
-    def login(self, username, password):
-        """Gestisce il login dell'utente"""
-        # Validazione input
-        if not username.strip() or not password:
-            return False, "Username e password sono obbligatori"
-        
-        # Autentica utente
-        success, message = self.user_model.authenticate_user(username.strip(), password)
-        
-        if success:
-            self.current_user = username.strip()
-            self.login_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        return success, message
-    
-    def register(self, username, email, password, confirm_password, name, surname, luogo, telefono, data):
-        """Gestisce la registrazione di un nuovo utente"""
-        # Validazioni
-        if not all([username.strip(), email.strip(), password, confirm_password]):
-            return False, "Tutti i campi sono obbligatori"
-        
-        if password != confirm_password:
-            return False, "Le password non coincidono"
-        
-        if len(password) < 6:
-            return False, "La password deve essere di almeno 6 caratteri"
-        
-        # Validazione email semplice
-        if '@' not in email or '.' not in email:
-            return False, "Formato email non valido"
-        
-        # Crea utente
-        return self.user_model.create_user(username.strip(), email.strip(), password, name, surname, luogo, telefono, data)
-    
-    def logout(self):
-        """Gestisce il logout dell'utente"""
-        self.current_user = None
-        self.login_time = None
-    
-    
-    def get_all_clients(self):
-        """Restituisce tutti gli utenti"""
-        return self.user_model.get_all_clients()
-    
-    
-    def get_current_user_data(self):
-        """Ottiene i dati dell'utente corrente"""
-        if not self.current_user:
-            return None
-        user_data = self.user_model.get_user(self.current_user)
-        if user_data:
-            user_data['username'] = self.current_user
-            user_data['login_time'] = self.login_time
-        return user_data
-    
-    def is_logged_in(self):
-        """Verifica se un utente è loggato"""
-        return self.current_user is not None
-
-
-    
-    
-    def handle_login(self,usern, passw, parent):
-        """Gestisce il click del bottone login"""
-
-        username = usern.strip()
-        password = passw
-        
-        # Debug: stampa per verificare i valori
-        print(f"Tentativo login - Username: '{username}', Password length: {len(password)}")
-        
-        if not username or not password:
-            QMessageBox.warning(parent, 'Errore', 'Inserisci username e password')
-            return False
-        
-        success, message = self.login(username, password)
-        
-        print(f"Risultato login - Success: {success}, Message: {message}")
-        
-        if success:
-            QMessageBox.information(parent, 'Successo', 'Login effettuato con successo!')
-            self.show_dashboard(username)
-            self.clear_fields()
-            self.login_view.hide()
-            #return True
-        else:
-            QMessageBox.warning(parent, 'Errore di Login', message)
-            #return False
-
-    def show_register(self):
-        """Mostra la finestra di registrazione"""
-        if not self.register_view:
-            self.register_view = RegisterView(self, self.login_view)
-        self.register_view.show()
-        self.login_view.hide()
-    
-
-    def clear_fields(self):
-        """Pulisce i campi di input"""
-        self.login_view.username_input.clear()
-        self.login_view.password_input.clear()
-
-    def get_current_user_role(self):
-            """Restituisce il ruolo dell'utente loggato"""
-            user_data = self.get_current_user_data()
-            if user_data:
-                return user_data.get("ruolo")
-            return None
-
-    def update_user_info(self, view):
+    def aggiornaInfoUtente(self, view):
         """Aggiorna le informazioni utente nella dashboard"""
-        user_data = self.get_current_user_data()
+        user_data = self.getDatiUtenteLoggato()
         if user_data:
             view.welcome_label.setText(f'Benvenuto, {user_data["username"]}!')
             view.username_label.setText(f'👤 Username: {user_data["username"]}')
@@ -141,20 +32,89 @@ class GestoreUtenti:
             view.surname_label.setText(f'Cognome: {user_data.get("surname", "N/A")}')
             view.luogo_label.setText(f'Luogo: {user_data.get("luogo", "N/A")}')
             view.telefono_label.setText(f'Telefono: {user_data.get("telefono", "N/A")}')
-            view.data_label.setText(f'Data di nascita: {user_data.get("data", "N/A")}')
-        
-    def handle_logout(self):
-        """Gestisce il logout"""
-        self.logout()
-        self.login_view.clear_fields()
+            view.data_label.setText(f'Data di nascita: {user_data.get("data", "N/A")}')   
+
+    def getClienti(self):
+        """Restituisce tutti gli utenti"""
+        return self.user_model.getAllClients()
+
+    def getDatiUtenteLoggato(self):
+        """Ottiene i dati dell'utente corrente"""
+        if not self.current_user:
+            return None
+        user_data = self.user_model.getUser(self.current_user)
+        if user_data:
+            user_data['username'] = self.current_user
+            user_data['login_time'] = self.login_time
+        return user_data
+
+    def getRuoloUtente(self):
+            """Restituisce il ruolo dell'utente loggato"""
+            user_data = self.getDatiUtenteLoggato()
+            if user_data:
+                return user_data.get("ruolo")
+            return None
+
+    def login(self, username, password, parent):
+        """Gestisce login e UI insieme"""
+
+        username = username.strip()
+        password = password
+
+        # Debug: stampa per verificare i valori
+        print(f"Tentativo login - Username: '{username}', Password length: {len(password)}")
+
+        # Validazione input
+        if not username or not password:
+            QMessageBox.warning(parent, 'Errore', 'Inserisci username e password')
+            return False
+
+        # Autenticazione utente
+        success, message = self.user_model.authenticateUser(username, password)
+
+        if success:
+            self.current_user = username
+            self.login_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            QMessageBox.information(parent, 'Successo', 'Login effettuato con successo!')
+            self.visualizzaDashboard(username)
+            self.login_view.username_input.clear()
+            self.login_view.password_input.clear()
+            self.login_view.hide()
+            return True
+        else:
+            QMessageBox.warning(parent, 'Errore di Login', message)
+            return False
+ 
+    def logout(self):
+        """Gestisce il logout dell'utente"""
+        self.current_user = None
+        self.login_time = None
+        self.login_view.username_input.clear()
+        self.login_view.password_input.clear()
         self.login_view.show()
         self.dashboard_view.hide()
-
     
-    
-    
-    
-    def show_dashboard(self, username):
+    def register(self, username, email, password, confirmPassword, nome, cognome, luogo, telefono, data):
+        """Gestisce la registrazione di un nuovo utente"""
+        # Validazioni
+        if not all([username.strip(), email.strip(), password, confirmPassword]):
+            return False, "Tutti i campi sono obbligatori"
+        
+        if password != confirmPassword:
+            return False, "Le password non coincidono"
+        
+        if len(password) < 6:
+            return False, "La password deve essere di almeno 6 caratteri"
+        
+        # Validazione email semplice
+        if '@' not in email or '.' not in email:
+            return False, "Formato email non valido"
+        
+        # Crea utente
+        return self.user_model.createUser(username.strip(), email.strip(), password, nome, cognome, luogo, telefono, data) 
+       
+    def visualizzaDashboard(self, username):
         """Mostra la dashboard dell'utente"""
         self.current_user = username
         self.login_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -162,3 +122,10 @@ class GestoreUtenti:
         # Inizializza la vista della dashboard
         self.dashboard_view = DashboardView(self)
         self.dashboard_view.show()
+    
+    def visualizzaRegistrazione(self):
+        """Mostra la finestra di registrazione"""
+        if not self.register_view:
+            self.register_view = RegisterView(self, self.login_view)
+        self.register_view.show()
+        self.login_view.hide()

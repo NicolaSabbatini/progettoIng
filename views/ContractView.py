@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, QGridLayout, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, QGridLayout, QHBoxLayout, QSizePolicy, QScrollArea
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QSizePolicy, QScrollArea
+
 from controllers.GestoreAuto import GestoreAuto
 from views.FattureView import FattureView
 
@@ -91,10 +91,10 @@ class ContractView(QWidget):
             }          
         """)
 
-        self.populate_contracts()
-        self.center_window(self)
+        self.populateContracts()
+        self.centerWindow(self)
 
-    def populate_contracts(self):
+    def populateContracts(self):
         # Rimuovi tutti i widget dal layout principale
         while self.main_layout.count():
             item = self.main_layout.takeAt(0)
@@ -105,7 +105,7 @@ class ContractView(QWidget):
         button_layout = QHBoxLayout()
         dashboard_btn = QPushButton('Torna alla Dashboard')
         dashboard_btn.setObjectName('dashboard_button')
-        dashboard_btn.clicked.connect(self.go_to_dashboard)
+        dashboard_btn.clicked.connect(self.goToDashboard)
         button_layout.addWidget(dashboard_btn)
         button_layout.addStretch()
         self.main_layout.addLayout(button_layout)
@@ -113,12 +113,12 @@ class ContractView(QWidget):
         contract_frame = QFrame()
         contract_frame.setObjectName('contract_frame')
         contract_grid_layout = QGridLayout(contract_frame)
-        self.controller.contract_model.load_contracts()  # ricarica i dati da file
-        role = self.user_controller.get_current_user_data().get('ruolo', 'cliente')
+        self.controller.contract_model.loadContracts()  # ricarica i dati da file
+        role = self.user_controller.getRuoloUtente()
         if role == 'amministratore':
-            contracts = self.controller.get_all_contracts()
+            contracts = self.controller.getContratti()
         else:
-            contracts = self.controller.get_contracts(self.user_controller.get_current_user_data().get('username'))
+            contracts = self.controller.getContrattiCliente(self.user_controller.getDatiUtenteLoggato().get('username'))
 
         rent_contracts = [c for c in contracts if c.get('tipo') == 'noleggio']
         buy_contracts = [c for c in contracts if c.get('tipo') == 'acquisto']
@@ -135,7 +135,7 @@ class ContractView(QWidget):
         
 
         
-        auto_list = GestoreAuto(self.user_controller).get_every_auto()
+        auto_list = GestoreAuto(self.user_controller).getAllAuto()
         if not auto_list:        
             auto_list = []
         if self.type != 'acquisto':
@@ -195,14 +195,14 @@ class ContractView(QWidget):
 
                 view_fatture_btn = QPushButton('Visualizza Fatture')
                 view_fatture_btn.setObjectName('view_fatture_button')
-                view_fatture_btn.clicked.connect(lambda checked, c=contract: self.show_fatture_view(c))
+                view_fatture_btn.clicked.connect(lambda checked, c=contract: self.showFattureView(c))
                 contract_layout.addWidget(view_fatture_btn)
 
                 if role == 'amministratore':
                     elimina_contract_btn = QPushButton('elimina contratto')
                     elimina_contract_btn.setObjectName('elimina_contratto_button')
                     elimina_contract_btn.clicked.connect(
-                        lambda checked=False, c=contract: self.controller.delete_contract_and_fatture(c['id'], c['auto'], self))
+                        lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
                     contract_layout.addWidget(elimina_contract_btn)
 
                 contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
@@ -217,17 +217,9 @@ class ContractView(QWidget):
 
                 user_label = QLabel(f"User: {contract['user']}")
                 user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-                auto_label = QLabel("Auto: non trovata")
+                
+                auto_label.setText(f"Auto: {contract['auto']}")
                 auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
-                for auto in auto_list:
-                    #print(f"{auto}")
-                    if auto['id'] == contract['auto']:
-                        print(f"trovato auto per contratto {contract['id']}: {auto}")
-                        auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
-                        auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-                        break
 
                 price_label = QLabel(f"Price: {contract['price']}")
                 price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -235,7 +227,7 @@ class ContractView(QWidget):
                 tipoGaranzia_label = QLabel(f"tipo garanzia: {contract['tipoGaranzia']}")
                 tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']}")
+                durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']} mesi")
                 durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
 
@@ -249,7 +241,7 @@ class ContractView(QWidget):
                     elimina_contract_btn = QPushButton('elimina contratto')
                     elimina_contract_btn.setObjectName('elimina_contratto_button')
                     elimina_contract_btn.clicked.connect(
-                        lambda checked=False, c=contract: self.controller.delete_contract_and_fatture(c['id'], c['auto'], self))
+                        lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
                     contract_layout.addWidget(elimina_contract_btn)
 
                 contract_grid_layout.addWidget(contract_widget, (i + len(rent_contracts)) // 4, (i + len(rent_contracts)) % 4)
@@ -270,12 +262,12 @@ class ContractView(QWidget):
             admin_buttons_layout = QHBoxLayout()
             crea_acquisto_contract_btn = QPushButton('crea contratto acquisto')
             crea_acquisto_contract_btn.setObjectName('crea_contratto_acquisto_button')
-            crea_acquisto_contract_btn.clicked.connect(self.controller.crea_acquisto_contratto)
+            crea_acquisto_contract_btn.clicked.connect(self.controller.creaContrattoAcquistoDialog)
             admin_buttons_layout.addWidget(crea_acquisto_contract_btn)
 
             crea_noleggio_contract_btn = QPushButton('crea contratto noleggio')
             crea_noleggio_contract_btn.setObjectName('crea_contratto_noleggio_button')
-            crea_noleggio_contract_btn.clicked.connect(self.controller.crea_noleggio_contratto)
+            crea_noleggio_contract_btn.clicked.connect(self.controller.creaContrattoNoleggioDialog)
             admin_buttons_layout.addWidget(crea_noleggio_contract_btn)
 
             self.main_layout.addLayout(admin_buttons_layout)
@@ -290,24 +282,23 @@ class ContractView(QWidget):
 
 
 
-    def show_fatture_view(self, contract):
-        role = self.user_controller.get_current_user_role()
+    def showFattureView(self, contract):
+        role = self.user_controller.getRuoloUtente()
         self.fatture_view = FattureView(self.controller, contract, role, parent=self)
         self.controller.fatture_view = self.fatture_view
         self.fatture_view.setWindowTitle(f"Fatture per il contratto: {contract['id']}")
         self.fatture_view.show()
 
-    def refresh_contracts(self):
-        self.populate_contracts()
+    def refreshContracts(self):
+        self.populateContracts()
 
-    def go_to_dashboard(self):
+    def goToDashboard(self):
         self.hide()
         self.dashboard_view.show()
 
-    def center_window(self, view):
+    def centerWindow(self, view):
             """Centra la finestra sullo schermo"""
             screen = view.screen().availableGeometry()
-            size = view.geometry()
             view.move(
                 max(0, (screen.width() - view.width()) // 2),
                 max(0, (screen.height() - view.height()) // 2)

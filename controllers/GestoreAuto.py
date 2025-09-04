@@ -1,5 +1,3 @@
-from PyQt5.QtWidgets import (QFrame, QGridLayout)
-
 from models.Auto import Auto
 from views.CreaAutoDialog import CreaAutoDialog
 from views.ModificaAutoDialog import ModificaAutoDialog
@@ -11,94 +9,59 @@ class GestoreAuto:
         self.dashboard_view = dashboard_view
         self.auto_model = Auto()
 
-    def center_window(self, view):
-        """Centra la finestra sullo schermo"""
-        screen = view.screen().availableGeometry()
-        size = view.geometry()
-        view.move(
-            max(0, (screen.width() - view.width()) // 2),
-            max(0, (screen.height() - view.height()) // 2)
-        )
+    def aggiornaAuto(self, autoId, marca, modello, anno, chilometri, prezzo, targa):
+        """Effettua l’aggiornamento vero e proprio nel model"""
+        if not autoId:
+            return False, "ID dell'auto non valido"
 
-    def load_auto(self):
-        """Carica le auto dal modello"""
-        self.auto_model.load_auto()
+        success = self.auto_model.updateCar(autoId, marca, modello, anno, chilometri, prezzo, targa)
+        if success:
+            return True, "Auto modificata con successo"
+        else:
+            return False, "Errore durante la modifica dell'auto"
 
-    def update_auto_display(self, view):
-        """Aggiorna la visualizzazione delle auto nella dashboard"""
-        auto_list = self.auto_model.get_all_auto()
-        if not hasattr(view, 'auto_layout'):
-            view.auto_layout = QGridLayout()
-            view.auto_layout.setSpacing(10)
-            view.auto_layout.setContentsMargins(0, 0, 0, 0)
-            view.auto_frame = QFrame()
-            view.auto_frame.setObjectName('info_frame')
-            view.auto_frame.setLayout(view.auto_layout)
-            view.layout().addWidget(view.auto_frame)
-        # Pulisce il layout esistente
-        for i in reversed(range(view.auto_layout.count())):
-            widget = view.auto_layout.itemAt(i).widget()
-            if widget is not None:
-                widget.deleteLater()
-        # Crea e aggiunge i widget per le auto
-        if auto_list:
-            view.create_auto_widgets(auto_list)
-
-    def get_all_auto(self):
-        """Restituisce tutte le auto"""
-        return self.auto_model.get_all_auto()
-    
-    def get_every_auto(self):
-        """Restituisce tutte le auto, visibili e non"""
-        return self.auto_model.get_every_auto()
-
-    def crea_auto_dialog(self, dashboard_view=None):
-        dialog = CreaAutoDialog(self, auto_view=self.auto_view)
-        dialog.exec_()
-
-    def addo_auto(self, marca, modello, anno, chilometri, prezzo, targa):
+    def aggiungiAuto(self, marca, modello, anno, chilometri, prezzo, targa):
         """Aggiunge una nuova auto"""
         if not (marca and modello and anno and chilometri and prezzo and targa):
             return False, "Tutti i campi dell'auto sono obbligatori"
 
-        self.auto_model.add_auto(marca, modello, anno, chilometri, prezzo, targa)
+        self.auto_model.addCar(marca, modello, anno, chilometri, prezzo, targa)
         return True, "Auto aggiunta con successo"
+    
+    def caricaAuto(self):
+        """Carica le auto dal modello"""
+        self.auto_model.loadCars()
 
-    def elimina_auto(self, auto_id, auto_view=None):
+
+    def creaAutoDialog(self):
+        dialog = CreaAutoDialog(self, auto_view=self.auto_view)
+        dialog.exec_()
+
+    def eliminaAuto(self, autoId, view=None):
         """Elimina un'auto"""
-        if not auto_id:
+        if not autoId:
             return False, "ID dell'auto non valido"
 
-        success = self.auto_model.delete_auto(auto_id)
-        if self.auto_view:
-            self.auto_view.refresh_auto()
+        success = self.auto_model.deleteCar(autoId)
+        if view:
+            self.auto_view.refreshAuto()
         if success:
             return True, "Auto eliminata con successo"
         else:
             return False, "Errore durante l'eliminazione dell'auto"
-
-    def rimuoviAuto(self, autoId):
-        success = self.auto_model.rimuoviAuto(autoId)
-        if success:
-            return True, "Auto rimossa dal catalogo"
-        else:
-            return False, "Errore durante l'eliminazione dell'auto"
         
-
-    def reimpostaAuto(self, autoId):
-        """Reimposta l'auto per essere visibile nel catalogo"""
-        success = self.auto_model.reimpostaAuto(autoId)
-        if success:
-            return True, "Auto reimpostata con successo"
-        else:
-            return False, "Errore durante la reimpostazione dell'auto"
-        
+    def getAllAuto(self):
+        """Restituisce tutte le auto, visibili e non"""
+        return self.auto_model.getCarList()
     
-
-    def modificaAuto(self, auto_id, marca, modello, anno, chilometri, prezzo, targa, auto_view=None):
+    def getAutoVisibili(self):
+        """Restituisce tutte le auto"""
+        return self.auto_model.getAvailableCar()
+    
+    def modificaAutoDialog(self, autoId, marca, modello, anno, chilometri, prezzo, targa, auto_view=None):
         """Apre il dialog di modifica per un'auto"""
         auto_data = {
-            "id": auto_id,
+            "id": autoId,
             "marca": marca,
             "modello": modello,
             "anno": anno,
@@ -109,16 +72,26 @@ class GestoreAuto:
         dialog = ModificaAutoDialog(self, auto_data, auto_view=auto_view)
         dialog.exec_()
 
-    def salvaModificaAuto(self, auto_id, marca, modello, anno, chilometri, prezzo, targa):
-        """Effettua l’aggiornamento vero e proprio nel model"""
-        if not auto_id:
-            return False, "ID dell'auto non valido"
-
-        success = self.auto_model.update_auto(auto_id, marca, modello, anno, chilometri, prezzo, targa)
+    def reimpostaAuto(self, autoId):
+        """Reimposta l'auto per essere visibile nel catalogo"""
+        success = self.auto_model.resetCar(autoId)
         if success:
-            return True, "Auto modificata con successo"
+            return True, "Auto reimpostata con successo"
         else:
-            return False, "Errore durante la modifica dell'auto"
+            return False, "Errore durante la reimpostazione dell'auto"
+            
+    def rimuoviAuto(self, autoId):
+        success = self.auto_model.removeCar(autoId)
+        if success:
+            return True, "Auto rimossa dal catalogo"
+        else:
+            return False, "Errore durante l'eliminazione dell'auto"
+        
 
+        
+    
+
+
+    
 
 

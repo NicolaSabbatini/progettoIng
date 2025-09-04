@@ -2,15 +2,24 @@ import json
 from datetime import datetime
 
 from models.Contratto import Contratto
-
+from models.Auto import Auto
 class ContrattoAcquisto(Contratto): 
      
    def __init__(self):
         super().__init__()
+        self.auto_model = Auto()
 
 
-   def add_buy_contract(self, user, auto, prezzoTot, durataGaranzia, tipoGaranzia):
+   def addBuyContract(self, user, auto, prezzoTot, durataGaranzia, tipoGaranzia):
         """Aggiunge un nuovo contratto"""
+
+        datiAuto =self.auto_model.getCarById(auto)
+
+        if datiAuto:
+            datiAuto = f"{datiAuto['marca']} {datiAuto['modello']} {datiAuto['targa']}"
+        else:
+            return False, "Auto non trovata"
+        
         if self.contracts:
             new_id = max(c['id'] for c in self.contracts) + 1
         else:
@@ -19,17 +28,17 @@ class ContrattoAcquisto(Contratto):
             'id': new_id,
             'tipo': 'acquisto',
             'user': user,
-            'auto': auto,
+            'auto': datiAuto,
             'price': prezzoTot,
             'durataGaranzia': durataGaranzia,
             'tipoGaranzia': tipoGaranzia,
             'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
         self.contracts.append(new_buy_contract)
-        self.save_buy_contracts()
+        self.saveBuyContracts()
         return True, "Contratto creato con successo"
    
-   def save_buy_contracts(self):
+   def saveBuyContracts(self):
         """Salva i contratti nel file JSON"""
         with open(self.contracts_file, 'w', encoding='utf-8') as f:
             json.dump(self.contracts, f, indent=2, ensure_ascii=False)

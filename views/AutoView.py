@@ -13,8 +13,8 @@ class AutoView(QWidget):
         if parent:
             self.setGeometry(parent.geometry())
         self.setLayout(self.main_layout)
-        self.populate_auto()
-        self.controller.center_window(self)
+        self.populateAuto()
+        self.centerWindow()
 
         self.setStyleSheet("""
             QWidget {
@@ -73,7 +73,7 @@ class AutoView(QWidget):
             }
         """)
 
-    def populate_auto(self):
+    def populateAuto(self):
         # Rimuove tutti i widget dal layout principale
         while self.main_layout.count():
             item = self.main_layout.takeAt(0)
@@ -85,11 +85,11 @@ class AutoView(QWidget):
         # Bottone per tornare alla Dashboard
         dashboard_btn = QPushButton('Torna alla Dashboard')
         dashboard_btn.setObjectName('dashboard_button')
-        dashboard_btn.clicked.connect(self.go_to_dashboard)
+        dashboard_btn.clicked.connect(self.goToDashboard)
         self.main_layout.addWidget(dashboard_btn)
 
         # Recupera il ruolo dell'utente
-        role = self.user_controller.get_current_user_data().get('ruolo', 'cliente')
+        role = self.user_controller.getRuoloUtente()
         is_admin = role == 'amministratore'
         
 
@@ -98,7 +98,7 @@ class AutoView(QWidget):
         auto_frame.setObjectName('auto_frame')
         grid_auto_layout = QGridLayout(auto_frame)
 
-        for i, auto in enumerate(self.controller.get_all_auto()):
+        for i, auto in enumerate(self.controller.getAutoVisibili()):
             auto_widget = QWidget()
             auto_widget.setObjectName('auto_widget')
             auto_layout = QVBoxLayout(auto_widget)
@@ -117,14 +117,14 @@ class AutoView(QWidget):
             elimina_auto_btn = QPushButton('Elimina Auto')
             elimina_auto_btn.setObjectName('elimina_auto_button')
             elimina_auto_btn.clicked.connect(
-                lambda _, id=auto['id']: self.controller.elimina_auto(id, self)
+                lambda _, id=auto['id']: self.controller.eliminaAuto(id, self)
             )
             auto_layout.addWidget(elimina_auto_btn)
 
             modifica_auto_btn = QPushButton('Modifica Auto')
             modifica_auto_btn.setObjectName('modifica_auto_button')
             modifica_auto_btn.clicked.connect(
-                lambda _, a=auto: self.controller.modificaAuto(
+                lambda _, a=auto: self.controller.modificaAutoDialog(
                     a['id'], a['marca'], a['modello'], a['anno'], a['chilometri'], a['prezzo'], a['targa'], self
                 )
             )
@@ -140,15 +140,23 @@ class AutoView(QWidget):
         
         create_auto_btn = QPushButton('Crea Auto')
         create_auto_btn.setObjectName('create_auto_button')
-        create_auto_btn.clicked.connect(self.controller.crea_auto_dialog)
+        create_auto_btn.clicked.connect(self.controller.creaAutoDialog)
         self.main_layout.addWidget(create_auto_btn)
         create_auto_btn.setVisible(is_admin)
 
-    def refresh_auto(self):
+    def refreshAuto(self):
         """Aggiorna la visualizzazione delle auto"""
-        self.populate_auto()
+        self.populateAuto()
 
-    def go_to_dashboard(self):
+    def goToDashboard(self):
         self.hide()
         self.dashboard_view.show()
+
+    def centerWindow(self):
+        """Centra la finestra sullo schermo"""
+        screen = self.screen().availableGeometry()
+        self.move(
+            max(0, (screen.width() - self.width()) // 2),
+            max(0, (screen.height() - self.height()) // 2)
+        )
  
