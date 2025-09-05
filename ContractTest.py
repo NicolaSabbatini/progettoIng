@@ -12,12 +12,18 @@ class TestGestoreContrattiCreazione(unittest.TestCase):
 
     def test_crea_noleggio_contratto_missing_fields(self):
         # Tutti i campi vuoti
-        success, msg = self.gestore.addo_noleggio_contratto('', '', '', '', '', '', '', '', '')
+        success, msg = self.gestore.aggiungiContrattoNoleggio('', '', '', '', '', '', '', '', '')
         self.assertFalse(success)
         self.assertIn("obbligatori", msg)
+        print(success, msg)
 
     def test_crea_acquisto_contratto_missing_fields(self):
         # Tutti i campi vuoti
-        success, msg = self.gestore.addo_acquisto_contratto('', '', '', '', '')
+        success, msg = self.gestore.aggiungiContrattoAcquisto('', '', '', '', '')
         self.assertFalse(success)
         self.assertIn("obbligatori", msg)
+        print(success, msg)
+
+
+if __name__ == '__main__':
+    unittest.main()

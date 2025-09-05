@@ -66,10 +66,10 @@
     "password": "d58395ffabfe49141dc74cc9a65610000714c9e11f1858c518bdf9800190331c",
     "luogo": "Roma",
     "telefono": "3333333333",
-    "data": "iuyafeg",
+    "data": "05/09/2025",
     "ruolo": "amministratore",
     "created_at": "2025-08-26 15:39:39",
-    "login_time": "2025-09-04 23:26:25"
+    "login_time": "2025-09-05 12:37:52"
   },
   "avvofatto": {
     "name": "andrea",
@@ -114,10 +114,10 @@
     "username": "mesk11",
     "password": "b7e1dedbe0de394be43e46644d4f2dfc25d9c79e41414fed8ec6aeaad526494c",
     "luogo": "askjhedfvbg",
-    "telefono": "1231",
-    "data": "04/09/2025",
+    "telefono": "12333",
+    "data": "05/09/2025",
     "ruolo": "cliente",
     "created_at": "2025-09-04 23:21:59",
-    "login_time": "2025-09-04 23:31:59"
+    "login_time": "2025-09-05 12:38:16"
   }
 }

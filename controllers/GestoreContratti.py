@@ -64,7 +64,7 @@ class GestoreContratti:
     def aggiungiFattura(self, startDate, price, contractId):
         """Aggiunge un nuovo contratto"""
         if not (startDate and price):
-            return False, "Tutti i campi del contratto sono obbligatori"
+            return False, "Tutti i campi della fattura sono obbligatori"
         
         self.fatture_model.addBill(startDate, price, contractId)
         return True, "fattura aggiunto con successo"

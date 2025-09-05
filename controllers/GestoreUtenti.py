@@ -21,7 +21,7 @@ class GestoreUtenti:
         self.current_user = None
         self.login_time = None
     
-    def openModificaUtenteDialog(self, dashboard_view):
+    def modificaUtenteDialog(self, dashboard_view):
         """Apre il dialog per modificare l'utente"""
         if not self.current_user:
             return
@@ -29,16 +29,6 @@ class GestoreUtenti:
         dialog = ModificaUtenteDialog(self, user_data, dashboard_view=dashboard_view)
         if dialog.exec_():  # modale
             self.dashboard_view.refreshUtente()
-
-    #def aggiornaUtente(self, username, password, name, surname, email, luogo, telefono, data):
-    #    """Effettua l'aggiornamento vero e proprio nel model"""
-    #    if not username:
-    #        return False, "Username non valido"
-
-    #    success = self.user_model.updateUser(username, password, name, surname, email, luogo, telefono, data)
-    #    if success:
-    #        if self.current_user == username:
-    #            self.current_user = username
 
     def aggiornaUtente(self, username, old_password, new_password, name, surname, email, luogo, telefono, data):
         # Validazioni

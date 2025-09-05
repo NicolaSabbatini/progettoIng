@@ -110,7 +110,7 @@ class DashboardView(QWidget):
 
         self.modify_button = QPushButton('Modifica Profilo')
         self.modify_button.setObjectName('modify_button')
-        self.modify_button.clicked.connect(self.controller.openModificaUtenteDialog)
+        self.modify_button.clicked.connect(self.controller.modificaUtenteDialog)
         header_layout.addWidget(self.modify_button)
         
         self.logout_button = QPushButton('Logout')

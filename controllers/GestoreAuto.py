@@ -14,11 +14,8 @@ class GestoreAuto:
         if not autoId:
             return False, "ID dell'auto non valido"
 
-        success = self.auto_model.updateCar(autoId, marca, modello, anno, chilometri, prezzo, targa)
-        if success:
-            return True, "Auto modificata con successo"
-        else:
-            return False, "Errore durante la modifica dell'auto"
+        success, msg = self.auto_model.updateCar(autoId, marca, modello, anno, chilometri, prezzo, targa)
+        return success, msg
 
     def aggiungiAuto(self, marca, modello, anno, chilometri, prezzo, targa):
         """Aggiunge una nuova auto"""
