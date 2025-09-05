@@ -9,7 +9,7 @@ class ModificaUtenteDialog(QDialog):
         self.username = utente_data["username"]
 
         self.setWindowTitle('Modifica Utente')
-        self.setFixedSize(600, 600)
+        self.setFixedSize(600, 800)
         layout = QVBoxLayout(self)
 
         self.setStyleSheet("""
@@ -33,6 +33,24 @@ class ModificaUtenteDialog(QDialog):
                 border: 1px solid #2e86de;
                 background-color: black;
             }
+            QDateEdit {
+                padding: 8px;
+                border: 1px solid #bbb;
+                border-radius: 6px;
+                background-color: black;
+                min-height: 30px;
+                color: white;
+            }
+            QDateEdit:focus {
+                border: 1px solid #2e86de;
+                background-color: black;
+            }
+            QDateEdit::drop-down {
+                border: none;
+                background-color: #2e86de;
+                border-radius: 3px;
+                width: 20px;
+            }
             QPushButton#primary_button {
                 background-color: #2e86de;
                 color: white;
@@ -42,6 +60,16 @@ class ModificaUtenteDialog(QDialog):
             }
             QPushButton#primary_button:hover {
                 background-color: #1b4f72;
+            }
+            QPushButton#secondary_button {
+                background-color: #e74c3c;
+                color: white;
+                padding: 10px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            QPushButton#secondary_button:hover {
+                background-color: #c0392b;
             }
             QMessageBox {
                 background-color: #2b2b2b;
