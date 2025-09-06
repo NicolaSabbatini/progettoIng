@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame, QGridLayout, QPushButton
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame, QGridLayout, QPushButton, QScrollArea, QHBoxLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QSizePolicy
 
 class FattureView(QWidget):
     def __init__(self, controller, contract, role = 'cliente', parent =None):
@@ -15,8 +17,10 @@ class FattureView(QWidget):
         self.main_layout.setContentsMargins(30, 30, 30, 30)
         self.setLayout(self.main_layout)
 
-        self.populateFatture()
-        self.centerWindow()
+        if parent:
+            self.setGeometry(parent.geometry())
+
+        
 
         self.setStyleSheet("""
             QWidget {
@@ -60,45 +64,80 @@ class FattureView(QWidget):
         """)
 
 
+        self.populateFatture()
+        self.centerWindow()
+
     def populateFatture(self):
-        # Remove previous fatture frame if exists
-        for i in reversed(range(self.main_layout.count())):
-            item = self.main_layout.itemAt(i)
+        # Rimuove i widget precedenti dalla layout
+        while self.main_layout.count():
+            item = self.main_layout.takeAt(0)
             widget = item.widget()
-            if isinstance(widget, QFrame) or isinstance(widget, QPushButton):
-                self.main_layout.removeWidget(widget)
+            if widget is not None:
                 widget.deleteLater()
 
+        # Frame che contiene le fatture
         fatture_frame = QFrame()
         fatture_frame.setObjectName('fatture_frame')
         grid_fatture_layout = QGridLayout(fatture_frame)
+        grid_fatture_layout.setContentsMargins(20, 20, 20, 20)
+        grid_fatture_layout.setSpacing(15)
 
         fatture_list = self.controller.getFatturePerContratto(self.contract['id'])
+
         for i, fattura in enumerate(fatture_list):
             fatture_widget = QWidget()
             fatture_widget.setObjectName('fatture_widget')
             fatture_layout = QVBoxLayout(fatture_widget)
-            fatture_layout.setContentsMargins(10, 10, 10, 10)
+            fatture_layout.setContentsMargins(10, 10, 10, 20)
+
+            # dimensione fissa
+            fatture_widget.setFixedSize(420, 100)
 
             data_label = QLabel(f"Data: {fattura['data']}")
             prezzo_label = QLabel(f"Prezzo: {fattura['prezzo']}€")
 
-            
             fatture_layout.addWidget(data_label)
             fatture_layout.addWidget(prezzo_label)
 
-            grid_fatture_layout.addWidget(fatture_widget, i // 4, i % 4)
+            # inserisco nella griglia (max 4 colonne per riga)
+            grid_fatture_layout.addWidget(
+                fatture_widget,
+                i // 4,  # riga
+                i % 4,   # colonna
+                alignment=Qt.AlignTop | Qt.AlignLeft
+            )
 
-        self.main_layout.addWidget(fatture_frame)
+        # IMPORTANTISSIMO: impedisco alla griglia di "stirare" le colonne
+        for col in range(4):
+            grid_fatture_layout.setColumnStretch(col, 0)
+
+        # Scroll area che contiene tutto
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(fatture_frame)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        scroll_area.setMaximumHeight(900)
+
+        self.main_layout.addWidget(scroll_area)
         self.main_layout.addStretch()
 
+        # Bottone solo per admin
         if self.role == 'amministratore':
             crea_fattura_button = QPushButton('Crea Fattura')
             crea_fattura_button.setObjectName('crea_fattura_button')
+            crea_fattura_button.setFixedWidth(150)
             crea_fattura_button.clicked.connect(self.createFattura)
-            self.main_layout.addWidget(crea_fattura_button)
 
-        self.main_layout.addStretch()
+            button_layout = QHBoxLayout()
+            button_layout.addStretch()
+            button_layout.addWidget(crea_fattura_button)
+            button_layout.addStretch()
+
+            button_container = QWidget()
+            button_container.setLayout(button_layout)
+
+            self.main_layout.addWidget(button_container)
 
     def createFattura(self):
         # Call the controller to create a fattura, then refresh the view
