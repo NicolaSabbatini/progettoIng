@@ -179,7 +179,7 @@ class CreaContrattoNoleggioDialog(QDialog):
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input.currentText(), kmMax_input))
+        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input))
         
       
         self.setLayout(layout)
@@ -193,7 +193,7 @@ class CreaContrattoNoleggioDialog(QDialog):
         cauzione = cauzione_input.text()
         prezzo = prezzo_input.text()
         durataGaranzia = durataGaranzia_input.text()
-        tipoGaranzia = tipoGaranzia_input.text()
+        tipoGaranzia = tipoGaranzia_input.currentText()
         kmMax = kmMax_input.text()
 
         if user and auto and start_date and end_date and cauzione and prezzo and durataGaranzia and tipoGaranzia and kmMax:

@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QFrame, QGridLayout
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QFrame, QGridLayout, QScrollArea
+from PyQt5.QtCore import Qt
 
 class AutoView(QWidget):
     def __init__(self, controller, user_controller=None, dashboard_view=None, parent=None):
@@ -20,6 +21,9 @@ class AutoView(QWidget):
             QWidget {
                 background-color: #2b2b2b;
                 color: white;
+            }
+            QWidget#auto_widget {
+                min-height: 420px;
             }
             QLabel {
                 color: white;
@@ -91,12 +95,15 @@ class AutoView(QWidget):
         # Recupera il ruolo dell'utente
         role = self.user_controller.getRuoloUtente()
         is_admin = role == 'amministratore'
-        
 
-        # Area auto
-        auto_frame = QFrame()
-        auto_frame.setObjectName('auto_frame')
-        grid_auto_layout = QGridLayout(auto_frame)
+        # Scroll area per le auto
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        # Contenitore dentro lo scroll
+        scroll_content = QWidget()
+        grid_auto_layout = QGridLayout(scroll_content)
 
         for i, auto in enumerate(self.controller.getAutoVisibili()):
             auto_widget = QWidget()
@@ -112,8 +119,7 @@ class AutoView(QWidget):
             auto_layout.addWidget(QLabel(f"Prezzo: {auto['prezzo']}€"))
             auto_layout.addWidget(QLabel(f"Targa: {auto['targa']}"))
 
-            # Bottoni solo per amministratore
-            
+            # Bottoni
             elimina_auto_btn = QPushButton('Elimina Auto')
             elimina_auto_btn.setObjectName('elimina_auto_button')
             elimina_auto_btn.clicked.connect(
@@ -125,19 +131,23 @@ class AutoView(QWidget):
             modifica_auto_btn.setObjectName('modifica_auto_button')
             modifica_auto_btn.clicked.connect(
                 lambda _, a=auto: self.controller.modificaAutoDialog(
-                    a['id'], a['marca'], a['modello'], a['anno'], a['chilometri'], a['prezzo'], a['targa'], self
+                    a['id'], a['marca'], a['modello'], a['anno'],
+                    a['chilometri'], a['prezzo'], a['targa'], self
                 )
             )
             auto_layout.addWidget(modifica_auto_btn)
+
             elimina_auto_btn.setVisible(is_admin)
             modifica_auto_btn.setVisible(is_admin)
 
             grid_auto_layout.addWidget(auto_widget, i // 4, i % 4)
 
-        self.main_layout.addWidget(auto_frame)
-        self.main_layout.addStretch()
+        scroll_area.setWidget(scroll_content)
+        self.main_layout.addWidget(scroll_area)
 
-        
+        #self.main_layout.addStretch()
+
+        # Bottone crea auto
         create_auto_btn = QPushButton('Crea Auto')
         create_auto_btn.setObjectName('create_auto_button')
         create_auto_btn.clicked.connect(self.controller.creaAutoDialog)
@@ -159,4 +169,3 @@ class AutoView(QWidget):
             max(0, (screen.width() - self.width()) // 2),
             max(0, (screen.height() - self.height()) // 2)
         )
- 

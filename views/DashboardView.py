@@ -83,6 +83,16 @@ class DashboardView(QWidget):
             QPushButton#logout_button:hover {
                 background-color: #c0392b;
             }
+            QPushButton#modify_button {
+                background-color: #2e86de;
+                border-radius: 8px;
+                padding: 6px 12px;
+                font-size: 16px;
+                max-width: 80px;
+            }
+            QPushButton#modify_button:hover {
+                background-color: #1b4f72;
+            }
         """)
 
 

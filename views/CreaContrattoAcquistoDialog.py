@@ -157,7 +157,7 @@ class CreaContrattoAcquistoDialog(QDialog):
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input.currentText()))
+        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input))
         
       
         self.setLayout(layout)
@@ -168,7 +168,7 @@ class CreaContrattoAcquistoDialog(QDialog):
         auto = auto_combo.currentData()
         prezzo = prezzo_input.text()
         durataGaranzia = durataGaranzia_input.text()
-        tipoGaranzia = tipoGaranzia_input.text()
+        tipoGaranzia = tipoGaranzia_input.currentText()
 
 
         if user and auto and prezzo and durataGaranzia and tipoGaranzia:

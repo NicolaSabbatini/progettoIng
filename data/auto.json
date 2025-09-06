@@ -48,5 +48,45 @@
     "prezzo": "7800",
     "targa": "KJ864HG",
     "visibile": true
+  },
+  {
+    "id": 10,
+    "marca": "Peugeot",
+    "modello": "208",
+    "anno": "2015",
+    "chilometri": "150000",
+    "prezzo": "9000",
+    "targa": "LP463VG",
+    "visibile": true
+  },
+  {
+    "id": 11,
+    "marca": "Alfa Romeo",
+    "modello": "Giulia",
+    "anno": "2016",
+    "chilometri": "100000",
+    "prezzo": "13000",
+    "targa": "IB654VJ",
+    "visibile": true
+  },
+  {
+    "id": 12,
+    "marca": "Renault",
+    "modello": "Clio",
+    "anno": "2016",
+    "chilometri": "80000",
+    "prezzo": "12000",
+    "targa": "KB586GV",
+    "visibile": true
+  },
+  {
+    "id": 13,
+    "marca": "Fiat",
+    "modello": "Panda",
+    "anno": "2008",
+    "chilometri": "400000",
+    "prezzo": "2000",
+    "targa": "HL560PL",
+    "visibile": true
   }
 ]

@@ -64,6 +64,7 @@ class ContractView(QWidget):
                 border: 1px solid #555;
                 border-radius: 8px;
                 padding: 10px;
+                min-height: 500px;
             }
 
             QPushButton#elimina_contratto_button {
@@ -176,7 +177,7 @@ class ContractView(QWidget):
                 tipoGaranzia_label = QLabel(f"Tipo garanzia: {contract['tipoGaranzia']}")
                 tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']}")
+                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']} mesi")
                 durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
                 kmMax_label = QLabel(f"Chilometri massimi: {contract['kmMax']}")
