@@ -109,7 +109,7 @@ class AutoView(QWidget):
             auto_layout.addWidget(QLabel(f"Modello: {auto['modello']}"))
             auto_layout.addWidget(QLabel(f"Anno: {auto['anno']}"))
             auto_layout.addWidget(QLabel(f"Chilometri: {auto['chilometri']}"))
-            auto_layout.addWidget(QLabel(f"Prezzo: {auto['prezzo']}"))
+            auto_layout.addWidget(QLabel(f"Prezzo: {auto['prezzo']}€"))
             auto_layout.addWidget(QLabel(f"Targa: {auto['targa']}"))
 
             # Bottoni solo per amministratore

@@ -38,5 +38,15 @@
     "prezzo": 12000.0,
     "targa": "CI234DO",
     "visibile": false
+  },
+  {
+    "id": 8,
+    "marca": "Fiat",
+    "modello": "Punto",
+    "anno": "2013",
+    "chilometri": "300000",
+    "prezzo": "7800",
+    "targa": "KJ864HG",
+    "visibile": true
   }
 ]
