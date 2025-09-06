@@ -40,6 +40,7 @@ class FattureView(QWidget):
             }
             QPushButton#crea_fattura_button {
                 background-color: #2980b9;
+                
             }
             QPushButton#crea_fattura_button:hover {
                 background-color: #1f6391;
@@ -79,24 +80,24 @@ class FattureView(QWidget):
             fatture_layout = QVBoxLayout(fatture_widget)
             fatture_layout.setContentsMargins(10, 10, 10, 10)
 
-            id_label = QLabel(f"ID Fattura: {fattura['idfattura']}")
-            contratto_label = QLabel(f"Contratto: {fattura['contratto']}")
             data_label = QLabel(f"Data: {fattura['data']}")
-            prezzo_label = QLabel(f"Prezzo: {fattura['prezzo']}")
+            prezzo_label = QLabel(f"Prezzo: {fattura['prezzo']}€")
 
-            fatture_layout.addWidget(id_label)
-            fatture_layout.addWidget(contratto_label)
+            
             fatture_layout.addWidget(data_label)
             fatture_layout.addWidget(prezzo_label)
 
             grid_fatture_layout.addWidget(fatture_widget, i // 4, i % 4)
 
         self.main_layout.addWidget(fatture_frame)
+        self.main_layout.addStretch()
+
         if self.role == 'amministratore':
             crea_fattura_button = QPushButton('Crea Fattura')
             crea_fattura_button.setObjectName('crea_fattura_button')
             crea_fattura_button.clicked.connect(self.createFattura)
             self.main_layout.addWidget(crea_fattura_button)
+
         self.main_layout.addStretch()
 
     def createFattura(self):

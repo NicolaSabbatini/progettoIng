@@ -71,7 +71,7 @@ class GestoreUtenti:
             dashboard_view.email_label.setText(f"Email: {user_data.get('email', '')}")
             dashboard_view.name_label.setText(f"Nome: {user_data.get('name', '')}")
             dashboard_view.surname_label.setText(f"Cognome: {user_data.get('surname', '')}")
-            dashboard_view.luogo_label.setText(f"Luogo: {user_data.get('luogo', '')}")
+            dashboard_view.luogo_label.setText(f"Luogo di nascita: {user_data.get('luogo', '')}")
             dashboard_view.telefono_label.setText(f"Telefono: {user_data.get('telefono', '')}")
             dashboard_view.data_label.setText(f"Data di nascita: {user_data.get('data', '')}")
             dashboard_view.login_time_label.setText(f"Login effettuato il: {user_data.get('login_time', '')}")

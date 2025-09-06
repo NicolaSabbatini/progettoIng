@@ -123,7 +123,7 @@ class CreaContrattoAcquistoDialog(QDialog):
             display_text = f"{user['name']} {user['surname']} - {user['username']}"
             users_combo.addItem(display_text)
         
-        layout.addWidget(QLabel('user:'))
+        layout.addWidget(QLabel('Utente:'))
         layout.addWidget(users_combo)
 
         auto_list = self.controller.auto_controller.getAutoVisibili()
@@ -140,7 +140,7 @@ class CreaContrattoAcquistoDialog(QDialog):
 
         prezzo_input = QLineEdit()
         prezzo_input.setPlaceholderText('prezzo')
-        layout.addWidget(QLabel('prezzo:'))
+        layout.addWidget(QLabel('Prezzo:'))
         layout.addWidget(prezzo_input)
 
         durataGaranzia_input = QLineEdit()
@@ -148,16 +148,16 @@ class CreaContrattoAcquistoDialog(QDialog):
         layout.addWidget(QLabel('Durata Garanzia:'))
         layout.addWidget(durataGaranzia_input)
 
-        tipoGaranzia_input = QLineEdit()
-        tipoGaranzia_input.setPlaceholderText('tipo garanzia')
-        layout.addWidget(QLabel('tipo garanzia:'))
+        tipoGaranzia_input = QComboBox()
+        tipoGaranzia_input.addItems(["Base", "Plus", "Premium"])
+        layout.addWidget(QLabel("Tipo garanzia:"))
         layout.addWidget(tipoGaranzia_input)
 
         # Bottone per salvare l'auto
         save_btn = QPushButton('Salva contratto')  
         save_btn.setObjectName('primary_button')
         layout.addWidget(save_btn)
-        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input))
+        save_btn.clicked.connect(lambda: self.aggiungiContratto(users_combo,auto_combo,prezzo_input, durataGaranzia_input, tipoGaranzia_input.currentText()))
         
       
         self.setLayout(layout)

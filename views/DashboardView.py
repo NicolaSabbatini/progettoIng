@@ -103,7 +103,7 @@ class DashboardView(QWidget):
         
         # Header
         header_layout = QHBoxLayout()
-        self.welcome_label = QLabel('Benvenuto/a!')
+        self.welcome_label = QLabel('Benvenuto/a')
         self.welcome_label.setObjectName('welcome_title')
         header_layout.addWidget(self.welcome_label)
         header_layout.addStretch()
@@ -189,18 +189,18 @@ class DashboardView(QWidget):
         buttons_layout = QHBoxLayout()
         
         if role == 'amministratore':
-            show_contract_btn = QPushButton('visualizza contratti')
+            show_contract_btn = QPushButton('Visualizza contratti')
             show_contract_btn.setObjectName('show_contract_button')
             show_contract_btn.clicked.connect(self.showContract)
             buttons_layout.addWidget(show_contract_btn)
 
         
         if role == 'cliente':
-            show_buy_contract_btn = QPushButton('visualizza contratti acquisto')
+            show_buy_contract_btn = QPushButton('Visualizza contratti acquisto')
             show_buy_contract_btn.setObjectName('show_buy_contract_button')
             show_buy_contract_btn.clicked.connect(self.showBuyContractClient)
             buttons_layout.addWidget(show_buy_contract_btn)
-            show_rent_contract_btn = QPushButton('visualizza contratti noleggio')
+            show_rent_contract_btn = QPushButton('Visualizza contratti noleggio')
             show_rent_contract_btn.setObjectName('show_rent_contract_button')
             show_rent_contract_btn.clicked.connect(self.showRentContractClient)
             buttons_layout.addWidget(show_rent_contract_btn)
@@ -285,12 +285,6 @@ class DashboardView(QWidget):
                 max(0, (screen.height() - view.height()) // 2)
             )
 
-
-    #def refreshUtente(self):
-        #"""Aggiorna le informazioni dell'utente visualizzate"""
-        #self.controller.user_model.loadUsers()  # Ricarica i dati degli utenti
-        #self.populateUserInfo()
-    
 
     def refreshUtente(self):
         self.populateUserInfo()

@@ -86,12 +86,12 @@ class CreaFatturaDialog(QDialog):
         start_date_input = QDateEdit()
         start_date_input.setCalendarPopup(True)
         start_date_input.setDate(QDate.currentDate())
-        layout.addWidget(QLabel('data emissione:'))
+        layout.addWidget(QLabel('Data emissione:'))
         layout.addWidget(start_date_input)
 
         prezzo_input = QLineEdit()
         prezzo_input.setPlaceholderText('prezzo')
-        layout.addWidget(QLabel('prezzo fattura:'))
+        layout.addWidget(QLabel('Prezzo fattura:'))
         layout.addWidget(prezzo_input)
 
         # Bottone per salvare l'auto

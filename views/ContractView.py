@@ -146,7 +146,7 @@ class ContractView(QWidget):
                 contract_layout = QVBoxLayout(contract_widget)
                 contract_layout.setContentsMargins(10, 10, 10, 10)
 
-                user_label = QLabel(f"User: {contract['user']}")
+                user_label = QLabel(f"Utente: {contract['user']}")
                 user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
 
@@ -161,25 +161,25 @@ class ContractView(QWidget):
                         auto_label.setText(f"Auto: {auto['marca']} {auto['modello']} {auto['targa']}")
                         auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                start_date_label = QLabel(f"start date: {contract['start_date']}")
+                start_date_label = QLabel(f"Data inizio: {contract['start_date']}")
                 start_date_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                end_date_label = QLabel(f"end date: {contract['end_date']}")
+                end_date_label = QLabel(f"Data fine: {contract['end_date']}")
                 end_date_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                cauzione_label = QLabel(f"cauzione: {contract['cauzione']}")
+                cauzione_label = QLabel(f"Cauzione: {contract['cauzione']}€")
                 cauzione_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                price_label = QLabel(f"Price: {contract['prezzoTot']}")
+                price_label = QLabel(f"Prezzo: {contract['prezzoTot']}€")
                 price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                tipoGaranzia_label = QLabel(f"tipo garanzia: {contract['tipoGaranzia']}")
+                tipoGaranzia_label = QLabel(f"Tipo garanzia: {contract['tipoGaranzia']}")
                 tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']}")
+                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']}")
                 durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                kmMax_label = QLabel(f"chilometri massimi: {contract['kmMax']}")
+                kmMax_label = QLabel(f"Chilometri massimi: {contract['kmMax']}")
                 kmMax_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
 
@@ -199,7 +199,7 @@ class ContractView(QWidget):
                 contract_layout.addWidget(view_fatture_btn)
 
                 if role == 'amministratore':
-                    elimina_contract_btn = QPushButton('elimina contratto')
+                    elimina_contract_btn = QPushButton('Elimina contratto')
                     elimina_contract_btn.setObjectName('elimina_contratto_button')
                     elimina_contract_btn.clicked.connect(
                         lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
@@ -215,19 +215,19 @@ class ContractView(QWidget):
                 contract_layout = QVBoxLayout(contract_widget)
                 contract_layout.setContentsMargins(10, 10, 10, 10)
 
-                user_label = QLabel(f"User: {contract['user']}")
+                user_label = QLabel(f"Utente: {contract['user']}")
                 user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
                 
                 auto_label.setText(f"Auto: {contract['auto']}")
                 auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                price_label = QLabel(f"Price: {contract['price']}")
+                price_label = QLabel(f"Prezzo: {contract['price']}€")
                 price_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                tipoGaranzia_label = QLabel(f"tipo garanzia: {contract['tipoGaranzia']}")
+                tipoGaranzia_label = QLabel(f"Tipo garanzia: {contract['tipoGaranzia']}")
                 tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                durataGaranzia_label = QLabel(f"durata garanzia: {contract['durataGaranzia']} mesi")
+                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']} mesi")
                 durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
 
@@ -238,7 +238,7 @@ class ContractView(QWidget):
                 contract_layout.addWidget(durataGaranzia_label)
 
                 if role == 'amministratore':
-                    elimina_contract_btn = QPushButton('elimina contratto')
+                    elimina_contract_btn = QPushButton('Elimina contratto')
                     elimina_contract_btn.setObjectName('elimina_contratto_button')
                     elimina_contract_btn.clicked.connect(
                         lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
@@ -260,12 +260,12 @@ class ContractView(QWidget):
         
         if role == 'amministratore':
             admin_buttons_layout = QHBoxLayout()
-            crea_acquisto_contract_btn = QPushButton('crea contratto acquisto')
+            crea_acquisto_contract_btn = QPushButton('Crea contratto acquisto')
             crea_acquisto_contract_btn.setObjectName('crea_contratto_acquisto_button')
             crea_acquisto_contract_btn.clicked.connect(self.controller.creaContrattoAcquistoDialog)
             admin_buttons_layout.addWidget(crea_acquisto_contract_btn)
 
-            crea_noleggio_contract_btn = QPushButton('crea contratto noleggio')
+            crea_noleggio_contract_btn = QPushButton('Crea contratto noleggio')
             crea_noleggio_contract_btn.setObjectName('crea_contratto_noleggio_button')
             crea_noleggio_contract_btn.clicked.connect(self.controller.creaContrattoNoleggioDialog)
             admin_buttons_layout.addWidget(crea_noleggio_contract_btn)
