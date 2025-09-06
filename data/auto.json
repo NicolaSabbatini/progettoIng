@@ -1,45 +1,5 @@
 [
   {
-    "id": 1,
-    "marca": "kia",
-    "modello": "roax",
-    "anno": "2001",
-    "chilometri": "0",
-    "prezzo": "7700",
-    "targa": "DD123DD",
-    "visibile": false
-  },
-  {
-    "id": 5,
-    "marca": "ferrari",
-    "modello": "lacaca",
-    "anno": "2004",
-    "chilometri": "0",
-    "prezzo": "900000000",
-    "targa": "UC!£!LO",
-    "visibile": false
-  },
-  {
-    "id": 6,
-    "marca": "fuoco",
-    "modello": "macchia",
-    "anno": "2008",
-    "chilometri": "0",
-    "prezzo": "121245",
-    "targa": "CD456FR",
-    "visibile": false
-  },
-  {
-    "id": 7,
-    "marca": "adessovediamobene",
-    "modello": "coupe",
-    "anno": 2004,
-    "chilometri": 0,
-    "prezzo": 12000.0,
-    "targa": "CI234DO",
-    "visibile": false
-  },
-  {
     "id": 8,
     "marca": "Fiat",
     "modello": "Punto",

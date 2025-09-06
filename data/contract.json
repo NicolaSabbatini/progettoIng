@@ -1,57 +1,5 @@
 [
   {
-    "id": 1,
-    "tipo": "noleggio",
-    "user": "Abbo",
-    "auto": 1,
-    "start_date": "30/08/2025",
-    "end_date": "30/08/2025",
-    "cauzione": "235",
-    "tipoGaranzia": "1",
-    "durataGaranzia": "12",
-    "kmMax": "200000",
-    "prezzoTot": "20000",
-    "created_at": "2025-08-30 11:25:37"
-  },
-  {
-    "id": 5,
-    "tipo": "noleggio",
-    "user": "Abbo",
-    "auto": 6,
-    "start_date": "02/09/2025",
-    "end_date": "02/09/2025",
-    "cauzione": "800",
-    "tipoGaranzia": "base",
-    "durataGaranzia": "36",
-    "kmMax": "10000",
-    "prezzoTot": "70000",
-    "created_at": "2025-09-02 18:55:20"
-  },
-  {
-    "id": 6,
-    "tipo": "acquisto",
-    "user": "sofixx",
-    "auto": "Porche LaPorche CD200DC",
-    "price": "80000",
-    "durataGaranzia": "16",
-    "tipoGaranzia": "base",
-    "created_at": "2025-09-04 03:25:52"
-  },
-  {
-    "id": 7,
-    "tipo": "noleggio",
-    "user": "mesk11",
-    "auto": 7,
-    "start_date": "04/09/2025",
-    "end_date": "05/09/2025",
-    "cauzione": "900",
-    "tipoGaranzia": "1",
-    "durataGaranzia": "12",
-    "kmMax": "10000",
-    "prezzoTot": "1200",
-    "created_at": "2025-09-04 23:22:44"
-  },
-  {
     "id": 8,
     "tipo": "acquisto",
     "user": "spiderman",
