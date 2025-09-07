@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QFrame, QGridLayout, QScrollArea
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout, QScrollArea
 from PyQt5.QtCore import Qt
 
 class AutoView(QWidget):
@@ -57,6 +57,8 @@ class AutoView(QWidget):
                 border: 1px solid #555;
                 border-radius: 8px;
                 padding: 10px;
+                max-width: 450px;
+                min-width: 400px;
             }
             QPushButton#elimina_auto_button {
                 background-color: #e74c3c;
@@ -73,7 +75,8 @@ class AutoView(QWidget):
             QPushButton#create_auto_button {
                 background-color: black;
                 min-height: 40px;
-                font-size: 20px;
+                font-size: 23px;
+                min-width: 350px;
             }
         """)
 
@@ -140,7 +143,9 @@ class AutoView(QWidget):
             elimina_auto_btn.setVisible(is_admin)
             modifica_auto_btn.setVisible(is_admin)
 
-            grid_auto_layout.addWidget(auto_widget, i // 4, i % 4)
+            grid_auto_layout.addWidget(auto_widget, i // 4, i % 4, alignment=Qt.AlignTop | Qt.AlignLeft)
+            for col in range(4):
+                    grid_auto_layout.setColumnStretch(col, 0)
 
         scroll_area.setWidget(scroll_content)
         self.main_layout.addWidget(scroll_area)
@@ -151,8 +156,16 @@ class AutoView(QWidget):
         create_auto_btn = QPushButton('Crea Auto')
         create_auto_btn.setObjectName('create_auto_button')
         create_auto_btn.clicked.connect(self.controller.creaAutoDialog)
-        self.main_layout.addWidget(create_auto_btn)
-        create_auto_btn.setVisible(is_admin)
+        button_layout = QHBoxLayout()
+        button_layout.addStretch()
+        button_layout.addWidget(create_auto_btn)
+        button_layout.addStretch()
+
+        button_container = QWidget()
+        button_container.setLayout(button_layout)
+
+        self.main_layout.addWidget(button_container)
+        button_container.setVisible(is_admin)
 
     def refreshAuto(self):
         """Aggiorna la visualizzazione delle auto"""

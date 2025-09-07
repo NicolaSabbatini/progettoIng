@@ -65,6 +65,8 @@ class ContractView(QWidget):
                 border-radius: 8px;
                 padding: 10px;
                 min-height: 500px;
+                max-width: 450px;
+                min-width: 400px;
             }
 
             QPushButton#elimina_contratto_button {
@@ -84,11 +86,13 @@ class ContractView(QWidget):
                 background-color: black;
                 min-height: 40px;
                 font-size: 20px;
+                max-width: 450px;
             }
             QPushButton#crea_contratto_noleggio_button{
                 background-color: black;
                 min-height: 40px;    
                 font-size: 20px;
+                max-width: 450px;
             }          
         """)
 
@@ -206,7 +210,9 @@ class ContractView(QWidget):
                         lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
                     contract_layout.addWidget(elimina_contract_btn)
 
-                contract_grid_layout.addWidget(contract_widget, i // 4, i % 4)
+                contract_grid_layout.addWidget(contract_widget, i // 4, i % 4, alignment=Qt.AlignTop | Qt.AlignLeft)
+                for col in range(4):
+                    contract_grid_layout.setColumnStretch(col, 0)
 
 
         if self.type != 'noleggio':
@@ -219,7 +225,7 @@ class ContractView(QWidget):
                 user_label = QLabel(f"Utente: {contract['user']}")
                 user_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
                 
-                auto_label.setText(f"Auto: {contract['auto']}")
+                auto_label = QLabel(f"Auto: {contract['auto']}")
                 auto_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
                 price_label = QLabel(f"Prezzo: {contract['price']}€")
@@ -245,7 +251,9 @@ class ContractView(QWidget):
                         lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
                     contract_layout.addWidget(elimina_contract_btn)
 
-                contract_grid_layout.addWidget(contract_widget, (i + len(rent_contracts)) // 4, (i + len(rent_contracts)) % 4)
+                contract_grid_layout.addWidget(contract_widget, (i + len(rent_contracts)) // 4, (i + len(rent_contracts)) % 4, alignment=Qt.AlignTop | Qt.AlignLeft)
+                for col in range(4):
+                    contract_grid_layout.setColumnStretch(col, 0)
 
             
             

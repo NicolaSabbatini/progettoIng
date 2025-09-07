@@ -133,7 +133,7 @@ class CreaContrattoNoleggioDialog(QDialog):
         auto_combo = QComboBox()
         auto_combo.setObjectName('auto_combo')
         for auto in auto_list:
-            display_text = f"{auto['marca']} {auto['modello']} ({auto['anno']}) - {auto['targa']}"
+            display_text = f"{auto['marca']} {auto['modello']} ({auto['anno']}) - {auto['targa']} (Prezzo: {auto['prezzo']}€)"
             auto_combo.addItem(display_text, auto['id'])
         layout.addWidget(QLabel('Seleziona auto:'))
         layout.addWidget(auto_combo)

@@ -228,7 +228,8 @@ class DashboardView(QWidget):
         # Centra la finestra
         self.centerWindow(self)
 
-        self.verificaScadenzaNoleggio()
+        if role == 'amministratore':
+            self.verificaScadenzaNoleggio()
 
 
 

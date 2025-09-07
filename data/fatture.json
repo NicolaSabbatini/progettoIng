@@ -7,14 +7,38 @@
   },
   {
     "idfattura": 2,
-    "contratto": 1,
-    "data": "010101",
-    "prezzo": "200"
+    "contratto": 9,
+    "data": "07/09/2025",
+    "prezzo": "250"
   },
   {
     "idfattura": 3,
-    "contratto": 1,
-    "data": "020202",
-    "prezzo": "121212"
+    "contratto": 9,
+    "data": "07/10/2025",
+    "prezzo": "250"
+  },
+  {
+    "idfattura": 4,
+    "contratto": 9,
+    "data": "07/11/2025",
+    "prezzo": "250"
+  },
+  {
+    "idfattura": 5,
+    "contratto": 9,
+    "data": "07/12/2025",
+    "prezzo": "250"
+  },
+  {
+    "idfattura": 6,
+    "contratto": 9,
+    "data": "07/01/2026",
+    "prezzo": "250"
+  },
+  {
+    "idfattura": 7,
+    "contratto": 9,
+    "data": "07/02/2026",
+    "prezzo": "250"
   }
 ]

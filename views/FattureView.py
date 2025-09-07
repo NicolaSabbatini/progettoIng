@@ -100,12 +100,7 @@ class FattureView(QWidget):
             fatture_layout.addWidget(prezzo_label)
 
             # inserisco nella griglia (max 4 colonne per riga)
-            grid_fatture_layout.addWidget(
-                fatture_widget,
-                i // 4,  # riga
-                i % 4,   # colonna
-                alignment=Qt.AlignTop | Qt.AlignLeft
-            )
+            grid_fatture_layout.addWidget(fatture_widget,i // 4, i % 4, alignment=Qt.AlignTop | Qt.AlignLeft)
 
         # IMPORTANTISSIMO: impedisco alla griglia di "stirare" le colonne
         for col in range(4):

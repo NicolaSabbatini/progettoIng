@@ -48,5 +48,25 @@
     "prezzo": "2000",
     "targa": "HL560PL",
     "visibile": true
+  },
+  {
+    "id": 15,
+    "marca": "Volkswagen",
+    "modello": "Golf",
+    "anno": 2017,
+    "chilometri": 210000,
+    "prezzo": 8500.0,
+    "targa": "IM458FR",
+    "visibile": false
+  },
+  {
+    "id": 16,
+    "marca": "Volvo",
+    "modello": "XC40",
+    "anno": "2025",
+    "chilometri": "0",
+    "prezzo": "41250",
+    "targa": "KX563BG",
+    "visibile": false
   }
 ]
