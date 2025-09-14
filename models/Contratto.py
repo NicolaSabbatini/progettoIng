@@ -13,8 +13,7 @@ class Contratto:
             if contract['id'] == contract_id:
                 del self.contracts[i]
                 self.saveContracts()
-                return True
-        return False
+        return
 
     def getAllContracts(self):
         """Restituisce tutti i contratti"""

@@ -79,8 +79,12 @@ class Utente:
     
     def updateUser(self, username, password=None, name=None, surname=None, email=None, luogo=None, telefono=None, data=None):
         """Aggiorna i dati di un utente esistente"""
-        if username not in self.users:
+        
+        getUser = self.getUser(username)
+
+        if not getUser:
             return False, "Utente non trovato"
+        
         
         if email and any(user['email'] == email and user != self.users[username] for user in self.users.values()):
             return False, "Email già registrata da un altro utente"
@@ -105,9 +109,10 @@ class Utente:
         return True, "Dati utente aggiornati con successo"
     
     def deleteUser(self, username):
-        """Elimina un utente"""
-        if username in self.users:
-            del self.users[username]
+        """Elimina un utente"""  
+        user = self.getUserByUsername(username)
+        if user:
+            self.users.remove(user)
             self.saveUser()
             return True
         return False

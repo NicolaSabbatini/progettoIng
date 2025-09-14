@@ -1,0 +1,185 @@
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex c18d846..9d98fb3 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -1,3 +1,8 @@[m
+ controllers/__pycache__/*[m
+ views/__pycache__/*[m
+[31m-models/__pycache__/*[m
+\ No newline at end of file[m
+[32m+[m[32mmodels/__pycache__/*[m
+[32m+[m[32mdata/auto.json[m
+[32m+[m[32mdata/users.json[m
+[32m+[m[32mdata/backup.json[m
+[32m+[m[32mdata/contract.json[m
+[32m+[m[32mdata/fatture.json[m
+\ No newline at end of file[m
+[1mdiff --git a/controllers/__pycache__/GestoreAuto.cpython-313.pyc b/controllers/__pycache__/GestoreAuto.cpython-313.pyc[m
+[1mindex a60b8c1..053a274 100644[m
+Binary files a/controllers/__pycache__/GestoreAuto.cpython-313.pyc and b/controllers/__pycache__/GestoreAuto.cpython-313.pyc differ
+[1mdiff --git a/controllers/__pycache__/GestoreContratti.cpython-313.pyc b/controllers/__pycache__/GestoreContratti.cpython-313.pyc[m
+[1mindex 595005a..22a5945 100644[m
+Binary files a/controllers/__pycache__/GestoreContratti.cpython-313.pyc and b/controllers/__pycache__/GestoreContratti.cpython-313.pyc differ
+[1mdiff --git a/controllers/__pycache__/GestoreUtenti.cpython-313.pyc b/controllers/__pycache__/GestoreUtenti.cpython-313.pyc[m
+[1mindex 4fb242a..2e948cf 100644[m
+Binary files a/controllers/__pycache__/GestoreUtenti.cpython-313.pyc and b/controllers/__pycache__/GestoreUtenti.cpython-313.pyc differ
+[1mdiff --git a/data/contract.json b/data/contract.json[m
+[1mindex b5472aa..38df165 100644[m
+[1m--- a/data/contract.json[m
+[1m+++ b/data/contract.json[m
+[36m@@ -27,16 +27,6 @@[m
+     "prezzoTot": "70000",[m
+     "created_at": "2025-09-02 18:55:20"[m
+   },[m
+[31m-  {[m
+[31m-    "id": 6,[m
+[31m-    "tipo": "acquisto",[m
+[31m-    "user": "sofixx",[m
+[31m-    "auto": "Porche LaPorche CD200DC",[m
+[31m-    "price": "80000",[m
+[31m-    "durataGaranzia": "16",[m
+[31m-    "tipoGaranzia": "base",[m
+[31m-    "created_at": "2025-09-04 03:25:52"[m
+[31m-  },[m
+   {[m
+     "id": 7,[m
+     "tipo": "noleggio",[m
+[1mdiff --git a/data/fatture.json b/data/fatture.json[m
+[1mindex 150ae6a..615ea4e 100644[m
+[1m--- a/data/fatture.json[m
+[1m+++ b/data/fatture.json[m
+[36m@@ -8,13 +8,7 @@[m
+   {[m
+     "idfattura": 2,[m
+     "contratto": 1,[m
+[31m-    "data": "010101",[m
+[31m-    "prezzo": "200"[m
+[31m-  },[m
+[31m-  {[m
+[31m-    "idfattura": 3,[m
+[31m-    "contratto": 1,[m
+[31m-    "data": "020202",[m
+[31m-    "prezzo": "121212"[m
+[32m+[m[32m    "data": "06/09/2025",[m
+[32m+[m[32m    "prezzo": "4"[m
+   }[m
+ ][m
+\ No newline at end of file[m
+[1mdiff --git a/views/FattureView.py b/views/FattureView.py[m
+[1mindex f1cb05a..39bf419 100644[m
+[1m--- a/views/FattureView.py[m
+[1m+++ b/views/FattureView.py[m
+[36m@@ -1,4 +1,6 @@[m
+[31m-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame, QGridLayout, QPushButton[m
+[32m+[m[32mfrom PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QFrame, QGridLayout, QPushButton, QScrollArea, QHBoxLayout[m
+[32m+[m[32mfrom PyQt5.QtCore import Qt[m
+[32m+[m[32mfrom PyQt5.QtWidgets import QSizePolicy[m
+ [m
+ class FattureView(QWidget):[m
+     def __init__(self, controller, contract, role = 'cliente', parent =None):[m
+[36m@@ -15,8 +17,10 @@[m [mclass FattureView(QWidget):[m
+         self.main_layout.setContentsMargins(30, 30, 30, 30)[m
+         self.setLayout(self.main_layout)[m
+ [m
+[31m-        self.populateFatture()[m
+[31m-        self.centerWindow()[m
+[32m+[m[32m        if parent:[m
+[32m+[m[32m            self.setGeometry(parent.geometry())[m
+[32m+[m
+[32m+[m[41m        [m
+ [m
+         self.setStyleSheet("""[m
+             QWidget {[m
+[36m@@ -60,45 +64,80 @@[m [mclass FattureView(QWidget):[m
+         """)[m
+ [m
+ [m
+[32m+[m[32m        self.populateFatture()[m
+[32m+[m[32m        self.centerWindow()[m
+[32m+[m
+     def populateFatture(self):[m
+[31m-        # Remove previous fatture frame if exists[m
+[31m-        for i in reversed(range(self.main_layout.count())):[m
+[31m-            item = self.main_layout.itemAt(i)[m
+[32m+[m[32m        # Rimuove i widget precedenti dalla layout[m
+[32m+[m[32m        while self.main_layout.count():[m
+[32m+[m[32m            item = self.main_layout.takeAt(0)[m
+             widget = item.widget()[m
+[31m-            if isinstance(widget, QFrame) or isinstance(widget, QPushButton):[m
+[31m-                self.main_layout.removeWidget(widget)[m
+[32m+[m[32m            if widget is not None:[m
+                 widget.deleteLater()[m
+ [m
+[32m+[m[32m        # Frame che contiene le fatture[m
+         fatture_frame = QFrame()[m
+         fatture_frame.setObjectName('fatture_frame')[m
+         grid_fatture_layout = QGridLayout(fatture_frame)[m
+[32m+[m[32m        grid_fatture_layout.setContentsMargins(20, 20, 20, 20)[m
+[32m+[m[32m        grid_fatture_layout.setSpacing(15)[m
+ [m
+         fatture_list = self.controller.getFatturePerContratto(self.contract['id'])[m
+[32m+[m
+         for i, fattura in enumerate(fatture_list):[m
+             fatture_widget = QWidget()[m
+             fatture_widget.setObjectName('fatture_widget')[m
+             fatture_layout = QVBoxLayout(fatture_widget)[m
+[31m-            fatture_layout.setContentsMargins(10, 10, 10, 10)[m
+[32m+[m[32m            fatture_layout.setContentsMargins(10, 10, 10, 20)[m
+[32m+[m
+[32m+[m[32m            # dimensione fissa[m
+[32m+[m[32m            fatture_widget.setFixedSize(420, 100)[m
+ [m
+             data_label = QLabel(f"Data: {fattura['data']}")[m
+             prezzo_label = QLabel(f"Prezzo: {fattura['prezzo']}€")[m
+ [m
+[31m-            [m
+             fatture_layout.addWidget(data_label)[m
+             fatture_layout.addWidget(prezzo_label)[m
+ [m
+[31m-            grid_fatture_layout.addWidget(fatture_widget, i // 4, i % 4)[m
+[31m-[m
+[31m-        self.main_layout.addWidget(fatture_frame)[m
+[32m+[m[32m            # inserisco nella griglia (max 4 colonne per riga)[m
+[32m+[m[32m            grid_fatture_layout.addWidget([m
+[32m+[m[32m                fatture_widget,[m
+[32m+[m[32m                i // 4,  # riga[m
+[32m+[m[32m                i % 4,   # colonna[m
+[32m+[m[32m                alignment=Qt.AlignTop | Qt.AlignLeft[m
+[32m+[m[32m            )[m
+[32m+[m
+[32m+[m[32m        # IMPORTANTISSIMO: impedisco alla griglia di "stirare" le colonne[m
+[32m+[m[32m        for col in range(4):[m
+[32m+[m[32m            grid_fatture_layout.setColumnStretch(col, 0)[m
+[32m+[m
+[32m+[m[32m        # Scroll area che contiene tutto[m
+[32m+[m[32m        scroll_area = QScrollArea()[m
+[32m+[m[32m        scroll_area.setWidgetResizable(True)[m
+[32m+[m[32m        scroll_area.setWidget(fatture_frame)[m
+[32m+[m[32m        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)[m
+[32m+[m[32m        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)[m
+[32m+[m[32m        scroll_area.setMaximumHeight(900)[m
+[32m+[m
+[32m+[m[32m        self.main_layout.addWidget(scroll_area)[m
+         self.main_layout.addStretch()[m
+ [m
+[32m+[m[32m        # Bottone solo per admin[m
+         if self.role == 'amministratore':[m
+             crea_fattura_button = QPushButton('Crea Fattura')[m
+             crea_fattura_button.setObjectName('crea_fattura_button')[m
+[32m+[m[32m            crea_fattura_button.setFixedWidth(150)[m
+             crea_fattura_button.clicked.connect(self.createFattura)[m
+[31m-            self.main_layout.addWidget(crea_fattura_button)[m
+ [m
+[31m-        self.main_layout.addStretch()[m
+[32m+[m[32m            button_layout = QHBoxLayout()[m
+[32m+[m[32m            button_layout.addStretch()[m
+[32m+[m[32m            button_layout.addWidget(crea_fattura_button)[m
+[32m+[m[32m            button_layout.addStretch()[m
+[32m+[m
+[32m+[m[32m            button_container = QWidget()[m
+[32m+[m[32m            button_container.setLayout(button_layout)[m
+[32m+[m
+[32m+[m[32m            self.main_layout.addWidget(button_container)[m
+ [m
+     def createFattura(self):[m
+         # Call the controller to create a fattura, then refresh the view[m

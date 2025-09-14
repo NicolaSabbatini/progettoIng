@@ -39,13 +39,10 @@ class GestoreAuto:
         if not autoId:
             return False, "ID dell'auto non valido"
 
-        success = self.auto_model.deleteCar(autoId)
+        self.auto_model.deleteCar(autoId)
         if view:
             self.auto_view.refreshAuto()
-        if success:
-            return True, "Auto eliminata con successo"
-        else:
-            return False, "Errore durante l'eliminazione dell'auto"
+        return
         
     def getAllAuto(self):
         """Restituisce tutte le auto, visibili e non"""

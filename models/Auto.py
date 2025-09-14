@@ -31,12 +31,12 @@ class Auto:
         """Elimina un'auto dato il suo id"""
         if self.auto_list is None:
             self.auto_list = []
-        for i, auto in enumerate(self.auto_list):
-            if auto['id'] == auto_id:
-                del self.auto_list[i]
-                self.saveCar()
-                return True
-        return False
+
+        car = self.getCarById(auto_id)
+        if car:
+            self.auto_list.remove(car)
+            self.saveCar()
+        return
     
     def getAvailableCar(self):
         return [a for a in self.auto_list if a.get('visibile', True)]
@@ -98,22 +98,22 @@ class Auto:
         if self.auto_list is None:
             self.auto_list = []
         auto_id = int(auto_id)
-        for auto in self.auto_list:
-            if auto['id'] == auto_id:
-                if marca is not None:
-                    auto['marca'] = marca
-                if modello is not None:
-                    auto['modello'] = modello
-                if anno is not None:
-                    auto['anno'] = anno
-                if chilometri is not None:
-                    auto['chilometri'] = chilometri
-                if prezzo is not None:
-                    auto['prezzo'] = prezzo
-                if targa is not None:
-                    auto['targa'] = targa
-                self.saveCar()
-                return True, "Auto aggiornata con successo"
+        auto=self.getCarById(auto_id)  # Verifica che l'auto esista
+        if auto['id'] == auto_id:
+            if marca is not None:
+                auto['marca'] = marca
+            if modello is not None:
+                auto['modello'] = modello
+            if anno is not None:
+                auto['anno'] = anno
+            if chilometri is not None:
+                auto['chilometri'] = chilometri
+            if prezzo is not None:
+                auto['prezzo'] = prezzo
+            if targa is not None:
+                auto['targa'] = targa
+            self.saveCar()
+            return True, "Auto aggiornata con successo"
         return False, "Auto non trovata"
 
     

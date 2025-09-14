@@ -90,7 +90,7 @@ class GestoreContratti:
         self.fatture_model.saveBills()
         self.contract_view = contract_view
         # 2️ Elimina il contratto
-        success = self.contract_model.deleteContract(contractId)
+        self.contract_model.deleteContract(contractId)
         self.reimpostaAuto(autoId)  # Reimposta l'auto associata al contratto
         self.auto_controller.caricaAuto()
         self.rent_contract_model.loadContracts()
@@ -99,10 +99,7 @@ class GestoreContratti:
 
         if contract_view:
             self.contract_view.refreshContracts()
-        if success:
-            return True, "Contratto e fatture collegate eliminate con successo"
-        else:
-            return False, "Errore durante l'eliminazione del contratto e delle fatture collegate"
+        return
 
     def getContratti(self):
         """Restituisce tutti i contratti"""
