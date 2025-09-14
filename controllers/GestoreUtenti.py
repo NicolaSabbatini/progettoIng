@@ -62,23 +62,6 @@ class GestoreUtenti:
                 return False, "Impossibile aggiornare l'utente"
         except Exception as e:
             return False, f"Errore: {str(e)}"
-    
-    def aggiornaInfoUtente(self, dashboard_view):
-        """Aggiorna le informazioni dell'utente visualizzate nella dashboard"""
-        user_data = self.getDatiUtenteLoggato()
-        if user_data:
-            dashboard_view.username_label.setText(f"Username: {user_data.get('username', '')}")
-            dashboard_view.email_label.setText(f"Email: {user_data.get('email', '')}")
-            dashboard_view.name_label.setText(f"Nome: {user_data.get('name', '')}")
-            dashboard_view.surname_label.setText(f"Cognome: {user_data.get('surname', '')}")
-            dashboard_view.luogo_label.setText(f"Luogo di nascita: {user_data.get('luogo', '')}")
-            dashboard_view.telefono_label.setText(f"Telefono: {user_data.get('telefono', '')}")
-            dashboard_view.data_label.setText(f"Data di nascita: {user_data.get('data', '')}")
-            dashboard_view.login_time_label.setText(f"Login effettuato il: {user_data.get('login_time', '')}")
-            dashboard_view.created_label.setText(f"Utente creato il: {user_data.get('created_at', '')}")
-
-            dashboard_view.welcome_label.setText(f"Benvenuto, {user_data.get('name', '')}!")
-    
 
     def eliminaUtente(self, parent):
         """Elimina il profilo dell'utente corrente dopo conferma"""

@@ -25,6 +25,7 @@ class DashboardView(QWidget):
         self.setWindowTitle('Dashboard')
 
         self.populateUserInfo()
+
         self.setStyleSheet("""
             QWidget {
                 background-color: #2b2b2b; /* grigio scuro */
@@ -109,8 +110,6 @@ class DashboardView(QWidget):
 
         self.controller.user_model.loadUsers()  # Ricarica i dati degli utenti
         
-
-        
         # Header
         header_layout = QHBoxLayout()
         self.welcome_label = QLabel('Benvenuto/a')
@@ -159,7 +158,6 @@ class DashboardView(QWidget):
         self.telefono_label.setObjectName('info_label')
         self.data_label = QLabel()
         self.data_label.setObjectName('info_label')
-        self.controller.aggiornaInfoUtente(self)
        
         info_layout.addWidget(self.username_label)
         info_layout.addWidget(self.email_label)
@@ -170,12 +168,24 @@ class DashboardView(QWidget):
         info_layout.addWidget(self.luogo_label)
         info_layout.addWidget(self.telefono_label)
         info_layout.addWidget(self.data_label)
+        user_data = self.controller.getDatiUtenteLoggato()
+        if user_data:
+            self.username_label.setText(f"Username: {user_data.get('username', '')}")
+            self.email_label.setText(f"Email: {user_data.get('email', '')}")
+            self.name_label.setText(f"Nome: {user_data.get('name', '')}")
+            self.surname_label.setText(f"Cognome: {user_data.get('surname', '')}")
+            self.luogo_label.setText(f"Luogo di nascita: {user_data.get('luogo', '')}")
+            self.telefono_label.setText(f"Telefono: {user_data.get('telefono', '')}")
+            self.data_label.setText(f"Data di nascita: {user_data.get('data', '')}")
+            self.login_time_label.setText(f"Login effettuato il: {user_data.get('login_time', '')}")
+            self.created_label.setText(f"Utente creato il: {user_data.get('created_at', '')}")
+
+            self.welcome_label.setText(f"Benvenuto/a, {user_data.get('name', '')}!")
         info_layout.addStretch()
 
         
         self.main_layout.addWidget(info_frame)
 
-        self.controller.aggiornaInfoUtente(self)
 
         role = self.controller.getRuoloUtente()
         if role == 'amministratore':
@@ -224,18 +234,16 @@ class DashboardView(QWidget):
 
         self.main_layout.addLayout(buttons_layout)
         self.setLayout(self.main_layout)
-        
         # Centra la finestra
         self.centerWindow(self)
+        # Aggiorna le info utente
 
         if role == 'amministratore':
             self.verificaScadenzaNoleggio()
 
-
-
-
     
     ###---FUNZIONI---###--------------------------------------------
+
 
     def verificaScadenzaNoleggio(self):
         contract_controller = GestoreContratti(self.controller, self)
