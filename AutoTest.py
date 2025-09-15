@@ -33,9 +33,7 @@ class TestGestoreAutoModifica(unittest.TestCase):
         self.auto_id = 1
 
     def test_modifica_auto_success(self):
-        success, msg = self.gestore.aggiornaAuto(
-            self.auto_id, 'Fiat', 'Punto', '2021', '12000', '9500', 'AB123CD'
-        )
+        success, msg = self.gestore.aggiornaAuto(self.auto_id, 'Fiat', 'Punto', '2021', '12000', '9500', 'AB123CD')
         self.assertTrue(success)
         self.assertIn("aggiornata", msg)
         auto = self.gestore.getAllAuto()[0]
@@ -46,16 +44,12 @@ class TestGestoreAutoModifica(unittest.TestCase):
         self.assertEqual(auto['targa'], 'AB123CD')
 
     def test_modifica_auto_missing_id(self):
-        success, msg = self.gestore.aggiornaAuto(
-            None, 'Fiat', 'Punto', '2021', '12000', '9500', 'AB123CD'
-        )
+        success, msg = self.gestore.aggiornaAuto(None, 'Fiat', 'Punto', '2021', '12000', '9500', 'AB123CD')
         self.assertFalse(success)
         self.assertIn("ID dell'auto non valido", msg)
 
     def test_modifica_auto_not_found(self):
-        success, msg = self.gestore.aggiornaAuto(
-            9999, 'Fiat', 'Punto', '2021', '12000', '9500', 'AB123CD'
-        )
+        success, msg = self.gestore.aggiornaAuto(9999, 'Fiat', 'Punto', '2021', '12000', '9500', 'AB123CD')
         self.assertFalse(success)
         self.assertIn("auto non trovata", msg.lower())
 

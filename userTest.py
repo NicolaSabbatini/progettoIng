@@ -25,14 +25,11 @@ class TestGestoreUtenti(unittest.TestCase):
 
     def test_login_missing_fields(self):
         success = self.gestore.login('', '', None)
-        self.assertFalse(success)  # login fallisce perché mancano credenziali
-
-    #@patch.object(QMessageBox, 'warning', return_value=None)
+        self.assertFalse(success) 
+ 
     def test_login_wrong_credentials(self):
         success = self.gestore.login('utente_non_esistente', 'password_sbagliata', None)
         self.assertFalse(success)
-        #mock_warning.assert_called_once()  # verifica che QMessageBox.warning sia stato chiamato
-
 
     def test_register_missing_fields(self):
         success, msg = self.gestore.register('', '', '', '', '', '', '', '', '')
