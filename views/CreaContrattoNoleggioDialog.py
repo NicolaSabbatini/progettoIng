@@ -160,8 +160,8 @@ class CreaContrattoNoleggioDialog(QDialog):
         layout.addWidget(QLabel('Prezzo:'))
         layout.addWidget(prezzo_input)
 
-        durataGaranzia_input = QLineEdit()
-        durataGaranzia_input.setPlaceholderText('durata garanzia')
+        durataGaranzia_input = QComboBox()
+        durataGaranzia_input.addItems(["6 mesi", "12 mesi", "24 mesi", "36 mesi", "48 mesi"])
         layout.addWidget(QLabel('Durata garanzia:'))
         layout.addWidget(durataGaranzia_input)
 
@@ -185,19 +185,53 @@ class CreaContrattoNoleggioDialog(QDialog):
         self.setLayout(layout)
         self.setWindowModality(Qt.ApplicationModal)
 
-    def aggiungiContratto(self,users_combo,auto_combo,start_date_input,end_date_input,cauzione_input,prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input):
+    def aggiungiContratto(self, users_combo, auto_combo, start_date_input, end_date_input, cauzione_input, prezzo_input, durataGaranzia_input, tipoGaranzia_input, kmMax_input):
         user = users_combo.currentText().split(' - ')[-1].strip(')')
         auto = auto_combo.currentData()
-        start_date = start_date_input.text()
-        end_date = end_date_input.text()
+        start_date = start_date_input.date()
+        end_date = end_date_input.date()
         cauzione = cauzione_input.text()
         prezzo = prezzo_input.text()
-        durataGaranzia = durataGaranzia_input.text()
+        durataGaranzia = durataGaranzia_input.currentText()
         tipoGaranzia = tipoGaranzia_input.currentText()
         kmMax = kmMax_input.text()
 
+        # Controllo che la data di inizio sia antecedente alla data di fine
+        if start_date >= end_date:
+            QMessageBox.warning(self, 'Errore', 'La data di inizio noleggio deve essere antecedente alla data di fine noleggio.')
+            return
+        
+        contratti_cliente = self.controller.contract_model.getClientContracts(user)
+        for c in contratti_cliente:
+            if c.get("tipo") == "noleggio":
+                esistente_start = QDate.fromString(c["start_date"], "dd/MM/yyyy")
+                esistente_end = QDate.fromString(c["end_date"], "dd/MM/yyyy")
+
+                # Se c’è sovrapposizione
+                if (start_date >= esistente_start and start_date <= esistente_end) or (end_date >= esistente_start and end_date <= esistente_end) or (start_date <= esistente_start and end_date >= esistente_end):
+                    QMessageBox.warning(
+                        self,
+                        "Errore",
+                        f"Il cliente ha già un contratto di noleggio attivo in questo periodo\n"
+                        "("f"🚗 Auto: {c.get('auto', 'N/A')}"
+                           f"📅 Periodo: {c['start_date']} → {c['end_date']})\n"
+                        "Non possono esserci due contratti attivi nello stesso periodo."
+                    )
+                    return
+
         if user and auto and start_date and end_date and cauzione and prezzo and durataGaranzia and tipoGaranzia and kmMax:
-            self.controller.aggiungiContrattoNoleggio(user, auto, start_date, end_date, cauzione, tipoGaranzia, durataGaranzia, kmMax, prezzo)
+            self.controller.aggiungiContrattoNoleggio(
+                user,
+                auto,
+                start_date.toString("dd/MM/yyyy"),
+                end_date.toString("dd/MM/yyyy"),
+                cauzione,
+                tipoGaranzia,
+                durataGaranzia,
+                kmMax,
+                prezzo
+            )
             self.accept()
         else:
             QMessageBox.warning(self, 'Errore', 'Inserisci tutti i campi.')
+

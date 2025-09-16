@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout, QScrollArea
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout, QScrollArea, QMessageBox
 from PyQt5.QtCore import Qt
 
 class AutoView(QWidget):
@@ -78,6 +78,26 @@ class AutoView(QWidget):
                 font-size: 23px;
                 min-width: 350px;
             }
+            QMessageBox {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+                font-size: 18px;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }
         """)
 
     def populateAuto(self):
@@ -126,7 +146,7 @@ class AutoView(QWidget):
             elimina_auto_btn = QPushButton('Elimina Auto')
             elimina_auto_btn.setObjectName('elimina_auto_button')
             elimina_auto_btn.clicked.connect(
-                lambda _, id=auto['id']: self.controller.eliminaAuto(id, self)
+                lambda _, id=auto['id']: self.deleteAuto(id)
             )
             auto_layout.addWidget(elimina_auto_btn)
 
@@ -167,9 +187,25 @@ class AutoView(QWidget):
         self.main_layout.addWidget(button_container)
         button_container.setVisible(is_admin)
 
+###---FUNZIONI---###--------------------------------------------    
+
     def refreshAuto(self):
         """Aggiorna la visualizzazione delle auto"""
         self.populateAuto()
+
+    def deleteAuto(self, id):
+        """Elimina l'auto selezionata"""
+        reply = QMessageBox.question(
+            self,
+            'Conferma Eliminazione',
+            'Sei sicuro di voler eliminare questa auto? Questa azione è irreversibile.',
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        if reply == QMessageBox.Yes:
+            self.controller.eliminaAuto(id)
+            self.refreshAuto()
+            
 
     def goToDashboard(self):
         self.hide()

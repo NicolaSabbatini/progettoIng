@@ -81,24 +81,22 @@ class GestoreContratti:
         dialog = CreaFatturaDialog(parent=None, controller=self, fatture_view=self.fatture_view, contract_id=contractId)
         dialog.exec_()
 
-    def eliminaContrattieFatture(self, contractId, autoId, contract_view=None):
+    def eliminaContrattieFatture(self, contractId, autoId = None):
         """Elimina un contratto e tutte le sue fatture collegate"""
         # 1️ Elimina le fatture legate a quel contratto
         self.fatture_model.fatture = [
             f for f in self.fatture_model.fatture if f['contratto'] != contractId
         ]
         self.fatture_model.saveBills()
-        self.contract_view = contract_view
         # 2️ Elimina il contratto
         self.contract_model.deleteContract(contractId)
-        self.reimpostaAuto(autoId)  # Reimposta l'auto associata al contratto
-        self.auto_controller.caricaAuto()
+        if autoId:
+            self.reimpostaAuto(autoId)  # Reimposta l'auto associata al contratto
+            self.auto_controller.caricaAuto()
         self.rent_contract_model.loadContracts()
         self.buy_contract_model.loadContracts()
         self.contract_model.loadContracts()
 
-        if contract_view:
-            self.contract_view.refreshContracts()
         return
 
     def getContratti(self):

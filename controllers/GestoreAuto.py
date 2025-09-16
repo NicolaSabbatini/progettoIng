@@ -34,14 +34,12 @@ class GestoreAuto:
         dialog = CreaAutoDialog(self, auto_view=self.auto_view)
         dialog.exec_()
 
-    def eliminaAuto(self, autoId, view=None):
+    def eliminaAuto(self, autoId):
         """Elimina un'auto"""
         if not autoId:
             return False, "ID dell'auto non valido"
 
         self.auto_model.deleteCar(autoId)
-        if view:
-            self.auto_view.refreshAuto()
         return
         
     def getAllAuto(self):

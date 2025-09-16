@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, QGridLayout, QHBoxLayout, QSizePolicy, QScrollArea
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QFrame, QGridLayout, QHBoxLayout, QSizePolicy, QScrollArea, QMessageBox
 from PyQt5.QtCore import Qt
 
 from controllers.GestoreAuto import GestoreAuto
@@ -93,7 +93,27 @@ class ContractView(QWidget):
                 min-height: 40px;    
                 font-size: 20px;
                 max-width: 450px;
-            }          
+            }       
+            QMessageBox {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+            QMessageBox QLabel {
+                color: white;
+                background-color: #2b2b2b;
+                font-size: 18px;
+            }
+            QMessageBox QPushButton {
+                background-color: #2e86de;
+                color: white;
+                border-radius: 6px;
+                padding: 6px 12px;
+            }
+            QMessageBox QPushButton:hover {
+                background-color: #1b4f72;
+            }   
         """)
 
         self.populateContracts()
@@ -181,7 +201,7 @@ class ContractView(QWidget):
                 tipoGaranzia_label = QLabel(f"Tipo garanzia: {contract['tipoGaranzia']}")
                 tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']} mesi")
+                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']}")
                 durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
                 kmMax_label = QLabel(f"Chilometri massimi: {contract['kmMax']}")
@@ -207,7 +227,7 @@ class ContractView(QWidget):
                     elimina_contract_btn = QPushButton('Elimina contratto')
                     elimina_contract_btn.setObjectName('elimina_contratto_button')
                     elimina_contract_btn.clicked.connect(
-                        lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
+                        lambda checked=False, c=contract: self.deleteContratto(c['id'], c['tipo'], c['auto']))
                     contract_layout.addWidget(elimina_contract_btn)
 
                 contract_grid_layout.addWidget(contract_widget, i // 4, i % 4, alignment=Qt.AlignTop | Qt.AlignLeft)
@@ -234,7 +254,7 @@ class ContractView(QWidget):
                 tipoGaranzia_label = QLabel(f"Tipo garanzia: {contract['tipoGaranzia']}")
                 tipoGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
-                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']} mesi")
+                durataGaranzia_label = QLabel(f"Durata garanzia: {contract['durataGaranzia']}")
                 durataGaranzia_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
 
@@ -248,7 +268,7 @@ class ContractView(QWidget):
                     elimina_contract_btn = QPushButton('Elimina contratto')
                     elimina_contract_btn.setObjectName('elimina_contratto_button')
                     elimina_contract_btn.clicked.connect(
-                        lambda checked=False, c=contract: self.controller.eliminaContrattieFatture(c['id'], c['auto'], self))
+                        lambda checked=False, c=contract: self.deleteContratto(c['id'], c['tipo']))
                     contract_layout.addWidget(elimina_contract_btn)
 
                 contract_grid_layout.addWidget(contract_widget, (i + len(rent_contracts)) // 4, (i + len(rent_contracts)) % 4, alignment=Qt.AlignTop | Qt.AlignLeft)
@@ -301,6 +321,22 @@ class ContractView(QWidget):
     def refreshContracts(self):
         self.populateContracts()
 
+    def deleteContratto(self, id, tipo, idAuto=None):
+        """Elimina il contratto selezionato"""
+        reply = QMessageBox.question(
+            self,
+            'Conferma Eliminazione',
+            'Sei sicuro di voler eliminare questo contratto? Questa azione è irreversibile.',
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        if reply == QMessageBox.Yes:
+            if tipo == 'noleggio':
+                self.controller.eliminaContrattieFatture(id, idAuto)
+            else:
+                self.controller.eliminaContrattieFatture(id)
+            self.refreshContracts()
+            
     def goToDashboard(self):
         self.hide()
         self.dashboard_view.show()

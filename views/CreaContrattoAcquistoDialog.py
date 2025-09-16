@@ -143,9 +143,9 @@ class CreaContrattoAcquistoDialog(QDialog):
         layout.addWidget(QLabel('Prezzo:'))
         layout.addWidget(prezzo_input)
 
-        durataGaranzia_input = QLineEdit()
-        durataGaranzia_input.setPlaceholderText('durataGaranzia')
-        layout.addWidget(QLabel('Durata Garanzia:'))
+        durataGaranzia_input = QComboBox()
+        durataGaranzia_input.addItems(["6 mesi", "12 mesi", "24 mesi", "36 mesi", "48 mesi"])
+        layout.addWidget(QLabel('Durata garanzia:'))
         layout.addWidget(durataGaranzia_input)
 
         tipoGaranzia_input = QComboBox()
@@ -167,7 +167,7 @@ class CreaContrattoAcquistoDialog(QDialog):
         user = users_combo.currentText().split(' - ')[-1].strip(')')
         auto = auto_combo.currentData()
         prezzo = prezzo_input.text()
-        durataGaranzia = durataGaranzia_input.text()
+        durataGaranzia = durataGaranzia_input.currentText()
         tipoGaranzia = tipoGaranzia_input.currentText()
 
 
